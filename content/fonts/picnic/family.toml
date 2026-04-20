@@ -1,0 +1,23 @@
+[details]
+name = "PicNic"
+designer = "Marielle Nils"
+designer_url = "https://velvetyne.fr/authors/mariel-nils/"
+license = "CUTE 0.1"
+license_url = "https://genderfluid.space/"
+copyright = "Copyright 2022, Mariel Nils"
+foundry = "Bye Bye Binary Type Library"
+foundry_url = "https://typotheque.genderfluid.space/"
+website = "https://typotheque.genderfluid.space/fr/fontes/picnic"
+
+[source]
+repository = "https://gitlab.com/mariellenils/PicNic"
+commit = "4d11087bd7705f44640f587933d99b329316f07c"
+archive = "tiparo-picnic.tar.gz"
+archive_version = "dev"
+
+[display]
+style = "Regular400"
+
+[style.Regular400]
+name = "Regular 400"
+file = "picnic/fonts/webfonts/PicNic.woff2"

@@ -1,0 +1,75 @@
+site_name: Tiparo Docs
+site_url: https://tiparo.leightonpayne.dev/docs/
+site_description: >-
+  Architecture, content pipeline, and deployment guide for Tiparo.
+site_author: Leighton Payne
+
+repo_name: leightonpayne/tiparo
+repo_url: https://github.com/leightonpayne/tiparo
+edit_uri: https://github.com/leightonpayne/tiparo/edit/main/docs/
+
+copyright: "&copy; 2026 Leighton Payne"
+
+theme:
+  name: material
+  variant: modern
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.path
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: lucide/moon-star
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: orange
+      toggle:
+        icon: lucide/sun
+        name: Switch to system preference
+  favicon: static/tiparo.svg
+  logo: static/tiparo.svg
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - fenced_code
+  - pymdownx.keys
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/leightonpayne/tiparo
+    - icon: fontawesome/solid/globe
+      link: https://tiparo.leightonpayne.dev
+    - icon: fontawesome/brands/bluesky
+      link: https://bsky.app/profile/leightonpayne.bsky.social
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/leightonpayne
+
+nav:
+  - Home:
+      - Overview: index.md
+      - Installation: about/installation.md
+      - Identity: about/identity.md
+      - License: about/license.md
+      - Contributing: about/contributing.md
+  - Usage:
+      - Architecture: operations/architecture.md
+      - Adding Fonts: operations/adding-fonts.md
+      - Publishing Archives: operations/publishing-archives.md
+      - Deployment: operations/deployment.md
+  - Reference:
+      - family.toml: reference/family-toml.md
+      - Runtime Manifest: reference/runtime-manifest.md

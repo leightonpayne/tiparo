@@ -1,0 +1,11 @@
+node_modules
+dist
+site
+.DS_Store
+*.tsbuildinfo
+.venv
+.venv-docs
+.uv_cache
+content/upstreams/
+
+.wrangler/

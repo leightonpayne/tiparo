@@ -1,0 +1,160 @@
+[details]
+name = "Inter"
+designer = "Rasmus Andersson"
+designer_url = "https://rsms.me/"
+license = "SIL Open Font License 1.1"
+license_url = "http://scripts.sil.org/OFL"
+copyright = "Copyright 2016, The Inter Project Authors"
+foundry = "Independent"
+website = "https://rsms.me/inter/"
+
+[source]
+archive = "tiparo-inter.tar.gz"
+archive_version = "b44e318c"
+
+[display]
+style = "Regular400"
+
+[style.Black900]
+name = "Black 900"
+file = "inter/web/Inter-Black.woff2"
+
+[style.Black900Italic]
+name = "Black 900 Italic"
+file = "inter/web/Inter-BlackItalic.woff2"
+
+[style.Bold700]
+name = "Bold 700"
+file = "inter/web/Inter-Bold.woff2"
+
+[style.Bold700Italic]
+name = "Bold 700 Italic"
+file = "inter/web/Inter-BoldItalic.woff2"
+
+[style.ExtraBold800]
+name = "ExtraBold 800"
+file = "inter/web/Inter-ExtraBold.woff2"
+
+[style.ExtraBold800Italic]
+name = "ExtraBold 800 Italic"
+file = "inter/web/Inter-ExtraBoldItalic.woff2"
+
+[style.ExtraLight200]
+name = "ExtraLight 200"
+file = "inter/web/Inter-ExtraLight.woff2"
+
+[style.ExtraLight200Italic]
+name = "ExtraLight 200 Italic"
+file = "inter/web/Inter-ExtraLightItalic.woff2"
+
+[style.Italic400]
+name = "Italic 400"
+file = "inter/web/Inter-Italic.woff2"
+
+[style.Light300]
+name = "Light 300"
+file = "inter/web/Inter-Light.woff2"
+
+[style.Light300Italic]
+name = "Light 300 Italic"
+file = "inter/web/Inter-LightItalic.woff2"
+
+[style.Medium500]
+name = "Medium 500"
+file = "inter/web/Inter-Medium.woff2"
+
+[style.Medium500Italic]
+name = "Medium 500 Italic"
+file = "inter/web/Inter-MediumItalic.woff2"
+
+[style.Regular400]
+name = "Regular 400"
+file = "inter/web/Inter-Regular.woff2"
+
+[style.SemiBold600]
+name = "SemiBold 600"
+file = "inter/web/Inter-SemiBold.woff2"
+
+[style.SemiBold600Italic]
+name = "SemiBold 600 Italic"
+file = "inter/web/Inter-SemiBoldItalic.woff2"
+
+[style.Thin100]
+name = "Thin 100"
+file = "inter/web/Inter-Thin.woff2"
+
+[style.Thin100Italic]
+name = "Thin 100 Italic"
+file = "inter/web/Inter-ThinItalic.woff2"
+
+[style.DisplayBlack900]
+name = "Display Black 900"
+file = "inter/web/InterDisplay-Black.woff2"
+
+[style.DisplayBlack900Italic]
+name = "Display Black 900 Italic"
+file = "inter/web/InterDisplay-BlackItalic.woff2"
+
+[style.DisplayBold700]
+name = "Display Bold 700"
+file = "inter/web/InterDisplay-Bold.woff2"
+
+[style.DisplayBold700Italic]
+name = "Display Bold 700 Italic"
+file = "inter/web/InterDisplay-BoldItalic.woff2"
+
+[style.DisplayExtraBold800]
+name = "Display ExtraBold 800"
+file = "inter/web/InterDisplay-ExtraBold.woff2"
+
+[style.DisplayExtraBold800Italic]
+name = "Display ExtraBold 800 Italic"
+file = "inter/web/InterDisplay-ExtraBoldItalic.woff2"
+
+[style.DisplayExtraLight200]
+name = "Display ExtraLight 200"
+file = "inter/web/InterDisplay-ExtraLight.woff2"
+
+[style.DisplayExtraLight200Italic]
+name = "Display ExtraLight 200 Italic"
+file = "inter/web/InterDisplay-ExtraLightItalic.woff2"
+
+[style.DisplayItalic400]
+name = "Display Italic 400"
+file = "inter/web/InterDisplay-Italic.woff2"
+
+[style.DisplayLight300]
+name = "Display Light 300"
+file = "inter/web/InterDisplay-Light.woff2"
+
+[style.DisplayLight300Italic]
+name = "Display Light 300 Italic"
+file = "inter/web/InterDisplay-LightItalic.woff2"
+
+[style.DisplayMedium500]
+name = "Display Medium 500"
+file = "inter/web/InterDisplay-Medium.woff2"
+
+[style.DisplayMedium500Italic]
+name = "Display Medium 500 Italic"
+file = "inter/web/InterDisplay-MediumItalic.woff2"
+
+[style.DisplayRegular400]
+name = "Display Regular 400"
+file = "inter/web/InterDisplay-Regular.woff2"
+
+[style.DisplaySemiBold600]
+name = "Display SemiBold 600"
+file = "inter/web/InterDisplay-SemiBold.woff2"
+
+[style.DisplaySemiBold600Italic]
+name = "Display SemiBold 600 Italic"
+file = "inter/web/InterDisplay-SemiBoldItalic.woff2"
+
+[style.DisplayThin100]
+name = "Display Thin 100"
+file = "inter/web/InterDisplay-Thin.woff2"
+
+[style.DisplayThin100Italic]
+name = "Display Thin 100 Italic"
+file = "inter/web/InterDisplay-ThinItalic.woff2"
