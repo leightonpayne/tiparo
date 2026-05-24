@@ -10,7 +10,7 @@
 
 Detailed architecture and content-pipeline documentation lives in [docs/operations/architecture.md](docs/operations/architecture.md).
 
-There is also a dedicated Zensical docs site configured via [mkdocs.yml](mkdocs.yml) and deployed at `https://tiparo.leightonpayne.dev/docs/`.
+There is also a dedicated Zensical docs site configured via [zensical.toml](zensical.toml) and deployed at `https://tiparo.leightonpayne.dev/docs/`.
 
 ## Development
 
@@ -33,7 +33,6 @@ The Python side is managed with `uv`.
 Recommended setup:
 
 ```bash
-uv python pin 3.14
 uv sync --group docs
 ```
 
@@ -79,6 +78,9 @@ For a new font:
 3. Run `bun run fonts:sync -- {font}` to copy only the preview font files into `content/fonts/{font}/`.
 4. Set `source.archive` to the tarball filename you will upload to R2, such as `tiparo-myfont.tar.gz`.
 5. Publish with `bun run fonts:publish -- {font} --bucket your-r2-bucket`.
+
+For real uploads, Wrangler must already be authenticated locally or have
+`CLOUDFLARE_API_TOKEN` set in the environment.
 
 To update one font's tarball version manually:
 

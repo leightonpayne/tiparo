@@ -1,0 +1,79 @@
+[project]
+site_name = "Tiparo Docs"
+site_url = "https://tiparo.leightonpayne.dev/docs/"
+site_description = "Architecture, content pipeline, and deployment guide for Tiparo."
+site_author = "Leighton Payne"
+site_dir = "dist/docs"
+extra_css = ["stylesheets/extra.css"]
+repo_name = "leightonpayne/tiparo"
+repo_url = "https://github.com/leightonpayne/tiparo"
+edit_uri = "edit/main/docs"
+copyright = "Copyright &copy; 2026 Leighton Payne"
+nav = [
+  { Home = [
+    { Overview = "index.md" },
+    { Installation = "about/installation.md" },
+    { Identity = "about/identity.md" },
+    { License = "about/license.md" },
+    { Contributing = "about/contributing.md" },
+  ] },
+  { Usage = [
+    { Architecture = "operations/architecture.md" },
+    { "Adding Fonts" = "operations/adding-fonts.md" },
+    { "Publishing Archives" = "operations/publishing-archives.md" },
+    { Deployment = "operations/deployment.md" },
+  ] },
+  { Reference = [
+    { "family.toml" = "reference/family-toml.md" },
+  ] },
+]
+
+[project.theme]
+name = "flexoki"
+features = [
+  "content.code.copy",
+  "content.code.annotate",
+  "navigation.tabs",
+  "navigation.tabs.sticky",
+  "navigation.path",
+]
+favicon = "static/tiparo.svg"
+logo = "static/tiparo.svg"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "custom"
+accent = "custom"
+toggle.icon = "lucide/moon-star"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "custom"
+accent = "custom"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to light mode"
+
+[project.theme.icon]
+repo = "fontawesome/brands/github"
+
+[project.extra.flexoki]
+linkout_icons = true
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/leightonpayne/tiparo"
+
+[[project.extra.social]]
+icon = "fontawesome/solid/globe"
+link = "https://tiparo.leightonpayne.dev"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/bluesky"
+link = "https://bsky.app/profile/leightonpayne.bsky.social"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/x-twitter"
+link = "https://x.com/leightonpayne"

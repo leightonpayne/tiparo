@@ -1,6 +1,6 @@
 import { promises as fs } from "node:fs";
 import { createHash } from "node:crypto";
-import { execFile } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
@@ -115,6 +115,39 @@ async function runCommand(command, commandArgs) {
   }
 }
 
+async function runInteractiveCommand(command, commandArgs) {
+  await new Promise((resolve, reject) => {
+    const child = spawn(command, commandArgs, {
+      cwd: repoRoot,
+      env: process.env,
+      stdio: "inherit",
+    });
+
+    child.on("error", (error) => {
+      if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
+        reject(new Error(`Command not found: ${command}`));
+        return;
+      }
+
+      reject(error);
+    });
+
+    child.on("exit", (code, signal) => {
+      if (code === 0) {
+        resolve();
+        return;
+      }
+
+      if (signal) {
+        reject(new Error(`Command failed with signal ${signal}: ${command} ${commandArgs.join(" ")}`));
+        return;
+      }
+
+      reject(new Error(`Command failed with exit code ${code}: ${command} ${commandArgs.join(" ")}`));
+    });
+  });
+}
+
 async function collectDirectoryEntries(rootPath, currentPath = rootPath) {
   const relativePath = path.relative(rootPath, currentPath).split(path.sep).join("/");
   const stats = await fs.lstat(currentPath);
@@ -226,7 +259,7 @@ try {
       throw new Error("Missing R2 bucket name. Pass --bucket or set TIPARO_R2_BUCKET.");
     }
 
-    await runCommand(wranglerBin, [
+    await runInteractiveCommand(wranglerBin, [
       "r2",
       "object",
       "put",

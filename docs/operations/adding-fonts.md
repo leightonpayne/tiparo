@@ -1,6 +1,14 @@
+---
+icon: lucide/circle-plus
+---
+
 # Adding Fonts
 
 ## 1. Create the folder layout
+
+Place the full upstream source tree under `upstreams/<font-id>/`, i.e.
+everything that was bundled by the primary source of the font. This is what will
+get uploaded to the S2 bucket.
 
 ```yaml
 tiparo
@@ -16,83 +24,32 @@ tiparo
 
 ## 2. Write `family.toml`
 
-Create:
+Under `fonts/<font-id>/`. See the
+[`family.toml` reference](/reference/family-toml/) for details.
 
-```text
-content/fonts/<font-id>/family.toml
-```
+## 3. Sync preview assets
 
-At minimum:
-
-- metadata in `[details]`
-- `archive` and `archive_version` in `[source]`
-- one or more `[style.<id>]` sections
-
-Recommended:
-
-- prefer `woff2` preview files
-- set `[display].style`
-- include `repository` and `commit`
-
-## 4. Sync preview assets
-
-Run:
+This script reads `family.toml`, gathers every specified `style.*.file`, and
+copies only those font files from the full upstream into
+`content/fonts/<font-id>/` for the served previews.
 
 ```bash
 bun run fonts:sync -- <font-id>
 ```
 
-This script:
+## 4. Regenerate the app manifest
 
-1. reads `family.toml`
-2. gathers every `style.*.file`
-3. copies only those font files from the full upstream
-4. writes them to `content/fonts/<font-id>/`
-
-This is the step that keeps the tracked repo small.
-
-## 5. Regenerate the app manifest
-
-Run:
+This script rebuilds `src/data/generated-font-library.ts`.
 
 ```bash
 bun run content:sync
 ```
 
-That rebuilds:
+## 5. Verify in the app
 
-```text
-src/data/generated-font-library.ts
-```
-
-## 6. Verify in the app
-
-Run:
+Verify that the family appears, the preferred preview style is correct, the
+detail page loads every face, and the metadata and links look right.
 
 ```bash
 bun run dev
 ```
-
-Then verify:
-
-- the family appears
-- the preferred preview style is correct
-- the detail page loads every face
-- metadata and links look right
-
-## Common mistakes
-
-### Missing synced asset
-
-If the app generator says a font file is missing, either:
-
-- the `file` path in `family.toml` is wrong
-- or you forgot to rerun `fonts:sync`
-
-### Wrong preview format
-
-If the repo gets heavy quickly, check whether you accidentally referenced large OTF or TTF files instead of `woff2`.
-
-### Too much tracked content
-
-If you copied the full upstream into `content/fonts/<font-id>/`, you skipped the intended split. The tracked font directory should stay selective.

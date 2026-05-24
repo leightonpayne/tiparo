@@ -1,98 +1,204 @@
+---
+icon: lucide/file-cog
+---
+
 # `family.toml`
 
-Each font family is defined by:
+Each family lives at:
 
 ```text
 content/fonts/<font-id>/family.toml
 ```
 
-This file is the authoritative source for:
+This file is the source of truth for:
 
-- display metadata
+- UI metadata
 - preview face definitions
-- archive naming and versioning
+- download/archive metadata
 - upstream provenance
+- specimen sanitization rules
 
-## Top-level sections
-
-Tiparo currently uses these sections:
-
-- `[details]`
-- `[source]`
-- `[display]`
-- `[style.<id>]`
-
-## `[details]`
-
-Human-facing metadata used in the UI:
+## Practical minimum
 
 ```toml
 [details]
 name = "Inter"
-designer = "Rasmus Andersson"
-designer_url = "https://rsms.me/"
-license = "SIL Open Font License 1.1"
-license_url = "http://scripts.sil.org/OFL"
-copyright = "Copyright 2016, The Inter Project Authors"
-foundry = "Independent"
-website = "https://rsms.me/inter/"
+
+[source]
+archive = "tiparo-inter.tar.gz"
+archive_version = "abc1234"
+
+[display]
+style = "Regular400"
+
+[style.Regular400]
+name = "Regular 400"
+file = "inter/web/Inter-Regular.woff2"
 ```
 
-Notes:
+## Parser limits
 
-- `designer` and `designer_url` may be either a string or a string array.
-- The generator normalizes these into the structured `designers` array used by the app.
+Tiparo uses a small local parser, not a full TOML implementation. Keep this file
+simple:
+
+- use quoted strings, booleans, integers, and flat arrays
+- use named tables like `[details]` and `[style.Regular400]`
+- inline `# comments` are fine
+- avoid multiline strings, inline tables, dates, and other advanced TOML forms
+
+Unknown keys are currently ignored by the toolchain.
+
+## Required in practice
+
+- At least one `[style.<id>]` table must exist.
+- Every `style.*.file` must resolve to a real synced asset before the app build
+  passes.
+- If `source.archive` is relative, `source.archive_version` is required for
+  manifest generation.
+- `source.archive` is required by `fonts:publish`.
+
+## Top-level sections
+
+Tiparo currently reads:
+
+- `[details]`
+- `[source]`
+- `[display]`
+- `[specimen]`
+- `[style.<id>]`
+
+## `[details]`
+
+Human-facing metadata used in the app.
+
+| Key            | Type                   | Use                                                     |
+| -------------- | ---------------------- | ------------------------------------------------------- |
+| `name`         | `string`               | Family name shown in the UI. Falls back to `<font-id>`. |
+| `designer`     | `string` or `string[]` | Designer label.                                         |
+| `designer_url` | `string` or `string[]` | Designer links, matched positionally with `designer`.   |
+| `foundry`      | `string`               | Foundry label.                                          |
+| `foundry_url`  | `string`               | Foundry link.                                           |
+| `license`      | `string`               | License label.                                          |
+| `license_url`  | `string`               | License link.                                           |
+| `copyright`    | `string`               | Copyright text.                                         |
+| `website`      | `string`               | Official family URL.                                    |
+
+Example:
+
+```toml
+[details]
+name = "Basteleur"
+designer = ["Keussel", "George Triantafyllakos"]
+designer_url = ["https://keussel.studio/", "https://backpacker.gr/"]
+license = "SIL Open Font License 1.1"
+license_url = "http://scripts.sil.org/OFL"
+copyright = "Copyright 2021, Keussel"
+foundry = "Velvetyne Type Foundry"
+foundry_url = "https://velvetyne.fr/"
+website = "https://velvetyne.fr/fonts/basteleur/"
+```
 
 ## `[source]`
 
-Packaging, download, and provenance data:
+Packaging, download, and provenance fields.
+
+| Key               | Type     | Use                                                 |
+| ----------------- | -------- | --------------------------------------------------- |
+| `repository`      | `string` | Upstream project/source link.                       |
+| `commit`          | `string` | Upstream version/provenance marker.                 |
+| `archive`         | `string` | Relative archive filename or absolute download URL. |
+| `archive_version` | `string` | Version path segment for relative archives.         |
+
+Example:
 
 ```toml
 [source]
 repository = "https://gitlab.com/velvetyne/basteleur"
 commit = "f32302d63d46e9b996f329648b0f2df01c9190f5"
 archive = "tiparo-basteleur.tar.gz"
-archive_version = "abc1234"
+archive_version = "2e9d0ec9"
 ```
 
-### `archive`
+Behavior:
 
-This is either:
-
-- a relative tarball filename, which Tiparo turns into an R2 URL
-- or an absolute URL, which the app uses directly
-
-Relative archives are resolved as:
+- If `archive` is absolute, the app uses it as-is.
+- If `archive` is relative, the download URL becomes:
 
 ```text
 <archive-config.baseUrl>/<archive_version>/<archive>
 ```
 
-### `archive_version`
-
-This is a short hash path segment used to version the external download URL.
-
-It matters because the app expects a stable URL for the currently published archive, while allowing the content of that archive to change over time.
+- `repository` is used as the source link.
+- `website` from `[details]` is preferred as the official link; otherwise the
+  app falls back to `repository`.
 
 ## `[display]`
 
-The preferred preview face for list/grid display:
+Preferred preview face for list/grid views.
+
+| Key     | Type     | Use                      |
+| ------- | -------- | ------------------------ |
+| `style` | `string` | Preferred preview style. |
+
+Example:
 
 ```toml
 [display]
 style = "Regular400"
 ```
 
-The runtime loader tries to match this value against:
+Matching behavior:
 
-- the `[style.<id>]` table name
-- or the style `name`
+- first matches a `[style.<id>]` table name
+- then matches a style `name`
+- otherwise the app falls back to the first normal 400-ish face it can infer
 
-If it is missing, the app falls back to the first normal 400 face it can find.
+## `[specimen]`
+
+Optional per-family preview sanitization rules.
+
+| Key                   | Type                   | Use                                          |
+| --------------------- | ---------------------- | -------------------------------------------- |
+| `force_lowercase`     | `boolean`              | Lowercase the preview first.                 |
+| `supported`           | `string` or `string[]` | Allowlist of glyphs or glyph groups.         |
+| `unsupported`         | `string` or `string[]` | Blocklist of glyphs or glyph groups.         |
+| `replace_punctuation` | `string`               | Replacement for Unicode punctuation.         |
+| `note`                | `string`               | UI explanation shown with adjusted previews. |
+
+Example:
+
+```toml
+[specimen]
+force_lowercase = true
+supported = ["abcdfghijklmnopqrstuvwxyz", " ", "*"]
+replace_punctuation = "*"
+note = "Unsupported glyphs are converted or dropped in the preview."
+```
+
+Order of operations:
+
+1. lowercase
+2. punctuation replacement
+3. `supported` filtering
+4. `unsupported` filtering
+
+Notes:
+
+- Include `" "` in `supported` if spaces should survive.
+- Use this for font-specific preview constraints instead of hardcoding special
+  cases in the UI.
 
 ## `[style.<id>]`
 
-One section per previewable face:
+One table per previewable face.
+
+| Key     | Type      | Use                                         |
+| ------- | --------- | ------------------------------------------- |
+| `name`  | `string`  | Face label. Defaults to `<id>` if omitted.  |
+| `file`  | `string`  | Preview font path inside the upstream tree. |
+| `index` | `integer` | Collection index for `.ttc` files.          |
+
+Example:
 
 ```toml
 [style.Regular400]
@@ -100,7 +206,7 @@ name = "Regular 400"
 file = "inter/web/Inter-Regular.woff2"
 ```
 
-Optional for collections:
+Collection example:
 
 ```toml
 [style.SomeFace]
@@ -109,19 +215,26 @@ file = "some/font.ttc"
 index = 2
 ```
 
-### `file`
+Notes:
 
-This path is relative to the full upstream layout, not the tracked font directory.
+- `<id>` should be stable and human-readable. It is used by `display.style`, the
+  runtime manifest, and debugging output.
+- `file` is relative to the full upstream layout, not just the tracked
+  `content/fonts/<font-id>/` directory.
+- Tiparo normalizes `file` paths by stripping:
+  - leading `./`
+  - an optional `upstream/` prefix
+  - an optional leading `<font-id>/` prefix
+- Prefer `woff2` for previews. `woff`, `ttf`, `otf`, and `ttc` also work.
+- Weight, italic style, and output format are inferred from the filename and
+  style naming convention.
 
-During sync and generation, Tiparo normalizes it to a path inside:
+## Recommended conventions
 
-```text
-content/fonts/<font-id>/
-```
-
-## Practical guidance
-
-- Prefer `woff2` for preview files.
-- Keep preview definitions aligned with the actual files copied by `fonts:sync`.
-- Treat `family.toml` as content, not generated output.
-- If you change `family.toml`, regenerate the runtime manifest before trusting the app state.
+- Put public-facing metadata in `[details]`, not in style names.
+- Keep `display.style` equal to a style table id when possible.
+- Keep style ids predictable, such as `Regular400` or `Bold700Italic`.
+- Store only preview assets under `content/fonts/<font-id>/`; keep the full
+  source tree in `content/upstreams/<font-id>/`.
+- After editing `family.toml`, rerun the normal build flow or at least
+  `bun run content:sync`.

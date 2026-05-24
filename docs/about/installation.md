@@ -20,18 +20,18 @@ Start the app locally:
 bun run dev
 ```
 
+Start and make accessible over tailnet:
+
+```bash
+__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=<MagicDNS> bun run dev --host
+```
+
 ## Docs toolchain
 
 The docs site is built with Zensical and managed with `uv`:
 
 ```bash
-uv python pin 3.14
-uv sync --group docs
-```
-
-Then run:
-
-```bash
+uv sync
 bun run docs:serve
 ```
 
@@ -49,10 +49,17 @@ Docs only:
 bun run docs:build
 ```
 
+That writes the docs output to `dist/docs/`.
+
 Combined GitHub Pages artifact:
 
 ```bash
 bun run pages:build
 ```
 
-That command builds the app into `dist/`, builds the docs into `site/`, and then copies the docs site into `dist/docs/` so GitHub Pages can serve both from one deployment.
+That command builds the app into `dist/`, then builds the docs directly into
+`dist/docs/` so GitHub Pages can serve both from one deployment.
+
+Use `pages:build` when you want the final deploy-shaped artifact. Running
+`bun run build` after `bun run docs:build` will rebuild `dist/` for the app and
+remove the docs output until you build them again.

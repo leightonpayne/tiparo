@@ -5,15 +5,15 @@
   "type": "module",
   "packageManager": "bun@1.3.11",
   "scripts": {
-    "archives:set-version": "node scripts/set-archive-version.mjs",
-    "content:sync": "node scripts/generate-font-manifest.mjs",
-    "docs:build": "uv run --group docs zensical build -f mkdocs.yml --clean",
-    "docs:serve": "uv run --group docs zensical serve -f mkdocs.yml",
-    "fonts:publish": "node scripts/publish-font-archive.mjs",
-    "fonts:sync": "node scripts/sync-font-assets.mjs",
+    "archives:set-version": "bun scripts/set-archive-version.mjs",
+    "content:sync": "bun scripts/generate-font-manifest.mjs",
+    "docs:build": "uv run --group docs zensical build --clean",
+    "docs:serve": "uv run --group docs zensical serve",
+    "fonts:publish": "bun scripts/publish-font-archive.mjs",
+    "fonts:sync": "bun scripts/sync-font-assets.mjs",
     "dev": "bun run content:sync && vite",
-    "build": "bun run content:sync && tsc -b && vite build",
-    "pages:build": "bun run build && bun run docs:build && node scripts/assemble-pages-artifact.mjs",
+    "build": "bun run content:sync && tsc --noEmit && vite build",
+    "pages:build": "bun run build && bun run docs:build",
     "preview": "bun run content:sync && vite preview"
   },
   "dependencies": {
