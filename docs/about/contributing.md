@@ -4,7 +4,7 @@ icon: lucide/heart-handshake
 
 # Contributing
 
-Tiparo is primarily a personal type library, so contributions are not expected in the same way as a public framework or package. Still, corrections and well-scoped improvements are welcome.
+Tiparo is primarily a personal type library, so contributions are not expected. Still, corrections to font metadata and licensing are welcome through [issue](https://github.com/leightonpayne/tiparo/issues) or [pull request](https://github.com/leightonpayne/tiparo/pulls) submissions.
 
 ## Quick Start
 
@@ -17,12 +17,12 @@ uv sync --group docs
 
 ## Development Commands
 
-| Command                 | Description                 |
-| ----------------------- | --------------------------- |
-| `bun run dev` | Start the app locally |
-| `bun run build` | Build the app |
-| `bun run docs:serve` | Serve docs locally |
-| `bun run docs:build` | Build docs locally |
+| Command               | Description                       |
+| --------------------- | --------------------------------- |
+| `bun run dev`         | Start the app locally             |
+| `bun run build`       | Build the app                     |
+| `bun run docs:serve`  | Serve docs locally                |
+| `bun run docs:build`  | Build docs locally                |
 | `bun run pages:build` | Build the combined Pages artifact |
 
 ## Project Structure
