@@ -40,7 +40,10 @@ import font_content_fonts_inter_web_InterDisplay_SemiBold_woff2 from "../../cont
 import font_content_fonts_inter_web_InterDisplay_SemiBoldItalic_woff2 from "../../content/fonts/inter/web/InterDisplay-SemiBoldItalic.woff2?url";
 import font_content_fonts_inter_web_InterDisplay_Thin_woff2 from "../../content/fonts/inter/web/InterDisplay-Thin.woff2?url";
 import font_content_fonts_inter_web_InterDisplay_ThinItalic_woff2 from "../../content/fonts/inter/web/InterDisplay-ThinItalic.woff2?url";
+import font_content_fonts_isobare_Isobare_Regular_otf from "../../content/fonts/isobare/Isobare-Regular.otf?url";
+import font_content_fonts_jsl_blackletter_JBLACK_TTF from "../../content/fonts/jsl-blackletter/JBLACK.TTF?url";
 import font_content_fonts_picnic_fonts_webfonts_PicNic_woff2 from "../../content/fonts/picnic/fonts/webfonts/PicNic.woff2?url";
+import font_content_fonts_runicon_cypher_runicon_cypher_woff2 from "../../content/fonts/runicon-cypher/runicon_cypher.woff2?url";
 
 export const fontLibrary: FontEntry[] = [
   {
@@ -88,14 +91,14 @@ export const fontLibrary: FontEntry[] = [
     "links": {
       "source": "https://gitlab.com/velvetyne/basteleur",
       "official": "https://velvetyne.fr/fonts/basteleur/",
-      "download": "https://downloads.leightonpayne.dev/tiparo/dev/tiparo-basteleur.tar.gz",
+      "download": "https://downloads.leightonpayne.dev/tiparo/2e9d0ec9/tiparo-basteleur.tar.gz",
     },
     "display": {
       "style": "Bold400",
     },
     "upstream": {
       "projectUrl": "https://gitlab.com/velvetyne/basteleur",
-      "downloadUrl": "https://downloads.leightonpayne.dev/tiparo/dev/tiparo-basteleur.tar.gz",
+      "downloadUrl": "https://downloads.leightonpayne.dev/tiparo/2e9d0ec9/tiparo-basteleur.tar.gz",
       "version": "f32302d63d46e9b996f329648b0f2df01c9190f5",
     },
   },
@@ -457,6 +460,90 @@ export const fontLibrary: FontEntry[] = [
     },
   },
   {
+    "id": "isobare",
+    "family": "Isobare",
+    "designer": "Clémence Fontaine",
+    "designerUrl": "https://www.clemencefontaine.fr/index.html",
+    "designers": [
+      {
+        "name": "Clémence Fontaine",
+        "url": "https://www.clemencefontaine.fr/index.html",
+      },
+    ],
+    "foundry": "Independent",
+    "license": "SIL Open Font License 1.1",
+    "licenseUrl": "http://scripts.sil.org/OFL",
+    "copyright": "Copyright 2021, Clémence Fontaine",
+    "source": {
+      "type": "local",
+      "faces": [
+        {
+          "id": "Regular400",
+          "name": "Regular 400",
+          "file": "isobare/Isobare-Regular.otf",
+          "path": font_content_fonts_isobare_Isobare_Regular_otf,
+          "weight": "400",
+          "style": "normal",
+          "format": "opentype",
+        },
+      ],
+    },
+    "links": {
+      "official": "https://www.clemencefontaine.fr/page/isobar.html",
+      "download": "https://downloads.leightonpayne.dev/tiparo/2684748b/tiparo-isobare.tar.gz",
+    },
+    "display": {
+      "style": "Regular400",
+    },
+    "upstream": {
+      "projectUrl": null,
+      "downloadUrl": "https://downloads.leightonpayne.dev/tiparo/2684748b/tiparo-isobare.tar.gz",
+      "version": null,
+    },
+  },
+  {
+    "id": "jsl-blackletter",
+    "family": "JSL Blackletter",
+    "designer": "Jeffrey S. Lee",
+    "designerUrl": "https://www.shipbrook.net/",
+    "designers": [
+      {
+        "name": "Jeffrey S. Lee",
+        "url": "https://www.shipbrook.net/",
+      },
+    ],
+    "foundry": "Independent",
+    "license": "emailware",
+    "licenseUrl": "https://www.shipbrook.net/jeff/jblack.html",
+    "copyright": "Copyright 1997-2000, Jeffrey S. Lee.",
+    "source": {
+      "type": "local",
+      "faces": [
+        {
+          "id": "Regular400",
+          "name": "Regular 400",
+          "file": "jsl-blackletter/JBLACK.TTF",
+          "path": font_content_fonts_jsl_blackletter_JBLACK_TTF,
+          "weight": "400",
+          "style": "normal",
+          "format": "truetype",
+        },
+      ],
+    },
+    "links": {
+      "official": "https://www.shipbrook.net/",
+      "download": "https://downloads.leightonpayne.dev/tiparo/40fd4afb/tiparo-jsl-blackletter.tar.gz",
+    },
+    "display": {
+      "style": "Regular400",
+    },
+    "upstream": {
+      "projectUrl": null,
+      "downloadUrl": "https://downloads.leightonpayne.dev/tiparo/40fd4afb/tiparo-jsl-blackletter.tar.gz",
+      "version": null,
+    },
+  },
+  {
     "id": "picnic",
     "family": "PicNic",
     "designer": "Marielle Nils",
@@ -489,15 +576,68 @@ export const fontLibrary: FontEntry[] = [
     "links": {
       "source": "https://gitlab.com/mariellenils/PicNic",
       "official": "https://typotheque.genderfluid.space/fr/fontes/picnic",
-      "download": "https://downloads.leightonpayne.dev/tiparo/dev/tiparo-picnic.tar.gz",
+      "download": "https://downloads.leightonpayne.dev/tiparo/524657f0/tiparo-picnic.tar.gz",
     },
     "display": {
       "style": "Regular400",
     },
     "upstream": {
       "projectUrl": "https://gitlab.com/mariellenils/PicNic",
-      "downloadUrl": "https://downloads.leightonpayne.dev/tiparo/dev/tiparo-picnic.tar.gz",
+      "downloadUrl": "https://downloads.leightonpayne.dev/tiparo/524657f0/tiparo-picnic.tar.gz",
       "version": "4d11087bd7705f44640f587933d99b329316f07c",
+    },
+  },
+  {
+    "id": "runicon-cypher",
+    "family": "Runicon Cypher",
+    "designer": "Paloma Kop",
+    "designerUrl": "https://palomakop.tv/",
+    "designers": [
+      {
+        "name": "Paloma Kop",
+        "url": "https://palomakop.tv/",
+      },
+    ],
+    "foundry": "Independent",
+    "license": "CC-BY-NC-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "copyright": "Copyright 2025, Paloma Kop",
+    "source": {
+      "type": "local",
+      "faces": [
+        {
+          "id": "Regular400",
+          "name": "Regular 400",
+          "file": "runicon-cypher/runicon_cypher.woff2",
+          "path": font_content_fonts_runicon_cypher_runicon_cypher_woff2,
+          "weight": "400",
+          "style": "normal",
+          "format": "woff2",
+        },
+      ],
+    },
+    "links": {
+      "official": "https://palomakop.tv/notes/runicon-cypher/",
+      "download": "https://downloads.leightonpayne.dev/tiparo/d462ce03/tiparo-runicon-cypher.tar.gz",
+    },
+    "display": {
+      "style": "Regular400",
+    },
+    "specimen": {
+      "forceLowercase": true,
+      "supportedGlyphs": [
+        "abcdfghijklmnopqrstuvwxyz",
+        " ",
+        "*",
+      ],
+      "unsupportedGlyphs": [],
+      "punctuationReplacement": "*",
+      "note": "Runicon Cypher is a lipogram, which does not support the letter 'e', only uses lowercase letters, and only uses one punctuation mark '*'. Unsupported glyphs are converted or dropped in the preview.",
+    },
+    "upstream": {
+      "projectUrl": null,
+      "downloadUrl": "https://downloads.leightonpayne.dev/tiparo/d462ce03/tiparo-runicon-cypher.tar.gz",
+      "version": null,
     },
   },
 ];

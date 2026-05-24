@@ -212,9 +212,14 @@ export function FontDetailPage({
               </div>
 
               <p className={`mt-3 max-w-3xl ${uiTextSmallClass} leading-7 text-white/56`}>
-                {faces.length} styles
+                {faces.length} {faces.length === 1 ? "style" : "styles"}
                 {font.designer ? ` | Designed by ${font.designer}` : ""}
               </p>
+              {font.specimen?.note ? (
+                <p className={`mt-2 max-w-3xl ${uiTextSmallClass} leading-6 text-white/42`}>
+                  {font.specimen.note}
+                </p>
+              ) : null}
 
               <div className="mt-8 space-y-8">
                 {(
@@ -230,11 +235,12 @@ export function FontDetailPage({
                     <div key={i} className="overflow-visible py-[0.2em]">
                       <EditableSpecimenText
                         value={text}
+                        displayValue={metrics.text}
                         onChange={onChange}
                         className={
                           metrics.glyphHeavy
-                            ? "whitespace-pre-wrap break-words leading-[1.22] tracking-[-0.03em] text-white"
-                            : "whitespace-pre-wrap break-words leading-[1.32] tracking-[-0.045em] text-white"
+                            ? "whitespace-pre-wrap break-words leading-[1.22] text-white"
+                            : "whitespace-pre-wrap break-words leading-[1.32] text-white"
                         }
                         style={{
                           fontFamily: `"${getFontPreviewFamilyName(font)}", var(--font-sans)`,
@@ -322,9 +328,10 @@ export function FontDetailPage({
                   <div className="mt-4 overflow-hidden">
                     <EditableSpecimenText
                       value={largeText}
+                      displayValue={getDialogSpecimenMetrics(font, largeText, previewSize).text}
                       onChange={setLargeText}
                       singleLine
-                      className="pt-[0.16em] pb-[0.22em] leading-[1.16] tracking-[-0.045em] text-white"
+                      className="pt-[0.16em] pb-[0.22em] leading-[1.16] text-white"
                       style={{
                         fontFamily: `"${getManualStyleFontFamilyName(font, faceIndex)}", var(--font-sans)`,
                         fontStyle: face.style ?? "normal",

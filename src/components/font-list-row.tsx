@@ -21,7 +21,9 @@ export function FontListRow({
 }: FontListRowProps) {
   const specimen = getListSpecimenMetrics(font, previewText, previewSize);
   const styleLabel =
-    font.source.type === "local" ? `${font.source.faces.length} styles` : "Web font";
+    font.source.type === "local"
+      ? `${font.source.faces.length} ${font.source.faces.length === 1 ? "style" : "styles"}`
+      : "Web font";
   const creditLine = [font.designer, font.foundry].filter(Boolean).join(", ");
 
   return (
@@ -55,9 +57,10 @@ export function FontListRow({
           <div className="mt-5 overflow-hidden py-[0.24em]">
             <EditableSpecimenText
               value={previewText}
+              displayValue={specimen.text}
               onChange={onPreviewTextChange}
               singleLine
-              className="leading-[1.18] tracking-[-0.045em] text-white/92"
+              className="leading-[1.18] text-white/92"
               style={{
                 fontFamily: `"${getFontPreviewFamilyName(font)}", var(--font-sans)`,
                 fontSize: `clamp(2.4rem, 5.6vw, ${specimen.size}px)`,

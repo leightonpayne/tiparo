@@ -13,7 +13,7 @@ website = "https://velvetyne.fr/fonts/basteleur/"
 repository = "https://gitlab.com/velvetyne/basteleur"
 commit = "f32302d63d46e9b996f329648b0f2df01c9190f5"
 archive = "tiparo-basteleur.tar.gz"
-archive_version = "dev"
+archive_version = "2e9d0ec9"
 
 [display]
 style = "Bold400"

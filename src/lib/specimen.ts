@@ -35,14 +35,63 @@ export function isGlyphHeavyText(text: string) {
   );
 }
 
+function sanitizeSpecimenText(font: FontEntry, text: string) {
+  const rules = font.specimen;
+
+  if (!rules) {
+    return {
+      text,
+      adjusted: false,
+      note: undefined,
+    };
+  }
+
+  let nextText = text;
+  let adjusted = false;
+
+  if (rules.forceLowercase) {
+    const lowercased = nextText.toLocaleLowerCase();
+    adjusted ||= lowercased !== nextText;
+    nextText = lowercased;
+  }
+
+  if (rules.punctuationReplacement) {
+    const replaced = nextText.replace(/\p{P}/gu, rules.punctuationReplacement);
+    adjusted ||= replaced !== nextText;
+    nextText = replaced;
+  }
+
+  if (rules.supportedGlyphs && rules.supportedGlyphs.length > 0) {
+    const supported = new Set(rules.supportedGlyphs.flatMap((glyph) => Array.from(glyph)));
+    const filtered = Array.from(nextText)
+      .filter((char) => supported.has(char))
+      .join("");
+    adjusted ||= filtered !== nextText;
+    nextText = filtered;
+  }
+
+  if (rules.unsupportedGlyphs && rules.unsupportedGlyphs.length > 0) {
+    const unsupported = new Set(rules.unsupportedGlyphs.flatMap((glyph) => Array.from(glyph)));
+    const filtered = Array.from(nextText)
+      .filter((char) => !unsupported.has(char))
+      .join("");
+    adjusted ||= filtered !== nextText;
+    nextText = filtered;
+  }
+
+  return {
+    text: nextText,
+    adjusted,
+    note: rules.note,
+  };
+}
+
 export function getSpecimenText(font: FontEntry, requestedText: string) {
   const normalizedRequested = requestedText.trim();
 
-  if (normalizedRequested) {
-    return normalizedRequested;
-  }
+  const baseText = normalizedRequested || font.family;
 
-  return font.family;
+  return sanitizeSpecimenText(font, baseText);
 }
 
 export function getGridSpecimenMetrics(
@@ -50,10 +99,10 @@ export function getGridSpecimenMetrics(
   requestedText: string,
   previewSize: number,
 ) {
-  const text = getSpecimenText(font, requestedText);
-  const glyphHeavy = isGlyphHeavyText(text);
-  const visibleChars = countVisibleChars(text);
-  const longestToken = maxTokenLength(text);
+  const specimen = getSpecimenText(font, requestedText);
+  const glyphHeavy = isGlyphHeavyText(specimen.text);
+  const visibleChars = countVisibleChars(specimen.text);
+  const longestToken = maxTokenLength(specimen.text);
 
   let size = Math.min(Math.max(previewSize - 4, 34), 60);
 
@@ -74,7 +123,9 @@ export function getGridSpecimenMetrics(
   }
 
   return {
-    text,
+    text: specimen.text,
+    adjusted: specimen.adjusted,
+    note: specimen.note,
     glyphHeavy,
     size: Math.max(size, glyphHeavy ? 24 : 30),
   };
@@ -85,9 +136,9 @@ export function getListSpecimenMetrics(
   requestedText: string,
   previewSize: number,
 ) {
-  const text = getSpecimenText(font, requestedText);
-  const glyphHeavy = isGlyphHeavyText(text);
-  const visibleChars = countVisibleChars(text);
+  const specimen = getSpecimenText(font, requestedText);
+  const glyphHeavy = isGlyphHeavyText(specimen.text);
+  const visibleChars = countVisibleChars(specimen.text);
 
   let size = Math.min(Math.max(previewSize + 6, 34), 82);
 
@@ -100,7 +151,9 @@ export function getListSpecimenMetrics(
   }
 
   return {
-    text,
+    text: specimen.text,
+    adjusted: specimen.adjusted,
+    note: specimen.note,
     glyphHeavy,
     size: Math.max(size, glyphHeavy ? 30 : 34),
   };
@@ -111,10 +164,10 @@ export function getDialogSpecimenMetrics(
   requestedText: string,
   previewSize: number,
 ) {
-  const text = getSpecimenText(font, requestedText);
-  const glyphHeavy = isGlyphHeavyText(text);
-  const visibleChars = countVisibleChars(text);
-  const longestToken = maxTokenLength(text);
+  const specimen = getSpecimenText(font, requestedText);
+  const glyphHeavy = isGlyphHeavyText(specimen.text);
+  const visibleChars = countVisibleChars(specimen.text);
+  const longestToken = maxTokenLength(specimen.text);
 
   let size = Math.min(Math.max(previewSize + 18, 58), 140);
 
@@ -142,5 +195,11 @@ export function getDialogSpecimenMetrics(
     size -= 6;
   }
 
-  return { text, glyphHeavy, size: Math.max(size, glyphHeavy ? 38 : 44) };
+  return {
+    text: specimen.text,
+    adjusted: specimen.adjusted,
+    note: specimen.note,
+    glyphHeavy,
+    size: Math.max(size, glyphHeavy ? 38 : 44),
+  };
 }

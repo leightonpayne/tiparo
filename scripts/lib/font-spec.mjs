@@ -182,15 +182,21 @@ export function getRelativeUpstreamPath(familyId, file) {
     : normalized;
 }
 
-export function toStringArray(value) {
+export function toStringArray(value, options = {}) {
+  const { trim = true } = options;
+
   if (Array.isArray(value)) {
     return value
       .filter((entry) => typeof entry === "string")
-      .map((entry) => entry.trim())
-      .filter(Boolean);
+      .map((entry) => (trim ? entry.trim() : entry))
+      .filter((entry) => (trim ? Boolean(entry) : entry.length > 0));
   }
 
   if (typeof value === "string") {
+    if (!trim) {
+      return value.length > 0 ? [value] : [];
+    }
+
     const trimmed = value.trim();
     return trimmed ? [trimmed] : [];
   }

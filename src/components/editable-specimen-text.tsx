@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 type EditableSpecimenTextProps = {
   value: string;
+  displayValue?: string;
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
@@ -13,6 +14,7 @@ type EditableSpecimenTextProps = {
 
 export function EditableSpecimenText({
   value,
+  displayValue,
   onChange,
   placeholder = "Type to preview",
   className,
@@ -21,6 +23,8 @@ export function EditableSpecimenText({
 }: EditableSpecimenTextProps) {
   const ref = useRef<HTMLTextAreaElement>(null);
   const [singleLineMask, setSingleLineMask] = useState<CSSProperties>({});
+  const [isFocused, setIsFocused] = useState(false);
+  const renderedValue = isFocused ? value : displayValue ?? value;
 
   const updateSingleLineMask = () => {
     if (!ref.current || !singleLine) {
@@ -65,7 +69,7 @@ export function EditableSpecimenText({
 
   useEffect(() => {
     resizeToContent();
-  }, [singleLine, value]);
+  }, [renderedValue, singleLine]);
 
   useEffect(() => {
     if (!ref.current) {
@@ -90,17 +94,19 @@ export function EditableSpecimenText({
 
   useEffect(() => {
     updateSingleLineMask();
-  }, [singleLine, value]);
+  }, [renderedValue, singleLine]);
 
   return (
     <textarea
       ref={ref}
-      value={value}
+      value={renderedValue}
       rows={1}
       wrap={singleLine ? "off" : "soft"}
       placeholder={placeholder}
       spellCheck={false}
       onChange={(event) => onChange(event.target.value)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       onClick={(event) => event.stopPropagation()}
       onMouseDown={(event) => event.stopPropagation()}
       onPointerDown={(event) => event.stopPropagation()}
@@ -110,7 +116,7 @@ export function EditableSpecimenText({
         "block w-full resize-none border-0 bg-transparent p-0 text-inherit outline-none placeholder:text-white/26 focus:outline-none focus:ring-0 cursor-text",
         singleLine
           ? "tiparo-scrollbar-hidden overflow-x-auto overflow-y-hidden whitespace-nowrap overscroll-x-contain"
-          : "overflow-visible",
+          : "overflow-hidden",
         className,
       )}
       style={singleLine ? { ...style, ...singleLineMask } : style}

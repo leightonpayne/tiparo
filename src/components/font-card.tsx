@@ -21,7 +21,9 @@ export function FontCard({
 }: FontCardProps) {
   const specimen = getGridSpecimenMetrics(font, previewText, previewSize);
   const styleLabel =
-    font.source.type === "local" ? `${font.source.faces.length} styles` : "Web font";
+    font.source.type === "local"
+      ? `${font.source.faces.length} ${font.source.faces.length === 1 ? "style" : "styles"}`
+      : "Web font";
   const creditLine = [font.designer, font.foundry].filter(Boolean).join(", ");
 
   return (
@@ -56,11 +58,12 @@ export function FontCard({
       <div className="mt-6 flex-1 overflow-hidden">
         <EditableSpecimenText
           value={previewText}
+          displayValue={specimen.text}
           onChange={onPreviewTextChange}
           className={
             specimen.glyphHeavy
-              ? "w-full max-w-full whitespace-pre-wrap break-words pt-[0.14em] pb-[0.2em] leading-[1.28] tracking-[-0.02em] text-white/92"
-              : "w-full max-w-full whitespace-pre-wrap break-words pt-[0.14em] pb-[0.2em] leading-[1.22] tracking-[-0.035em] text-white/92"
+              ? "w-full max-w-full whitespace-pre-wrap break-words pt-[0.14em] pb-[0.2em] leading-[1.28] text-white/92"
+              : "w-full max-w-full whitespace-pre-wrap break-words pt-[0.14em] pb-[0.2em] leading-[1.22] text-white/92"
           }
           style={{
             fontFamily: `"${getFontPreviewFamilyName(font)}", var(--font-sans)`,

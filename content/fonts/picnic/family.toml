@@ -13,7 +13,7 @@ website = "https://typotheque.genderfluid.space/fr/fontes/picnic"
 repository = "https://gitlab.com/mariellenils/PicNic"
 commit = "4d11087bd7705f44640f587933d99b329316f07c"
 archive = "tiparo-picnic.tar.gz"
-archive_version = "dev"
+archive_version = "524657f0"
 
 [display]
 style = "Regular400"

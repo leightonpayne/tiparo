@@ -189,8 +189,26 @@ async function buildGeneratedLibrary() {
     const details = spec.details ?? {};
     const source = spec.source ?? {};
     const display = spec.display ?? {};
+    const specimen = spec.specimen ?? {};
     const designers = getDesignerEntries(details);
     const styles = getStyleEntries(spec, specPath);
+    const specimenConfig = {
+      forceLowercase:
+        typeof specimen.force_lowercase === "boolean"
+          ? specimen.force_lowercase
+          : undefined,
+      supportedGlyphs: toStringArray(specimen.supported, { trim: false }),
+      unsupportedGlyphs: toStringArray(specimen.unsupported, { trim: false }),
+      punctuationReplacement:
+        typeof specimen.replace_punctuation === "string"
+          ? specimen.replace_punctuation.trim() || undefined
+          : undefined,
+      note:
+        typeof specimen.note === "string" ? specimen.note.trim() || undefined : undefined,
+    };
+    const hasSpecimenConfig = Object.entries(specimenConfig).some(([, value]) =>
+      Array.isArray(value) ? value.length > 0 : value !== undefined,
+    );
 
     if (styles.length === 0) {
       continue;
@@ -265,6 +283,7 @@ async function buildGeneratedLibrary() {
       display: {
         style: display.style?.trim() || undefined,
       },
+      specimen: hasSpecimenConfig ? specimenConfig : undefined,
       upstream: {
         projectUrl: source.repository ?? null,
         downloadUrl: downloadValue ?? null,

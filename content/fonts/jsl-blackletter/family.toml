@@ -1,0 +1,20 @@
+[details]
+name = "JSL Blackletter"
+designer = "Jeffrey S. Lee"
+designer_url = "https://www.shipbrook.net/"
+license = "emailware"
+license_url = "https://www.shipbrook.net/jeff/jblack.html"
+copyright = "Copyright 1997-2000, Jeffrey S. Lee."
+foundry = "Independent"
+website = "https://www.shipbrook.net/"
+
+[source]
+archive = "tiparo-jsl-blackletter.tar.gz"
+archive_version = "40fd4afb"
+
+[display]
+style = "Regular400"
+
+[style.Regular400]
+name = "Regular 400"
+file = "jsl-blackletter/JBLACK.TTF"

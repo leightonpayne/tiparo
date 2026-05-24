@@ -23,6 +23,14 @@ type LocalFontSource = {
   }>;
 };
 
+type FontSpecimenRules = {
+  forceLowercase?: boolean;
+  supportedGlyphs?: string[];
+  unsupportedGlyphs?: string[];
+  punctuationReplacement?: string;
+  note?: string;
+};
+
 export type FontEntry = {
   id: string;
   family: string;
@@ -46,6 +54,7 @@ export type FontEntry = {
   display?: {
     style?: string;
   };
+  specimen?: FontSpecimenRules;
   upstream?: {
     projectUrl?: string | null;
     downloadUrl?: string | null;
