@@ -13,13 +13,13 @@ The app is built with Vite and deployed with GitHub Pages.
 The
 [Pages workflow](https://github.com/leightonpayne/tiparo/blob/main/.github/workflows/deploy-pages.yml):
 
-1. installs dependencies with Bun
+1. installs dependencies with aube
 2. syncs the docs environment with `uv`
-3. runs `bun run pages:build`
+3. runs `aube run pages:build`
 4. uploads `dist/`
 5. deploys the artifact to GitHub Pages
 
-`bun run pages:build` does two things:
+`aube run pages:build` does two things:
 
 1. builds the app into `dist/`
 2. builds the docs site directly into `dist/docs/`
@@ -42,9 +42,9 @@ https://downloads.leightonpayne.dev/tiparo
 The docs are deployed as part of the same GitHub Pages artifact.
 
 ```bash
-bun run docs:serve
-bun run docs:build
-bun run pages:build
+aube run docs:serve
+aube run docs:build
+aube run pages:build
 ```
 
 `docs:build` writes the docs site to `dist/docs/`. `pages:build` first builds

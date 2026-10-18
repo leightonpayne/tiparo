@@ -33,7 +33,7 @@ https://downloads.leightonpayne.dev/tiparo/<archive_version>/<archive>
 ## Publish command
 
 ```bash
-bun run fonts:publish -- <font-id> --bucket <bucket-name>
+aube run fonts:publish -- <font-id> --bucket <bucket-name>
 ```
 
 For real uploads, Wrangler must already be authenticated locally or have
@@ -54,7 +54,7 @@ The publish script:
 To inspect the result without uploading:
 
 ```bash
-bun run fonts:publish -- <font-id> --dry-run
+aube run fonts:publish -- <font-id> --dry-run
 ```
 
 ## Manual version control
@@ -62,7 +62,7 @@ bun run fonts:publish -- <font-id> --dry-run
 If you need to update only the version path:
 
 ```bash
-bun run archives:set-version -- <font-id> <short-hash>
+aube run archives:set-version -- <font-id> <short-hash>
 ```
 
 This only edits `archive_version` in the corresponding `family.toml`.

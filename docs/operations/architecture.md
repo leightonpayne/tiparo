@@ -66,19 +66,19 @@ The important directories are:
 The main scripts are defined in
 [`package.json`](https://github.com/leightonpayne/tiparo/blob/main/package.json):
 
-- `bun run dev` Runs `content:sync` first, then starts the Vite dev server.
-- `bun run build` Runs `content:sync`, TypeScript build checks, and then
+- `aube run dev` Runs `content:sync` first, then starts the Vite dev server.
+- `aube run build` Runs `content:sync`, TypeScript build checks, and then
   `vite build`.
-- `bun run preview` Runs `content:sync`, then serves the built app with
+- `aube run preview` Runs `content:sync`, then serves the built app with
   `vite preview`.
-- `bun run content:sync` Runs
+- `aube run content:sync` Runs
   [`scripts/generate-font-manifest.mjs`](https://github.com/leightonpayne/tiparo/blob/main/scripts/generate-font-manifest.mjs).
-- `bun run fonts:sync -- <font-id>` Copies preview assets from ignored full
+- `aube run fonts:sync -- <font-id>` Copies preview assets from ignored full
   upstreams into tracked preview directories.
-- `bun run fonts:publish -- <font-id> --bucket <bucket>` Packages the full
+- `aube run fonts:publish -- <font-id> --bucket <bucket>` Packages the full
   upstream, uploads it to R2, updates `archive_version`, and regenerates the
   manifest.
-- `bun run archives:set-version -- <font-id> <short-hash>` Updates
+- `aube run archives:set-version -- <font-id> <short-hash>` Updates
   `source.archive_version` manually in the target `family.toml`.
 
 ### Vite base path behavior
@@ -400,7 +400,7 @@ Recommended:
 Run:
 
 ```bash
-bun run fonts:sync -- <font-id>
+aube run fonts:sync -- <font-id>
 ```
 
 [`scripts/sync-font-assets.mjs`](https://github.com/leightonpayne/tiparo/blob/main/scripts/sync-font-assets.mjs)
@@ -421,21 +421,21 @@ locally.
 Run:
 
 ```bash
-bun run content:sync
+aube run content:sync
 ```
 
 This updates
 [`src/data/generated-font-library.ts`](https://github.com/leightonpayne/tiparo/blob/main/src/data/generated-font-library.ts),
 which is what the app actually imports.
 
-If you run `bun run dev` or `bun run build`, this happens automatically.
+If you run `aube run dev` or `aube run build`, this happens automatically.
 
 ### 5. Verify locally
 
 Run:
 
 ```bash
-bun run dev
+aube run dev
 ```
 
 Then check:
@@ -451,7 +451,7 @@ Then check:
 To publish one family’s full upstream archive to R2, run:
 
 ```bash
-bun run fonts:publish -- <font-id> --bucket <bucket-name>
+aube run fonts:publish -- <font-id> --bucket <bucket-name>
 ```
 
 For real uploads, Wrangler must already be authenticated locally or have
@@ -487,7 +487,7 @@ The script also sets useful object metadata:
 You can inspect the result without uploading:
 
 ```bash
-bun run fonts:publish -- inter --dry-run
+aube run fonts:publish -- inter --dry-run
 ```
 
 This prints:
@@ -502,7 +502,7 @@ This prints:
 If you need to set the archive version yourself, use:
 
 ```bash
-bun run archives:set-version -- inter abc1234
+aube run archives:set-version -- inter abc1234
 ```
 
 [`scripts/set-archive-version.mjs`](https://github.com/leightonpayne/tiparo/blob/main/scripts/set-archive-version.mjs)
@@ -518,9 +518,9 @@ The app and docs are deployed together via GitHub Pages using the workflow at
 The workflow:
 
 1. checks out the repo
-2. installs dependencies with Bun
+2. installs dependencies with aube
 3. syncs the docs environment with `uv`
-4. runs `bun run pages:build`
+4. runs `aube run pages:build`
 5. uploads `dist/`
 6. deploys to GitHub Pages
 
@@ -564,7 +564,7 @@ directory, `generate-font-manifest.mjs` fails.
 Usual fix:
 
 ```bash
-bun run fonts:sync -- <font-id>
+aube run fonts:sync -- <font-id>
 ```
 
 ### Missing full upstream
@@ -608,8 +608,8 @@ For day-to-day work:
 
 1. Edit `family.toml`
 2. Put the full upstream in `content/upstreams/<font-id>/`
-3. Run `bun run fonts:sync -- <font-id>`
-4. Run `bun run dev`
+3. Run `aube run fonts:sync -- <font-id>`
+4. Run `aube run dev`
 5. When ready to publish downloads, run
-   `bun run fonts:publish -- <font-id> --bucket <bucket>`
+   `aube run fonts:publish -- <font-id> --bucket <bucket>`
 6. Commit the tracked preview assets, TOML, generated manifest, and app changes

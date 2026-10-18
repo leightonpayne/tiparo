@@ -237,4 +237,4 @@ Notes:
 - Store only preview assets under `content/fonts/<font-id>/`; keep the full
   source tree in `content/upstreams/<font-id>/`.
 - After editing `family.toml`, rerun the normal build flow or at least
-  `bun run content:sync`.
+  `aube run content:sync`.

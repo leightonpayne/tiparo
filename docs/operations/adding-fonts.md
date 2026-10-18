@@ -34,7 +34,7 @@ copies only those font files from the full upstream into
 `content/fonts/<font-id>/` for the served previews.
 
 ```bash
-bun run fonts:sync -- <font-id>
+aube run fonts:sync -- <font-id>
 ```
 
 ## 4. Regenerate the app manifest
@@ -42,7 +42,7 @@ bun run fonts:sync -- <font-id>
 This script rebuilds `src/data/generated-font-library.ts`.
 
 ```bash
-bun run content:sync
+aube run content:sync
 ```
 
 ## 5. Verify in the app
@@ -51,5 +51,5 @@ Verify that the family appears, the preferred preview style is correct, the
 detail page loads every face, and the metadata and links look right.
 
 ```bash
-bun run dev
+aube run dev
 ```

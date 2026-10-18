@@ -11,7 +11,7 @@ Tiparo is primarily a personal type library, so contributions are not expected. 
 ```bash
 git clone https://github.com/leightonpayne/tiparo
 cd tiparo
-bun install
+aube install
 uv sync --group docs
 ```
 
@@ -19,11 +19,11 @@ uv sync --group docs
 
 | Command               | Description                       |
 | --------------------- | --------------------------------- |
-| `bun run dev`         | Start the app locally             |
-| `bun run build`       | Build the app                     |
-| `bun run docs:serve`  | Serve docs locally                |
-| `bun run docs:build`  | Build docs locally                |
-| `bun run pages:build` | Build the combined Pages artifact |
+| `aube run dev`         | Start the app locally             |
+| `aube run build`       | Build the app                     |
+| `aube run docs:serve`  | Serve docs locally                |
+| `aube run docs:build`  | Build docs locally                |
+| `aube run pages:build` | Build the combined Pages artifact |
 
 ## Project Structure
 
@@ -37,9 +37,9 @@ src/       # React app
 ## Making Changes
 
 1. Make the smallest coherent change.
-2. If you changed app behavior, run `bun run build`.
-3. If you changed docs, run `bun run docs:build`.
-4. If you changed deployment-relevant behavior, run `bun run pages:build`.
+2. If you changed app behavior, run `aube run build`.
+3. If you changed docs, run `aube run docs:build`.
+4. If you changed deployment-relevant behavior, run `aube run pages:build`.
 
 ## Submitting Changes
 
@@ -52,5 +52,5 @@ src/       # React app
 For changes involving fonts:
 
 1. Update `family.toml`.
-2. Sync tracked preview assets with `bun run fonts:sync -- <font-id>`.
-3. Regenerate the runtime manifest via `bun run content:sync` or any normal app build.
+2. Sync tracked preview assets with `aube run fonts:sync -- <font-id>`.
+3. Regenerate the runtime manifest via `aube run content:sync` or any normal app build.

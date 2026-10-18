@@ -236,7 +236,7 @@ export default function App() {
             </h2>
             <p className={`mx-auto mt-3 max-w-xl ${uiTextSmallClass} leading-7 text-white/56`}>
               {availableFonts.length === 0
-                ? "Add `content/fonts/<id>/family.toml`, put the full upstream in `content/upstreams/<id>`, then run `bun run fonts:sync -- <id>`."
+                ? "Add `content/fonts/<id>/family.toml`, put the full upstream in `content/upstreams/<id>`, then run `aube run fonts:sync -- <id>`."
                 : "Try a broader term, a different designer name, or a shorter family search."}
             </p>
           </div>
