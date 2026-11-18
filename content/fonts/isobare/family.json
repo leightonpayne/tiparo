@@ -1,0 +1,24 @@
+{
+  "details": {
+    "name": "Isobare",
+    "designer": "Clémence Fontaine",
+    "designer_url": "https://www.clemencefontaine.fr/index.html",
+    "license": "SIL Open Font License 1.1",
+    "license_url": "http://scripts.sil.org/OFL",
+    "copyright": "Copyright 2021, Clémence Fontaine",
+    "foundry": "Independent",
+    "website": "https://www.clemencefontaine.fr/page/isobar.html"
+  },
+  "source": {
+    "archive": "https://downloads.leightonpayne.dev/tiparo/2684748b/tiparo-isobare.tar.gz"
+  },
+  "display": {
+    "style": "Regular400"
+  },
+  "style": {
+    "Regular400": {
+      "name": "Regular 400",
+      "file": "Isobare-Regular.otf"
+    }
+  }
+}

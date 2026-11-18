@@ -7,5 +7,6 @@ site
 .venv-docs
 .uv_cache
 content/upstreams/
+docs/static/diagrams/
 
 .wrangler/

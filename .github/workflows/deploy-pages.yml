@@ -41,11 +41,11 @@ jobs:
       - name: Sync Docs Environment
         run: uv sync --frozen --group docs
 
+      - name: Test
+        run: aube test
+
       - name: Build
         run: aube run pages:build
-        env:
-          GITHUB_ACTIONS: "true"
-          VITE_BASE_PATH: "/"
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3

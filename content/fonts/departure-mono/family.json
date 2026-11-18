@@ -1,0 +1,29 @@
+{
+  "details": {
+    "name": "Departure Mono",
+    "designer": "Helena Zhang",
+    "designer_url": "https://helenazhang.com",
+    "license": "SIL Open Font License 1.1",
+    "license_url": "https://github.com/rektdeckard/departure-mono/blob/75152a3f1e6dacdd248a6c397c97dbf27e33eea0/public/assets/LICENSE",
+    "copyright": "Copyright 2022–2024 Helena Zhang",
+    "foundry": "Independent",
+    "website": "https://departuremono.com/"
+  },
+  "source": {
+    "repository": "https://github.com/rektdeckard/departure-mono",
+    "commit": "75152a3f1e6dacdd248a6c397c97dbf27e33eea0",
+    "archive": "https://github.com/rektdeckard/departure-mono/releases/download/v1.500/DepartureMono-1.500.zip"
+  },
+  "display": {
+    "style": "Regular400"
+  },
+  "specimen": {
+    "note": "For crisp pixel rendering, use font sizes in multiples of 11 px."
+  },
+  "style": {
+    "Regular400": {
+      "name": "Regular 400",
+      "file": "DepartureMono-1.500/DepartureMono-Regular.woff2"
+    }
+  }
+}

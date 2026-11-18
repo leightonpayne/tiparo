@@ -1,0 +1,61 @@
+{
+  "details": {
+    "name": "Paper Mono",
+    "designer": [
+      "Guido Ferreyra",
+      "Javier Quintana Godoy",
+      "Vladyslav Moroz"
+    ],
+    "designer_url": [
+      "https://www.tipografia.com.ar"
+    ],
+    "license": "SIL Open Font License 1.1",
+    "license_url": "https://github.com/paper-design/paper-mono/blob/v1.000/OFL.txt",
+    "copyright": "Copyright 2025 The Paper Mono Project Authors (https://github.com/paper-design/paper-mono)",
+    "foundry": "Paper Design",
+    "foundry_url": "https://paper.design",
+    "website": "https://paper.design"
+  },
+  "source": {
+    "repository": "https://github.com/paper-design/paper-mono",
+    "commit": "e6eaeceaef02e77e3db997711e07a16378de2bd7",
+    "archive": "https://github.com/paper-design/paper-mono/releases/download/v1.000/paper-mono-v1.000.zip"
+  },
+  "display": {
+    "style": "Regular400"
+  },
+  "style": {
+    "Thin100": {
+      "name": "Thin 100",
+      "file": "fonts/webfonts/PaperMono-Thin.woff2"
+    },
+    "ExtraLight200": {
+      "name": "ExtraLight 200",
+      "file": "fonts/webfonts/PaperMono-ExtraLight.woff2"
+    },
+    "Light300": {
+      "name": "Light 300",
+      "file": "fonts/webfonts/PaperMono-Light.woff2"
+    },
+    "Regular400": {
+      "name": "Regular 400",
+      "file": "fonts/webfonts/PaperMono-Regular.woff2"
+    },
+    "Medium500": {
+      "name": "Medium 500",
+      "file": "fonts/webfonts/PaperMono-Medium.woff2"
+    },
+    "SemiBold600": {
+      "name": "SemiBold 600",
+      "file": "fonts/webfonts/PaperMono-SemiBold.woff2"
+    },
+    "Bold700": {
+      "name": "Bold 700",
+      "file": "fonts/webfonts/PaperMono-Bold.woff2"
+    },
+    "ExtraBold800": {
+      "name": "ExtraBold 800",
+      "file": "fonts/webfonts/PaperMono-ExtraBold.woff2"
+    }
+  }
+}

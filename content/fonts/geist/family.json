@@ -1,0 +1,97 @@
+{
+  "details": {
+    "name": "Geist",
+    "designer": [
+      "Andrés Briganti",
+      "Mateo Zaragoza"
+    ],
+    "license": "SIL Open Font License 1.1",
+    "license_url": "https://github.com/vercel/geist-font/blob/e1f671c727f6de7e97c1e1d26dbb44f349c19459/OFL.txt",
+    "copyright": "Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font)",
+    "foundry": "Basement Studio",
+    "foundry_url": "https://basement.studio/",
+    "website": "https://vercel.com/font"
+  },
+  "source": {
+    "repository": "https://github.com/vercel/geist-font",
+    "commit": "e1f671c727f6de7e97c1e1d26dbb44f349c19459",
+    "archive": "https://github.com/vercel/geist-font/releases/download/v1.8.1/geist-font-v1.8.1.zip"
+  },
+  "display": {
+    "style": "Regular400"
+  },
+  "style": {
+    "Thin100": {
+      "name": "Thin 100",
+      "file": "geist-font/Geist/webfonts/Geist-Thin.woff2"
+    },
+    "Thin100Italic": {
+      "name": "Thin 100 Italic",
+      "file": "geist-font/Geist/webfonts/Geist-ThinItalic.woff2"
+    },
+    "ExtraLight200": {
+      "name": "ExtraLight 200",
+      "file": "geist-font/Geist/webfonts/Geist-ExtraLight.woff2"
+    },
+    "ExtraLight200Italic": {
+      "name": "ExtraLight 200 Italic",
+      "file": "geist-font/Geist/webfonts/Geist-ExtraLightItalic.woff2"
+    },
+    "Light300": {
+      "name": "Light 300",
+      "file": "geist-font/Geist/webfonts/Geist-Light.woff2"
+    },
+    "Light300Italic": {
+      "name": "Light 300 Italic",
+      "file": "geist-font/Geist/webfonts/Geist-LightItalic.woff2"
+    },
+    "Regular400": {
+      "name": "Regular 400",
+      "file": "geist-font/Geist/webfonts/Geist-Regular.woff2"
+    },
+    "Italic400": {
+      "name": "Italic 400",
+      "file": "geist-font/Geist/webfonts/Geist-Italic.woff2"
+    },
+    "Medium500": {
+      "name": "Medium 500",
+      "file": "geist-font/Geist/webfonts/Geist-Medium.woff2"
+    },
+    "Medium500Italic": {
+      "name": "Medium 500 Italic",
+      "file": "geist-font/Geist/webfonts/Geist-MediumItalic.woff2"
+    },
+    "SemiBold600": {
+      "name": "SemiBold 600",
+      "file": "geist-font/Geist/webfonts/Geist-SemiBold.woff2"
+    },
+    "SemiBold600Italic": {
+      "name": "SemiBold 600 Italic",
+      "file": "geist-font/Geist/webfonts/Geist-SemiBoldItalic.woff2"
+    },
+    "Bold700": {
+      "name": "Bold 700",
+      "file": "geist-font/Geist/webfonts/Geist-Bold.woff2"
+    },
+    "Bold700Italic": {
+      "name": "Bold 700 Italic",
+      "file": "geist-font/Geist/webfonts/Geist-BoldItalic.woff2"
+    },
+    "ExtraBold800": {
+      "name": "ExtraBold 800",
+      "file": "geist-font/Geist/webfonts/Geist-ExtraBold.woff2"
+    },
+    "ExtraBold800Italic": {
+      "name": "ExtraBold 800 Italic",
+      "file": "geist-font/Geist/webfonts/Geist-ExtraBoldItalic.woff2"
+    },
+    "Black900": {
+      "name": "Black 900",
+      "file": "geist-font/Geist/webfonts/Geist-Black.woff2"
+    },
+    "Black900Italic": {
+      "name": "Black 900 Italic",
+      "file": "geist-font/Geist/webfonts/Geist-BlackItalic.woff2"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+flowchart TB
+  accTitle: Full font downloads stay separate from site previews
+  accDescr: The site's Download link uses a complete URL from family.json, pointing to an official release or an existing hosted archive. The archive is not uploaded by Tiparo or bundled into the static site.
+  spec@{shape: doc, label: "<b>family.json</b><br/>source.archive URL"}
+  site(["<b>Download</b><br/>Site link"])
+  archive[("<b>Hosted archive</b><br/>Existing full release")]
+  official(["<b>Official release</b><br/>Release URL"])
+
+  spec -->|content:sync| site
+  site -.->|archive URL| archive
+  site -.->|or| official

@@ -4,52 +4,28 @@ icon: lucide/circle-plus
 
 # Adding Fonts
 
-## 1. Create the folder layout
+1. Put the complete upstream release, including licenses, in
+   `content/upstreams/<font-id>/` (ignored by git).
+2. Create `content/fonts/<font-id>/family.json` using the
+   [metadata reference](../reference/family-json.md). Record provenance, list
+   preview faces (prefer static WOFF2), and choose `display.style`. File paths
+   are relative to the family's directory, such as `web/Inter-Regular.woff2`.
+3. Set `source.archive` to a complete HTTP(S) download URL, preferably a pinned
+   official release including its license. Existing hosted archives can also
+   be linked by their complete URLs. Tiparo does not upload or manage archives.
 
-Place the full upstream source tree under `upstreams/<font-id>/`, i.e.
-everything that was bundled by the primary source of the font. This is what will
-get uploaded to the S2 bucket.
-
-```yaml
-tiparo
-└─ content/
-   ├─ fonts/
-   │  └─ <font-id>/ # (1)!
-   └─ upstreams/
-      └─ <font-id>/ # (2)!
-```
-
-1.  Metadata and preview assets only
-2.  Full upstream source tree
-
-## 2. Write `family.toml`
-
-Under `fonts/<font-id>/`. See the
-[`family.toml` reference](/reference/family-toml/) for details.
-
-## 3. Sync preview assets
-
-This script reads `family.toml`, gathers every specified `style.*.file`, and
-copies only those font files from the full upstream into
-`content/fonts/<font-id>/` for the served previews.
+Copy the listed preview files into the tracked font directory, then start the
+app (which regenerates the manifest):
 
 ```bash
 aube run fonts:sync -- <font-id>
-```
-
-## 4. Regenerate the app manifest
-
-This script rebuilds `src/data/generated-font-library.ts`.
-
-```bash
-aube run content:sync
-```
-
-## 5. Verify in the app
-
-Verify that the family appears, the preferred preview style is correct, the
-detail page loads every face, and the metadata and links look right.
-
-```bash
 aube run dev
 ```
+
+Check the default face, all styles on the detail page, metadata, and download
+link. Commit the family spec, preview assets, `src/data/generated-font-library.ts`,
+and `src/data/generated-fonts.css`.
+
+For later metadata-only edits, run `aube run content:sync`. For changed preview
+files, run `fonts:sync` first. Sync replaces the tracked family directory with
+the spec and listed assets, so keep other upstream material in `content/upstreams/`.

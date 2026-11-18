@@ -1,13 +1,10 @@
 import type { FontEntry } from "@/data/fonts";
 import { EditableSpecimenText } from "@/components/editable-specimen-text";
-import { getFontPreviewFamilyName } from "@/lib/font-loader";
-import { uiTextBodyClass, uiTextSmallClass } from "@/lib/layout";
 import { getGridSpecimenMetrics } from "@/lib/specimen";
 
 type FontCardProps = {
   font: FontEntry;
   previewText: string;
-  previewSize: number;
   onPreviewTextChange: (value: string) => void;
   onOpenDetails: (font: FontEntry) => void;
 };
@@ -15,15 +12,11 @@ type FontCardProps = {
 export function FontCard({
   font,
   previewText,
-  previewSize,
   onPreviewTextChange,
   onOpenDetails,
 }: FontCardProps) {
-  const specimen = getGridSpecimenMetrics(font, previewText, previewSize);
-  const styleLabel =
-    font.source.type === "local"
-      ? `${font.source.faces.length} ${font.source.faces.length === 1 ? "style" : "styles"}`
-      : "Web font";
+  const specimen = getGridSpecimenMetrics(font, previewText);
+  const styleLabel = `${font.faces.length} ${font.faces.length === 1 ? "style" : "styles"}`;
   const creditLine = [font.designer, font.foundry].filter(Boolean).join(", ");
 
   return (
@@ -45,12 +38,12 @@ export function FontCard({
     >
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
-          <p className={`${uiTextBodyClass} font-medium tracking-tight text-white`}>
+          <p className="text-base font-medium tracking-tight text-white">
             {font.family}
           </p>
-          <p className={`${uiTextSmallClass} leading-6 text-white/70`}>{creditLine}</p>
+          <p className="text-sm leading-6 text-white/70">{creditLine}</p>
         </div>
-        <p className={`shrink-0 ${uiTextSmallClass} font-medium text-white/72`}>
+        <p className="shrink-0 text-sm font-medium text-white/72">
           {styleLabel}
         </p>
       </div>
@@ -66,7 +59,7 @@ export function FontCard({
               : "w-full max-w-full whitespace-pre-wrap break-words pt-[0.14em] pb-[0.2em] leading-[1.22] text-white/92"
           }
           style={{
-            fontFamily: `"${getFontPreviewFamilyName(font)}", var(--font-sans)`,
+            fontFamily: `"${font.previewFamily}", var(--font-sans)`,
             fontSize: `${specimen.size}px`,
           }}
         />

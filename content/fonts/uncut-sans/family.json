@@ -1,0 +1,71 @@
+{
+  "details": {
+    "name": "Uncut Sans",
+    "designer": "Kasper Nordkvist",
+    "designer_url": "https://kaspernordkvist.dk/",
+    "license": "SIL Open Font License 1.1",
+    "license_url": "https://github.com/kaspernordkvist/uncut_sans/blob/1b1f2a2eaf3557e0db98f75eca5c14f22aa9a4d4/LICENSE.txt",
+    "copyright": "Copyright (c) 2022 Kasper Nordkvist.",
+    "foundry": "UNCUT.wtf",
+    "foundry_url": "https://uncut.wtf/",
+    "website": "https://uncut.wtf/sans-serif/uncut-sans/"
+  },
+  "source": {
+    "repository": "https://github.com/kaspernordkvist/uncut_sans",
+    "commit": "1b1f2a2eaf3557e0db98f75eca5c14f22aa9a4d4",
+    "archive": "https://github.com/kaspernordkvist/uncut_sans/releases/download/v1.3.4/Uncut-Sans-v1304.zip"
+  },
+  "display": {
+    "style": "Regular400"
+  },
+  "style": {
+    "Light300": {
+      "name": "Light 300",
+      "file": "Webfonts/UncutSans-Light.woff2"
+    },
+    "Light300Italic": {
+      "name": "Light 300 Italic",
+      "file": "Webfonts/UncutSans-LightItalic.woff2"
+    },
+    "Book350": {
+      "name": "Book 350",
+      "file": "Webfonts/UncutSans-Book.woff2"
+    },
+    "Book350Italic": {
+      "name": "Book 350 Italic",
+      "file": "Webfonts/UncutSans-BookItalic.woff2"
+    },
+    "Regular400": {
+      "name": "Regular 400",
+      "file": "Webfonts/UncutSans-Regular.woff2"
+    },
+    "Regular400Italic": {
+      "name": "Regular 400 Italic",
+      "file": "Webfonts/UncutSans-RegularItalic.woff2"
+    },
+    "Medium500": {
+      "name": "Medium 500",
+      "file": "Webfonts/UncutSans-Medium.woff2"
+    },
+    "Medium500Italic": {
+      "name": "Medium 500 Italic",
+      "file": "Webfonts/UncutSans-MediumItalic.woff2"
+    },
+    "SemiBold600": {
+      "name": "SemiBold 600",
+      "file": "Webfonts/UncutSans-Semibold.woff2"
+    },
+    "SemiBold600Italic": {
+      "name": "SemiBold 600 Italic",
+      "file": "Webfonts/UncutSans-SemiboldItalic.woff2"
+    },
+    "Bold700": {
+      "name": "Bold 700",
+      "file": "Webfonts/UncutSans-Bold.woff2"
+    },
+    "Bold700Italic": {
+      "name": "Bold 700 Italic",
+      "file": "Webfonts/UncutSans-BoldItalic.woff2"
+    }
+  }
+}

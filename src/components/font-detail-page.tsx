@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   ArrowDownToLineIcon,
   ChevronLeftIcon,
@@ -8,7 +8,7 @@ import {
 import type { FontEntry } from "@/data/fonts";
 import { previewPresets } from "@/data/fonts";
 import { EditableSpecimenText } from "@/components/editable-specimen-text";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button, buttonClasses } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -18,58 +18,32 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import {
-  ensureFontLoaded,
-  getFontPreviewFamilyName,
-  getManualStyleFontFamilyName,
-} from "@/lib/font-loader";
-import {
   brandButtonClass,
   brandMarkImageClass,
   brandMarkWrapClass,
   brandTitleClass,
   pageBodyShellClass,
   pageHeaderShellClass,
-  uiTextBodyClass,
-  uiTextSmallClass,
   uiTextTitleClass,
 } from "@/lib/layout";
 import { cn } from "@/lib/utils";
-import { getDialogSpecimenMetrics } from "@/lib/specimen";
+import { getDetailSpecimenMetrics, getSpecimenText } from "@/lib/specimen";
 
 type FontDetailPageProps = {
   font: FontEntry;
-  previewSize: number;
   onBack: () => void;
 };
 
 const styleSizeOptions = [8, 12, 14, 20, 24, 32, 40, 64, 96, 120, 184, 280];
 
-function getNearestStyleSize(value: number) {
-  return styleSizeOptions.reduce((closest, option) =>
-    Math.abs(option - value) < Math.abs(closest - value) ? option : closest,
-  );
-}
-
-export function FontDetailPage({
-  font,
-  previewSize,
-  onBack,
-}: FontDetailPageProps) {
+export function FontDetailPage({ font, onBack }: FontDetailPageProps) {
   const [largeText, setLargeText] = useState<string>(previewPresets.large);
   const [mediumText, setMediumText] = useState<string>(previewPresets.medium);
   const [smallText, setSmallText] = useState<string>(previewPresets.small);
-  const previewText = largeText;
-  const [stylesPreviewSize, setStylesPreviewSize] = useState(
-    getNearestStyleSize(Math.round(previewSize * 0.67)),
-  );
-  const faces = font.source.type === "local" ? font.source.faces : [];
-
-  useEffect(() => {
-    ensureFontLoaded(font);
-  }, [font]);
-
-  const hasRepository = Boolean(font.upstream?.projectUrl ?? font.links.source);
-  const downloadUrl = font.upstream?.downloadUrl ?? font.links.download ?? null;
+  const [stylesPreviewSize, setStylesPreviewSize] = useState(32);
+  const { faces } = font;
+  const stylesPreviewText = getSpecimenText(font, largeText);
+  const downloadUrl = font.links.download;
   const renderLinkedText = (value: string, href?: string) => {
     if (!href || value === "Unavailable") {
       return value;
@@ -86,9 +60,6 @@ export function FontDetailPage({
         <ExternalLinkIcon className="mt-0.5 size-3.5 shrink-0 opacity-72" />
       </a>
     );
-  };
-  const renderDetailValue = (value: string, href?: string) => {
-    return renderLinkedText(value, href);
   };
   const renderDesignerValue = () => {
     if (font.designers.length === 0) {
@@ -113,26 +84,26 @@ export function FontDetailPage({
     },
     {
       label: "Foundry",
-      value: renderDetailValue(font.foundry || "Unavailable", font.foundryUrl),
+      value: renderLinkedText(font.foundry || "Unavailable", font.foundryUrl),
     },
     {
       label: "License",
-      value: renderDetailValue(font.license || "Unavailable", font.licenseUrl),
+      value: renderLinkedText(font.license || "Unavailable", font.licenseUrl),
     },
     ...(font.copyright
       ? [{ label: "Copyright", value: font.copyright }]
       : []),
     {
       label: "Website",
-      value: renderDetailValue(font.links.official || "Unavailable", font.links.official),
+      value: renderLinkedText(font.links.official || "Unavailable", font.links.official),
     },
-    ...(hasRepository
+    ...(font.links.source
       ? [
           {
             label: "Source",
-            value: renderDetailValue(font.links.source || "Unavailable", font.links.source),
+            value: renderLinkedText(font.links.source, font.links.source),
           },
-          { label: "Commit", value: font.upstream?.version || "Unavailable" },
+          { label: "Commit", value: font.version || "Unavailable" },
         ]
       : []),
   ];
@@ -160,7 +131,7 @@ export function FontDetailPage({
                 />
                 <span
                   className={cn(
-                    buttonVariants({ variant: "outline", size: "icon-sm" }),
+                    buttonClasses({ size: "icon-sm" }),
                     "absolute inset-0 translate-y-1 scale-[0.94] place-items-center opacity-0 text-[#111214] transition duration-200 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:border-[#F2FDAD] group-hover:bg-[#F2FDAD] group-hover:text-[#111214] group-focus-visible:translate-y-0 group-focus-visible:scale-100 group-focus-visible:opacity-100 group-focus-visible:border-[#F2FDAD] group-focus-visible:bg-[#F2FDAD] group-focus-visible:text-[#111214]",
                   )}
                 >
@@ -178,7 +149,7 @@ export function FontDetailPage({
               target="_blank"
               rel="noreferrer"
               className={cn(
-                buttonVariants({ variant: "outline", size: "sm" }),
+                buttonClasses({ size: "sm" }),
                 "px-4",
               )}
             >
@@ -187,7 +158,6 @@ export function FontDetailPage({
             </a>
           ) : (
             <Button
-              variant="outline"
               size="sm"
               className="px-4 disabled:opacity-45"
               disabled
@@ -204,47 +174,75 @@ export function FontDetailPage({
           <section>
             <div className="min-w-0">
               <div className="flex min-h-11 items-center">
-                <div className={`flex items-center gap-3 ${uiTextSmallClass} text-white/68`}>
+                <div className="flex items-center gap-3 text-sm text-white/68">
                   <h2 className={`${uiTextTitleClass} font-medium tracking-tight leading-none text-white`}>
                     {font.family}
                   </h2>
                 </div>
               </div>
 
-              <p className={`mt-3 max-w-3xl ${uiTextSmallClass} leading-7 text-white/56`}>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/56">
                 {faces.length} {faces.length === 1 ? "style" : "styles"}
                 {font.designer ? ` | Designed by ${font.designer}` : ""}
               </p>
               {font.specimen?.note ? (
-                <p className={`mt-2 max-w-3xl ${uiTextSmallClass} leading-6 text-white/42`}>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-white/42">
                   {font.specimen.note}
                 </p>
               ) : null}
 
-              <div className="mt-8 space-y-8">
+              <div className="mt-8 grid gap-x-12 gap-y-8 lg:grid-cols-2 lg:gap-y-10">
                 {(
                   [
-                    { text: largeText, onChange: setLargeText, sizeMultiplier: 1 },
-                    { text: mediumText, onChange: setMediumText, sizeMultiplier: 0.55 },
-                    { text: smallText, onChange: setSmallText, sizeMultiplier: 0.38 },
+                    {
+                      text: largeText,
+                      onChange: setLargeText,
+                      sizeMultiplier: 1,
+                      minSize: 32,
+                      fluidSize: "6vw",
+                      measure: "32ch",
+                      lineHeight: 1.18,
+                    },
+                    {
+                      text: mediumText,
+                      onChange: setMediumText,
+                      sizeMultiplier: 0.55,
+                      minSize: 20,
+                      fluidSize: "2.5vw",
+                      measure: "60ch",
+                      lineHeight: 1.5,
+                    },
+                    {
+                      text: smallText,
+                      onChange: setSmallText,
+                      sizeMultiplier: 0.38,
+                      minSize: 16,
+                      fluidSize: "1.8vw",
+                      measure: "70ch",
+                      lineHeight: 1.6,
+                    },
                   ] as const
-                ).map(({ text, onChange, sizeMultiplier }, i) => {
-                  const metrics = getDialogSpecimenMetrics(font, text, previewSize);
-                  const size = Math.max(Math.round(metrics.size * sizeMultiplier), 16);
+                ).map(({ text, onChange, sizeMultiplier, minSize, fluidSize, measure, lineHeight }, i) => {
+                  const metrics = getDetailSpecimenMetrics(font, text);
+                  const size = Math.max(Math.round(metrics.size * sizeMultiplier), minSize);
                   return (
-                    <div key={i} className="overflow-visible py-[0.2em]">
+                    <div
+                      key={i}
+                      className={cn(
+                        "min-w-0 overflow-visible py-[0.2em]",
+                        i === 0 && "lg:col-span-2",
+                      )}
+                    >
                       <EditableSpecimenText
                         value={text}
                         displayValue={metrics.text}
                         onChange={onChange}
-                        className={
-                          metrics.glyphHeavy
-                            ? "whitespace-pre-wrap break-words leading-[1.22] text-white"
-                            : "whitespace-pre-wrap break-words leading-[1.32] text-white"
-                        }
+                        className="whitespace-pre-wrap break-words text-white"
                         style={{
-                          fontFamily: `"${getFontPreviewFamilyName(font)}", var(--font-sans)`,
-                          fontSize: `min(${size}px, ${Math.round(sizeMultiplier * 9)}vw)`,
+                          fontFamily: `"${font.previewFamily}", var(--font-sans)`,
+                          fontSize: `clamp(${minSize}px, ${fluidSize}, ${size}px)`,
+                          maxWidth: measure,
+                          lineHeight,
                         }}
                       />
                     </div>
@@ -264,8 +262,8 @@ export function FontDetailPage({
                     index < detailsItems.length - 1 && "border-b border-white/10",
                   )}
                 >
-                  <dt className={`${uiTextSmallClass} text-white/50`}>{item.label}</dt>
-                  <dd className={`mt-1 break-words ${uiTextSmallClass} font-medium text-white sm:mt-0`}>
+                  <dt className="text-sm text-white/50">{item.label}</dt>
+                  <dd className="mt-1 break-words text-sm font-medium text-white sm:mt-0">
                     {item.value}
                   </dd>
                 </div>
@@ -286,7 +284,7 @@ export function FontDetailPage({
                 >
                   <SelectTrigger
                     className={cn(
-                      buttonVariants({ variant: "outline", size: "sm" }),
+                      buttonClasses({ size: "sm" }),
                       "h-9 w-[96px] px-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:!border-[#F2FDAD] hover:!bg-[#F2FDAD] hover:!text-[#111214] data-[popup-open]:!border-[#F2FDAD] data-[popup-open]:!bg-[#F2FDAD] data-[popup-open]:!text-[#111214]",
                     )}
                   >
@@ -317,24 +315,24 @@ export function FontDetailPage({
             </div>
 
             <div className="mt-6 border-t border-white/12">
-              {faces.map((face, faceIndex) => (
+              {faces.map((face) => (
                 <article
-                  key={face.id ?? `${face.file ?? face.path}-${faceIndex}`}
+                  key={face.id}
                   className="border-b border-white/12 py-4"
                 >
-                  <p className={`${uiTextBodyClass} font-medium text-white/82`}>
-                    {face.name ?? face.id ?? `Style ${faceIndex + 1}`}
+                  <p className="text-base font-medium text-white/82">
+                    {face.name}
                   </p>
                   <div className="mt-4 overflow-hidden">
                     <EditableSpecimenText
                       value={largeText}
-                      displayValue={getDialogSpecimenMetrics(font, largeText, previewSize).text}
+                      displayValue={stylesPreviewText}
                       onChange={setLargeText}
                       singleLine
                       className="pt-[0.16em] pb-[0.22em] leading-[1.16] text-white"
                       style={{
-                        fontFamily: `"${getManualStyleFontFamilyName(font, faceIndex)}", var(--font-sans)`,
-                        fontStyle: face.style ?? "normal",
+                        fontFamily: `"${face.fontFamily}", var(--font-sans)`,
+                        fontStyle: face.style,
                         fontWeight: face.weight,
                         fontSize: `min(${stylesPreviewSize}px, calc(100vw - 5rem))`,
                       }}

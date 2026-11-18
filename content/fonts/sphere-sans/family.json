@@ -1,0 +1,70 @@
+{
+  "details": {
+    "name": "Sphere Sans",
+    "designer": "Studio Sphere, after Dylan Young (Koto)",
+    "designer_url": "https://www.studiosphere.co/",
+    "license": "SIL Open Font License 1.1",
+    "license_url": "https://openfontlicense.org",
+    "copyright": "Copyright 2026 Studio Sphere (https://studiosphere.de), with Reserved Font Name Sphere Sans. Derived from Stack Sans, Copyright 2025 The Stack Sans Project Authors (https://github.com/DylanYoungKoto/Stack-Sans), figures from Geist, Copyright 2023 Vercel (https://vercel.com/font). All under the SIL Open Font License 1.1.",
+    "foundry": "Studio Sphere",
+    "foundry_url": "https://www.studiosphere.co/",
+    "website": "https://www.studiosphere.co/sphere-sans"
+  },
+  "source": {
+    "commit": "1.0",
+    "archive": "https://www.studiosphere.co/sphere-sans/sphere-sans-1.0.zip"
+  },
+  "display": {
+    "style": "Regular400"
+  },
+  "style": {
+    "ExtraLight200": {
+      "name": "ExtraLight 200",
+      "file": "Sphere Sans 1.0/Sphere Sans/WOFF2/SphereSans-ExtraLight.woff2"
+    },
+    "Light300": {
+      "name": "Light 300",
+      "file": "Sphere Sans 1.0/Sphere Sans/WOFF2/SphereSans-Light.woff2"
+    },
+    "Regular400": {
+      "name": "Regular 400",
+      "file": "Sphere Sans 1.0/Sphere Sans/WOFF2/SphereSans-Regular.woff2"
+    },
+    "Medium500": {
+      "name": "Medium 500",
+      "file": "Sphere Sans 1.0/Sphere Sans/WOFF2/SphereSans-Medium.woff2"
+    },
+    "SemiBold600": {
+      "name": "SemiBold 600",
+      "file": "Sphere Sans 1.0/Sphere Sans/WOFF2/SphereSans-SemiBold.woff2"
+    },
+    "Bold700": {
+      "name": "Bold 700",
+      "file": "Sphere Sans 1.0/Sphere Sans/WOFF2/SphereSans-Bold.woff2"
+    },
+    "DisplayExtraLight200": {
+      "name": "Display ExtraLight 200",
+      "file": "Sphere Sans 1.0/Sphere Sans Display/WOFF2/SphereSansDisplay-ExtraLight.woff2"
+    },
+    "DisplayLight300": {
+      "name": "Display Light 300",
+      "file": "Sphere Sans 1.0/Sphere Sans Display/WOFF2/SphereSansDisplay-Light.woff2"
+    },
+    "DisplayRegular400": {
+      "name": "Display Regular 400",
+      "file": "Sphere Sans 1.0/Sphere Sans Display/WOFF2/SphereSansDisplay-Regular.woff2"
+    },
+    "DisplayMedium500": {
+      "name": "Display Medium 500",
+      "file": "Sphere Sans 1.0/Sphere Sans Display/WOFF2/SphereSansDisplay-Medium.woff2"
+    },
+    "DisplaySemiBold600": {
+      "name": "Display SemiBold 600",
+      "file": "Sphere Sans 1.0/Sphere Sans Display/WOFF2/SphereSansDisplay-SemiBold.woff2"
+    },
+    "DisplayBold700": {
+      "name": "Display Bold 700",
+      "file": "Sphere Sans 1.0/Sphere Sans Display/WOFF2/SphereSansDisplay-Bold.woff2"
+    }
+  }
+}

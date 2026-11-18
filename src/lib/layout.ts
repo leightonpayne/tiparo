@@ -13,10 +13,6 @@ export const brandMarkWrapClass = "relative grid size-9 place-items-center";
 export const brandMarkImageClass =
   "size-9 object-contain transition group-hover:opacity-90 group-focus-visible:opacity-90";
 
-export const uiTextSmallClass = "text-sm";
-
-export const uiTextBodyClass = "text-base";
-
 export const uiTextTitleClass = "text-[1.75rem]";
 
 export const brandTitleClass =

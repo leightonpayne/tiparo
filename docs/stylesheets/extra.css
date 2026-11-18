@@ -13,3 +13,10 @@
   --md-accent-fg-color: #f2fdad;
   --md-accent-fg-color--transparent: rgb(242 253 173 / 0.18);
 }
+
+.md-typeset img[src*="static/diagrams/"] {
+  display: block;
+  margin-inline: auto;
+  border: 1px solid #cecdc3;
+  border-radius: 0.4rem;
+}

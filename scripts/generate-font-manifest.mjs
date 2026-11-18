@@ -1,317 +1,95 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import {
-  getRelativeUpstreamPath,
-  getStyleEntries,
-  parseFamilySpec,
-  toStringArray,
-} from "./lib/font-spec.mjs";
+import { getFontFilePath, getStyleEntries, parseFamilySpec, toStringArray } from "./lib/font-spec.mjs";
 
-const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(scriptDir, "..");
-const contentFontsDir = path.join(repoRoot, "content", "fonts");
-const archiveConfigPath = path.join(repoRoot, "content", "archive-config.json");
-const outputPath = path.join(repoRoot, "src", "data", "generated-font-library.ts");
+const repoRoot = fileURLToPath(new URL("../", import.meta.url));
+const fontsDirectory = path.join(repoRoot, "content/fonts");
+const outputDirectory = path.join(repoRoot, "src/data");
+const formats = { woff2: "woff2", woff: "woff", ttf: "truetype", otf: "opentype" };
+const text = (value) => typeof value === "string" ? value.trim() || undefined : undefined;
+const library = [];
+const rules = [];
 
-function isExternalPath(value) {
-  return /^(?:https?:)?\/\//.test(value) || value.startsWith("/");
-}
+for (const entry of (await fs.readdir(fontsDirectory, { withFileTypes: true }))
+  .filter((entry) => entry.isDirectory()).sort((a, b) => a.name.localeCompare(b.name))) {
+  const id = entry.name;
+  const familyDirectory = path.join(fontsDirectory, id);
+  const specPath = path.join(familyDirectory, "family.json");
+  const spec = parseFamilySpec(await fs.readFile(specPath, "utf8"));
+  const { details = {}, source = {}, display = {}, specimen = {} } = spec;
+  const styles = getStyleEntries(spec, specPath);
+  if (!styles.length) continue;
 
-function toImportName(value) {
-  return value.replace(/[^a-zA-Z0-9]+/g, "_").replace(/^_+|_+$/g, "");
-}
-
-function toRepoRelativePath(filePath) {
-  return path.relative(repoRoot, filePath).split(path.sep).join("/");
-}
-
-function getFileExtension(filePath) {
-  return filePath.split(".").pop()?.toLowerCase() ?? "";
-}
-
-function detectFormat(filePath) {
-  const extension = getFileExtension(filePath);
-
-  if (extension === "ttf") {
-    return "truetype";
+  const faces = [];
+  for (const [index, style] of styles.entries()) {
+    const filePath = await getFontFilePath(familyDirectory, style.file);
+    const format = formats[path.extname(style.file).slice(1).toLowerCase()];
+    if (!format) throw new Error(`Unsupported font format: ${style.file}`);
+    const face = {
+      id: style.id,
+      name: style.name,
+      fontFamily: `tiparo-${id}-${index}`,
+      weight: `${style.name} ${style.id}`.match(/(?:^|\D)(\d{3})(?!\d)/)?.[1] ?? "400",
+      style: /italic/i.test(`${style.name} ${style.id}`) ? "italic" : "normal",
+    };
+    faces.push(face);
+    const assetUrl = path.relative(outputDirectory, filePath).split(path.sep).map(encodeURIComponent).join("/");
+    rules.push(`@font-face {
+  font-family: ${JSON.stringify(face.fontFamily)};
+  src: url(${JSON.stringify(assetUrl)}) format("${format}");
+  font-display: swap;
+  font-style: ${face.style};
+  font-weight: ${face.weight};
+}`);
   }
 
-  if (extension === "otf") {
-    return "opentype";
-  }
-
-  if (extension === "ttc") {
-    return "collection";
-  }
-
-  return extension;
-}
-
-function inferWeight(name, styleId) {
-  const match = `${name} ${styleId}`.match(/\b(\d{3})\b/);
-  return match?.[1] ?? "400";
-}
-
-function inferFontStyle(name, styleId) {
-  return /italic/i.test(`${name} ${styleId}`) ? "italic" : "normal";
-}
-
-function getDesignerEntries(details) {
-  const names = toStringArray(details.designer);
-  const uniqueNames = names.filter(
-    (name, index) => names.findIndex((candidate) => candidate === name) === index,
-  );
-  const urls = toStringArray(details.designer_url);
-
-  return uniqueNames.map((name, index) => ({
-    name,
-    url: urls[index] || undefined,
-  }));
-}
-
-async function fileExists(filePath) {
-  try {
-    await fs.access(filePath);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-function raw(code) {
-  return { __raw: code };
-}
-
-async function readArchiveConfig() {
-  const configText = await fs.readFile(archiveConfigPath, "utf8");
-  const config = JSON.parse(configText);
-  const baseUrl = typeof config.baseUrl === "string" ? config.baseUrl.trim() : "";
-
-  if (!/^https?:\/\//.test(baseUrl)) {
-    throw new Error(`Invalid archive baseUrl in ${archiveConfigPath}`);
-  }
-
-  return {
-    baseUrl: baseUrl.replace(/\/+$/, ""),
+  const configuredStyle = text(display.style)?.toLowerCase();
+  const preview = faces.find((face) => configuredStyle &&
+    [face.id.toLowerCase(), face.name.toLowerCase()].includes(configuredStyle)) ??
+    faces.find((face) => face.style === "normal" && face.weight === "400") ?? faces[0];
+  const designerUrls = toStringArray(details.designer_url);
+  const designers = toStringArray(details.designer)
+    .map((name, index) => ({ name, url: designerUrls[index] }))
+    .filter((designer, index, entries) => entries.findIndex(({ name }) => name === designer.name) === index);
+  const specimenRules = {
+    forceLowercase: typeof specimen.force_lowercase === "boolean" ? specimen.force_lowercase : undefined,
+    supportedGlyphs: toStringArray(specimen.supported, { trim: false }),
+    unsupportedGlyphs: toStringArray(specimen.unsupported, { trim: false }),
+    punctuationReplacement: text(specimen.replace_punctuation),
+    note: text(specimen.note),
   };
+  const hasSpecimenRules = Object.values(specimenRules).some((value) =>
+    Array.isArray(value) ? value.length > 0 : value !== undefined);
+  const download = text(source.archive);
+  if (download && !/^https?:\/\//.test(download)) {
+    throw new Error(`Expected an absolute HTTP(S) source.archive URL in ${specPath}`);
+  }
+
+  library.push({
+    id,
+    family: text(details.name) ?? id,
+    designer: designers.map(({ name }) => name).join(", "),
+    designers,
+    foundry: text(details.foundry) ?? "",
+    foundryUrl: text(details.foundry_url),
+    license: text(details.license) ?? "",
+    licenseUrl: text(details.license_url),
+    copyright: text(details.copyright),
+    faces,
+    previewFamily: preview.fontFamily,
+    links: {
+      source: text(source.repository),
+      official: text(details.website) ?? text(source.repository),
+      download,
+    },
+    version: text(source.commit),
+    specimen: hasSpecimenRules ? specimenRules : undefined,
+  });
 }
 
-function serialize(value, indent = 0) {
-  const padding = "  ".repeat(indent);
-  const nextPadding = "  ".repeat(indent + 1);
-
-  if (value && typeof value === "object" && "__raw" in value) {
-    return value.__raw;
-  }
-
-  if (value === undefined) {
-    return "undefined";
-  }
-
-  if (value === null) {
-    return "null";
-  }
-
-  if (typeof value === "string") {
-    return JSON.stringify(value);
-  }
-
-  if (typeof value === "number" || typeof value === "boolean") {
-    return String(value);
-  }
-
-  if (Array.isArray(value)) {
-    if (value.length === 0) {
-      return "[]";
-    }
-
-    return `[\n${value
-      .map((entry) => `${nextPadding}${serialize(entry, indent + 1)},`)
-      .join("\n")}\n${padding}]`;
-  }
-
-  const entries = Object.entries(value).filter(([, entry]) => entry !== undefined);
-
-  if (entries.length === 0) {
-    return "{}";
-  }
-
-  return `{\n${entries
-    .map(
-      ([key, entry]) =>
-        `${nextPadding}${JSON.stringify(key)}: ${serialize(entry, indent + 1)},`,
-    )
-    .join("\n")}\n${padding}}`;
-}
-
-async function buildGeneratedLibrary() {
-  const archiveConfig = await readArchiveConfig();
-  const familyEntries = await fs.readdir(contentFontsDir, { withFileTypes: true });
-  const families = familyEntries
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name)
-    .sort((a, b) => a.localeCompare(b));
-
-  const assetImports = new Map();
-  const fontLibraryEntries = [];
-
-  function getOrCreateAssetImport(filePath, prefix) {
-    const existing = assetImports.get(filePath);
-
-    if (existing) {
-      return existing;
-    }
-
-    const importName = `${prefix}_${toImportName(toRepoRelativePath(filePath))}`;
-    const relativeImportPath = path
-      .relative(path.dirname(outputPath), filePath)
-      .split(path.sep)
-      .join("/");
-
-    assetImports.set(filePath, {
-      importName,
-      importPath: `${relativeImportPath}?url`,
-    });
-
-    return assetImports.get(filePath);
-  }
-
-  for (const familyId of families) {
-    const specPath = path.join(contentFontsDir, familyId, "family.toml");
-
-    if (!(await fileExists(specPath))) {
-      continue;
-    }
-
-    const specText = await fs.readFile(specPath, "utf8");
-    const spec = parseFamilySpec(specText);
-    const details = spec.details ?? {};
-    const source = spec.source ?? {};
-    const display = spec.display ?? {};
-    const specimen = spec.specimen ?? {};
-    const designers = getDesignerEntries(details);
-    const styles = getStyleEntries(spec, specPath);
-    const specimenConfig = {
-      forceLowercase:
-        typeof specimen.force_lowercase === "boolean"
-          ? specimen.force_lowercase
-          : undefined,
-      supportedGlyphs: toStringArray(specimen.supported, { trim: false }),
-      unsupportedGlyphs: toStringArray(specimen.unsupported, { trim: false }),
-      punctuationReplacement:
-        typeof specimen.replace_punctuation === "string"
-          ? specimen.replace_punctuation.trim() || undefined
-          : undefined,
-      note:
-        typeof specimen.note === "string" ? specimen.note.trim() || undefined : undefined,
-    };
-    const hasSpecimenConfig = Object.entries(specimenConfig).some(([, value]) =>
-      Array.isArray(value) ? value.length > 0 : value !== undefined,
-    );
-
-    if (styles.length === 0) {
-      continue;
-    }
-
-    const faces = [];
-
-    for (const style of styles) {
-      const relativeUpstreamPath = getRelativeUpstreamPath(familyId, style.file);
-      const assetDiskPath = path.join(contentFontsDir, familyId, ...relativeUpstreamPath.split("/"));
-
-      if (!(await fileExists(assetDiskPath))) {
-        throw new Error(`Missing font asset for "${familyId}": ${style.file}`);
-      }
-
-      const assetImport = getOrCreateAssetImport(assetDiskPath, "font");
-
-      faces.push({
-        id: style.id,
-        name: style.name,
-        file: style.file,
-        path: raw(assetImport.importName),
-        weight: inferWeight(style.name, style.id),
-        style: inferFontStyle(style.name, style.id),
-        format: detectFormat(style.file),
-        collectionIndex: style.index,
-      });
-    }
-
-    let downloadValue;
-
-    if (typeof source.archive === "string" && source.archive.trim()) {
-      const archive = source.archive.trim();
-
-      if (isExternalPath(archive)) {
-        downloadValue = archive;
-      } else {
-        const archiveVersion =
-          typeof source.archive_version === "string" ? source.archive_version.trim() : "";
-
-        if (!archiveVersion) {
-          throw new Error(`Missing source.archive_version for "${familyId}" in ${specPath}`);
-        }
-
-        downloadValue = `${archiveConfig.baseUrl}/${archiveVersion.replace(
-          /^\/+|\/+$/g,
-          "",
-        )}/${archive.replace(/^\/+/, "")}`;
-      }
-    }
-
-    const familyEntry = {
-      id: familyId,
-      family: details.name?.trim() || familyId,
-      designer: designers.map(({ name }) => name).join(", "),
-      designerUrl: designers.length === 1 ? designers[0]?.url : undefined,
-      designers,
-      foundry: details.foundry?.trim() ?? "",
-      foundryUrl: details.foundry_url?.trim() ?? undefined,
-      license: details.license?.trim() ?? "",
-      licenseUrl: details.license_url?.trim() ?? undefined,
-      copyright: details.copyright?.trim() ?? "",
-      source: {
-        type: "local",
-        faces,
-      },
-      links: {
-        source: source.repository,
-        official: details.website ?? source.repository,
-        download: downloadValue,
-      },
-      display: {
-        style: display.style?.trim() || undefined,
-      },
-      specimen: hasSpecimenConfig ? specimenConfig : undefined,
-      upstream: {
-        projectUrl: source.repository ?? null,
-        downloadUrl: downloadValue ?? null,
-        version: source.commit ?? null,
-      },
-    };
-
-    fontLibraryEntries.push(familyEntry);
-  }
-
-  fontLibraryEntries.sort((left, right) => left.family.localeCompare(right.family));
-
-  const importLines = [
-    'import type { FontEntry } from "./fonts";',
-    ...Array.from(assetImports.values()).map(
-      ({ importName, importPath }) => `import ${importName} from ${JSON.stringify(importPath)};`,
-    ),
-  ];
-
-  const output = `// This file is generated by scripts/generate-font-manifest.mjs.
-// Do not edit manually.
-
-${importLines.join("\n")}
-
-export const fontLibrary: FontEntry[] = ${serialize(fontLibraryEntries)};
-`;
-
-  await fs.writeFile(outputPath, output);
-}
-
-await buildGeneratedLibrary();
+library.sort((a, b) => a.family.localeCompare(b.family));
+await fs.writeFile(path.join(outputDirectory, "generated-font-library.ts"),
+  `// Generated by scripts/generate-font-manifest.mjs. Do not edit manually.\nimport type { FontEntry } from "./fonts";\n\nexport const fontLibrary: FontEntry[] = ${JSON.stringify(library, null, 2)};\n`);
+await fs.writeFile(path.join(outputDirectory, "generated-fonts.css"),
+  `/* Generated by scripts/generate-font-manifest.mjs. Do not edit manually. */\n\n${rules.join("\n\n")}\n`);

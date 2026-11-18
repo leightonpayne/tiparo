@@ -20,11 +20,10 @@ nav = [
   { Usage = [
     { Architecture = "operations/architecture.md" },
     { "Adding Fonts" = "operations/adding-fonts.md" },
-    { "Publishing Archives" = "operations/publishing-archives.md" },
     { Deployment = "operations/deployment.md" },
   ] },
   { Reference = [
-    { "family.toml" = "reference/family-toml.md" },
+    { "family.json" = "reference/family-json.md" },
   ] },
 ]
 

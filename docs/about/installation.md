@@ -4,63 +4,46 @@ icon: lucide/download
 
 # Installation
 
-## Local development
-
-Install Node.js 24 or newer and [aube](https://aube.sh/) 2.1.0, then clone the
-repository and install the JavaScript dependencies:
+Use Node.js 24+ and [aube](https://aube.sh/) 2.1.0:
 
 ```bash
 git clone https://github.com/leightonpayne/tiparo
 cd tiparo
 aube install
-```
-
-Start the app locally:
-
-```bash
 aube run dev
 ```
 
-Start and make accessible over tailnet:
+The app builds from tracked previews; full upstream files are only needed to
+sync previews. The project keeps dependencies local so React and its types
+resolve to the versions in the lockfile.
+
+For the docs, install `uv`, then run:
 
 ```bash
-__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=<MagicDNS> aube run dev --host
-```
-
-## Docs toolchain
-
-The docs site is built with Zensical and managed with `uv`:
-
-```bash
-uv sync
+uv sync --group docs
 aube run docs:serve
 ```
 
-## Build commands
+| Command                | Purpose                                                        |
+| ---------------------- | -------------------------------------------------------------- |
+| `aube run dev`         | Regenerate font data and start Vite                            |
+| `aube test`            | Run regression tests                                           |
+| `aube run build`       | Regenerate font data, check TypeScript, build app into `dist/` |
+| `aube run preview`     | Serve the existing app build locally                           |
+| `aube run docs:serve`  | Preview docs locally                                           |
+| `aube run docs:build`  | Build docs into `dist/docs/`                                   |
+| `aube run pages:build` | Build app, then docs, for deployment                           |
 
-App only:
+The app build clears `dist/`, so use `pages:build` when you need both outputs.
+
+Docs commands render `docs/diagrams/*.mmd` to static SVGs with Pele. After editing
+diagram sources while the docs server is running, run `aube run docs:diagrams`
+to refresh the images. Generated files in `docs/static/diagrams/` are ignored by
+git. Run a new app build before `preview` to see metadata or font changes.
+
+To expose the dev server over your tailnet, replace `your-host.ts.net` with its
+MagicDNS hostname:
 
 ```bash
-aube run build
+__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=your-host.ts.net aube run dev --host
 ```
-
-Docs only:
-
-```bash
-aube run docs:build
-```
-
-That writes the docs output to `dist/docs/`.
-
-Combined GitHub Pages artifact:
-
-```bash
-aube run pages:build
-```
-
-That command builds the app into `dist/`, then builds the docs directly into
-`dist/docs/` so GitHub Pages can serve both from one deployment.
-
-Use `pages:build` when you want the final deploy-shaped artifact. Running
-`aube run build` after `aube run docs:build` will rebuild `dist/` for the app and
-remove the docs output until you build them again.

@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -26,7 +33,7 @@ export function EditableSpecimenText({
   const [isFocused, setIsFocused] = useState(false);
   const renderedValue = isFocused ? value : displayValue ?? value;
 
-  const updateSingleLineMask = () => {
+  const updateSingleLineMask = useCallback(() => {
     if (!ref.current || !singleLine) {
       setSingleLineMask({});
       return;
@@ -56,20 +63,41 @@ export function EditableSpecimenText({
           }
         : {},
     );
-  };
+  }, [singleLine]);
 
-  const resizeToContent = () => {
+  const resizeToContent = useCallback(() => {
     if (!ref.current || singleLine) {
       return;
     }
 
     ref.current.style.height = "0px";
     ref.current.style.height = `${ref.current.scrollHeight + 2}px`;
-  };
+  }, [singleLine]);
 
-  useEffect(() => {
-    resizeToContent();
-  }, [renderedValue, singleLine]);
+  const refreshLayout = useCallback(() => {
+    if (singleLine) {
+      updateSingleLineMask();
+    } else {
+      resizeToContent();
+    }
+  }, [singleLine, updateSingleLineMask, resizeToContent]);
+
+  useLayoutEffect(() => {
+    refreshLayout();
+  }, [
+    renderedValue,
+    refreshLayout,
+    className,
+    style?.fontFamily,
+    style?.fontSize,
+    style?.fontWeight,
+    style?.fontStyle,
+    style?.fontStretch,
+    style?.fontVariationSettings,
+    style?.lineHeight,
+    style?.letterSpacing,
+    style?.maxWidth,
+  ]);
 
   useEffect(() => {
     if (!ref.current) {
@@ -77,24 +105,35 @@ export function EditableSpecimenText({
     }
 
     const textarea = ref.current;
-    const observer = new ResizeObserver(() => {
-      if (singleLine) {
-        updateSingleLineMask();
-      } else {
-        resizeToContent();
+    let frame: number | null = null;
+    let disposed = false;
+    const scheduleRefresh = () => {
+      if (disposed || frame !== null) {
+        return;
       }
-    });
+
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        refreshLayout();
+      });
+    };
+    const observer = new ResizeObserver(scheduleRefresh);
 
     observer.observe(textarea);
 
-    return () => {
-      observer.disconnect();
-    };
-  }, [singleLine]);
+    // Font swaps can change wrapping without changing the textarea's fixed box.
+    document.fonts.ready.then(scheduleRefresh);
+    document.fonts.addEventListener("loadingdone", scheduleRefresh);
 
-  useEffect(() => {
-    updateSingleLineMask();
-  }, [renderedValue, singleLine]);
+    return () => {
+      disposed = true;
+      observer.disconnect();
+      document.fonts.removeEventListener("loadingdone", scheduleRefresh);
+      if (frame !== null) {
+        cancelAnimationFrame(frame);
+      }
+    };
+  }, [refreshLayout]);
 
   return (
     <textarea

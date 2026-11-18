@@ -1,0 +1,14 @@
+flowchart TB
+  accTitle: From source files to site previews
+  accDescr: Edit family.json by hand. It selects which upstream files fonts:sync copies into the repository. content:sync generates metadata and font CSS. Vite builds the static site with those preview assets.
+  upstream@{shape: docs, label: "<b>Upstream release</b><br/>Local · git-ignored"}
+  spec@{shape: doc, label: "<b>family.json</b><br/>Edit by hand"}
+  previews@{shape: docs, label: "<b>Preview fonts</b><br/>Tracked in git"}
+  manifest@{shape: docs, label: "<b>Generated files</b><br/>Metadata + font CSS"}
+  site(["<b>Static site</b><br/>GitHub Pages"])
+
+  upstream -->|fonts:sync| previews
+  spec -.->|selects files| previews
+  spec -->|metadata| manifest
+  previews -->|content:sync| manifest
+  manifest -->|Vite build| site

@@ -1,0 +1,164 @@
+{
+  "details": {
+    "name": "Inter",
+    "designer": "Rasmus Andersson",
+    "designer_url": "https://rsms.me/",
+    "license": "SIL Open Font License 1.1",
+    "license_url": "http://scripts.sil.org/OFL",
+    "copyright": "Copyright 2016, The Inter Project Authors",
+    "foundry": "Independent",
+    "website": "https://rsms.me/inter/"
+  },
+  "source": {
+    "archive": "https://downloads.leightonpayne.dev/tiparo/b44e318c/tiparo-inter.tar.gz"
+  },
+  "display": {
+    "style": "Regular400"
+  },
+  "style": {
+    "Black900": {
+      "name": "Black 900",
+      "file": "web/Inter-Black.woff2"
+    },
+    "Black900Italic": {
+      "name": "Black 900 Italic",
+      "file": "web/Inter-BlackItalic.woff2"
+    },
+    "Bold700": {
+      "name": "Bold 700",
+      "file": "web/Inter-Bold.woff2"
+    },
+    "Bold700Italic": {
+      "name": "Bold 700 Italic",
+      "file": "web/Inter-BoldItalic.woff2"
+    },
+    "ExtraBold800": {
+      "name": "ExtraBold 800",
+      "file": "web/Inter-ExtraBold.woff2"
+    },
+    "ExtraBold800Italic": {
+      "name": "ExtraBold 800 Italic",
+      "file": "web/Inter-ExtraBoldItalic.woff2"
+    },
+    "ExtraLight200": {
+      "name": "ExtraLight 200",
+      "file": "web/Inter-ExtraLight.woff2"
+    },
+    "ExtraLight200Italic": {
+      "name": "ExtraLight 200 Italic",
+      "file": "web/Inter-ExtraLightItalic.woff2"
+    },
+    "Italic400": {
+      "name": "Italic 400",
+      "file": "web/Inter-Italic.woff2"
+    },
+    "Light300": {
+      "name": "Light 300",
+      "file": "web/Inter-Light.woff2"
+    },
+    "Light300Italic": {
+      "name": "Light 300 Italic",
+      "file": "web/Inter-LightItalic.woff2"
+    },
+    "Medium500": {
+      "name": "Medium 500",
+      "file": "web/Inter-Medium.woff2"
+    },
+    "Medium500Italic": {
+      "name": "Medium 500 Italic",
+      "file": "web/Inter-MediumItalic.woff2"
+    },
+    "Regular400": {
+      "name": "Regular 400",
+      "file": "web/Inter-Regular.woff2"
+    },
+    "SemiBold600": {
+      "name": "SemiBold 600",
+      "file": "web/Inter-SemiBold.woff2"
+    },
+    "SemiBold600Italic": {
+      "name": "SemiBold 600 Italic",
+      "file": "web/Inter-SemiBoldItalic.woff2"
+    },
+    "Thin100": {
+      "name": "Thin 100",
+      "file": "web/Inter-Thin.woff2"
+    },
+    "Thin100Italic": {
+      "name": "Thin 100 Italic",
+      "file": "web/Inter-ThinItalic.woff2"
+    },
+    "DisplayBlack900": {
+      "name": "Display Black 900",
+      "file": "web/InterDisplay-Black.woff2"
+    },
+    "DisplayBlack900Italic": {
+      "name": "Display Black 900 Italic",
+      "file": "web/InterDisplay-BlackItalic.woff2"
+    },
+    "DisplayBold700": {
+      "name": "Display Bold 700",
+      "file": "web/InterDisplay-Bold.woff2"
+    },
+    "DisplayBold700Italic": {
+      "name": "Display Bold 700 Italic",
+      "file": "web/InterDisplay-BoldItalic.woff2"
+    },
+    "DisplayExtraBold800": {
+      "name": "Display ExtraBold 800",
+      "file": "web/InterDisplay-ExtraBold.woff2"
+    },
+    "DisplayExtraBold800Italic": {
+      "name": "Display ExtraBold 800 Italic",
+      "file": "web/InterDisplay-ExtraBoldItalic.woff2"
+    },
+    "DisplayExtraLight200": {
+      "name": "Display ExtraLight 200",
+      "file": "web/InterDisplay-ExtraLight.woff2"
+    },
+    "DisplayExtraLight200Italic": {
+      "name": "Display ExtraLight 200 Italic",
+      "file": "web/InterDisplay-ExtraLightItalic.woff2"
+    },
+    "DisplayItalic400": {
+      "name": "Display Italic 400",
+      "file": "web/InterDisplay-Italic.woff2"
+    },
+    "DisplayLight300": {
+      "name": "Display Light 300",
+      "file": "web/InterDisplay-Light.woff2"
+    },
+    "DisplayLight300Italic": {
+      "name": "Display Light 300 Italic",
+      "file": "web/InterDisplay-LightItalic.woff2"
+    },
+    "DisplayMedium500": {
+      "name": "Display Medium 500",
+      "file": "web/InterDisplay-Medium.woff2"
+    },
+    "DisplayMedium500Italic": {
+      "name": "Display Medium 500 Italic",
+      "file": "web/InterDisplay-MediumItalic.woff2"
+    },
+    "DisplayRegular400": {
+      "name": "Display Regular 400",
+      "file": "web/InterDisplay-Regular.woff2"
+    },
+    "DisplaySemiBold600": {
+      "name": "Display SemiBold 600",
+      "file": "web/InterDisplay-SemiBold.woff2"
+    },
+    "DisplaySemiBold600Italic": {
+      "name": "Display SemiBold 600 Italic",
+      "file": "web/InterDisplay-SemiBoldItalic.woff2"
+    },
+    "DisplayThin100": {
+      "name": "Display Thin 100",
+      "file": "web/InterDisplay-Thin.woff2"
+    },
+    "DisplayThin100Italic": {
+      "name": "Display Thin 100 Italic",
+      "file": "web/InterDisplay-ThinItalic.woff2"
+    }
+  }
+}

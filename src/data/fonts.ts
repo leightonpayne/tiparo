@@ -4,25 +4,6 @@ export const previewPresets = {
   small: "But in the measure that history moves forward, and with it the struggle of the proletariat assumes clearer outlines, they no longer need to seek science in their minds; they have only to take note of what is happening before their eyes and to become its mouthpiece. So long as they look for science and merely make systems, so long as they are at the beginning of the struggle, they see in poverty nothing but poverty, without seeing in it the revolutionary, subversive side, which will overthrow the old society. From this moment, science, which is a product of the historical movement, has associated itself consciously with it, has ceased to be doctrinaire and has become revolutionary.",
 } as const;
 
-type CssFontSource = {
-  type: "css";
-  url: string;
-};
-
-type LocalFontSource = {
-  type: "local";
-  faces: Array<{
-    id?: string;
-    name?: string;
-    file?: string;
-    path: string;
-    weight: string;
-    style?: "normal" | "italic";
-    format?: "woff2" | "woff" | "truetype" | "opentype" | "collection";
-    collectionIndex?: number;
-  }>;
-};
-
 type FontSpecimenRules = {
   forceLowercase?: boolean;
   supportedGlyphs?: string[];
@@ -35,7 +16,6 @@ export type FontEntry = {
   id: string;
   family: string;
   designer: string;
-  designerUrl?: string;
   designers: Array<{
     name: string;
     url?: string;
@@ -45,19 +25,19 @@ export type FontEntry = {
   license: string;
   licenseUrl?: string;
   copyright?: string;
-  source: CssFontSource | LocalFontSource;
+  faces: Array<{
+    id: string;
+    name: string;
+    fontFamily: string;
+    weight: string;
+    style: "normal" | "italic";
+  }>;
+  previewFamily: string;
   links: {
     source?: string;
     official?: string;
     download?: string;
   };
-  display?: {
-    style?: string;
-  };
+  version?: string;
   specimen?: FontSpecimenRules;
-  upstream?: {
-    projectUrl?: string | null;
-    downloadUrl?: string | null;
-    version?: string | null;
-  };
 };

@@ -1,13 +1,11 @@
 import type { FontEntry } from "@/data/fonts";
 import { EditableSpecimenText } from "@/components/editable-specimen-text";
-import { getFontPreviewFamilyName } from "@/lib/font-loader";
-import { uiTextSmallClass, uiTextTitleClass } from "@/lib/layout";
+import { uiTextTitleClass } from "@/lib/layout";
 import { getListSpecimenMetrics } from "@/lib/specimen";
 
 type FontListRowProps = {
   font: FontEntry;
   previewText: string;
-  previewSize: number;
   onPreviewTextChange: (value: string) => void;
   onOpenDetails: (font: FontEntry) => void;
 };
@@ -15,15 +13,11 @@ type FontListRowProps = {
 export function FontListRow({
   font,
   previewText,
-  previewSize,
   onPreviewTextChange,
   onOpenDetails,
 }: FontListRowProps) {
-  const specimen = getListSpecimenMetrics(font, previewText, previewSize);
-  const styleLabel =
-    font.source.type === "local"
-      ? `${font.source.faces.length} ${font.source.faces.length === 1 ? "style" : "styles"}`
-      : "Web font";
+  const specimen = getListSpecimenMetrics(font, previewText);
+  const styleLabel = `${font.faces.length} ${font.faces.length === 1 ? "style" : "styles"}`;
   const creditLine = [font.designer, font.foundry].filter(Boolean).join(", ");
 
   return (
@@ -45,7 +39,7 @@ export function FontListRow({
         className="group block w-full cursor-pointer rounded-[1rem] px-4 py-5 text-left transition hover:bg-[#23252b] focus-visible:bg-[#23252b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#587ec9]/55 sm:px-6 sm:py-6"
       >
         <div className="min-w-0">
-          <div className={`flex flex-wrap items-center gap-x-3 gap-y-1.5 ${uiTextSmallClass} leading-6 text-white/68`}>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm leading-6 text-white/68">
             <h2 className={`${uiTextTitleClass} font-medium tracking-tight text-white`}>
               {font.family}
             </h2>
@@ -62,7 +56,7 @@ export function FontListRow({
               singleLine
               className="leading-[1.18] text-white/92"
               style={{
-                fontFamily: `"${getFontPreviewFamilyName(font)}", var(--font-sans)`,
+                fontFamily: `"${font.previewFamily}", var(--font-sans)`,
                 fontSize: `clamp(2.4rem, 5.6vw, ${specimen.size}px)`,
               }}
             />

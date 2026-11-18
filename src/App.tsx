@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import {
   LayoutGridIcon,
   Rows3Icon,
@@ -9,9 +9,9 @@ import { FontCard } from "@/components/font-card";
 import { FontDetailPage } from "@/components/font-detail-page";
 import { FontListRow } from "@/components/font-list-row";
 import { Input } from "@/components/ui/input";
-import { fontLibrary } from "@/data/font-library";
+import { fontLibrary } from "@/data/generated-font-library";
 import { previewPresets, type FontEntry } from "@/data/fonts";
-import { ensureFontPreviewsLoaded } from "@/lib/font-loader";
+import { getFontIdFromPath } from "@/lib/routes";
 import {
   brandButtonClass,
   brandMarkImageClass,
@@ -19,8 +19,6 @@ import {
   brandTitleClass,
   pageBodyShellClass,
   pageHeaderShellClass,
-  uiTextBodyClass,
-  uiTextSmallClass,
   uiTextTitleClass,
 } from "@/lib/layout";
 
@@ -48,21 +46,11 @@ function matchesSearch(font: FontEntry, query: string) {
   return haystack.includes(query.toLowerCase());
 }
 
-function getFontIdFromPath(pathname: string) {
-  const match = pathname.match(/^\/fonts\/([^/]+)$/);
-  return match ? decodeURIComponent(match[1]) : null;
-}
-
 export default function App() {
-  const [isPending, startTransition] = useTransition();
   const [searchQuery, setSearchQuery] = useState("");
   const [previewText, setPreviewText] = useState<string>(previewPresets.large);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [routePath, setRoutePath] = useState(() => getRoutePathFromHash(window.location.hash));
-
-  const deferredSearch = useDeferredValue(searchQuery);
-  const previewSize = 52;
-  const availableFonts = fontLibrary;
 
   useEffect(() => {
     const handleHashChange = () => setRoutePath(getRoutePathFromHash(window.location.hash));
@@ -70,22 +58,14 @@ export default function App() {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
-  const visibleFonts = availableFonts.filter((font) =>
-    matchesSearch(font, deferredSearch),
+  const visibleFonts = fontLibrary.filter((font) =>
+    matchesSearch(font, searchQuery),
   );
   const activeFontId = getFontIdFromPath(routePath);
   const activeFont =
     activeFontId === null
       ? null
-      : availableFonts.find((font) => font.id === activeFontId) ?? null;
-
-  useEffect(() => {
-    if (activeFont) {
-      return;
-    }
-
-    ensureFontPreviewsLoaded(visibleFonts);
-  }, [activeFont, visibleFonts]);
+      : fontLibrary.find((font) => font.id === activeFontId) ?? null;
 
   const navigateToFont = (font: FontEntry) => {
     const nextPath = `#/fonts/${encodeURIComponent(font.id)}`;
@@ -101,13 +81,7 @@ export default function App() {
   };
 
   if (activeFont) {
-    return (
-      <FontDetailPage
-        font={activeFont}
-        previewSize={previewSize}
-        onBack={navigateHome}
-      />
-    );
+    return <FontDetailPage font={activeFont} onBack={navigateHome} />;
   }
 
   return (
@@ -129,9 +103,6 @@ export default function App() {
                   />
                 </span>
                 <div className="hidden sm:block">
-                  {/* <p className="text-[0.68rem] uppercase tracking-[0.24em] text-white/38">
-                    Private library
-                  </p> */}
                   <h1 className={brandTitleClass}>Tiparo</h1>
                 </div>
               </button>
@@ -141,11 +112,9 @@ export default function App() {
               <SearchIcon className="pointer-events-none absolute top-1/2 left-4 size-[1.05rem] -translate-y-1/2 text-white/45" />
               <Input
                 value={searchQuery}
-                onChange={(event) =>
-                  startTransition(() => setSearchQuery(event.target.value))
-                }
+                onChange={(event) => setSearchQuery(event.target.value)}
                 placeholder="Search fonts"
-                className={`h-10 rounded-full border border-white/10 bg-[#23252b] pl-11 pr-11 ${uiTextBodyClass} text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] placeholder:text-white/38 hover:border-[#F2FDAD]/30 hover:bg-[#26292f] focus-visible:border-[#F2FDAD] focus-visible:ring-4 focus-visible:ring-[#F2FDAD]/24 dark:bg-[#23252b]`}
+                className="h-10 rounded-full border border-white/10 bg-[#23252b] pl-11 pr-11 text-base text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] placeholder:text-white/38 hover:border-[#F2FDAD]/30 hover:bg-[#26292f] focus-visible:border-[#F2FDAD] focus-visible:ring-4 focus-visible:ring-[#F2FDAD]/24 dark:bg-[#23252b]"
               />
             </div>
           </div>
@@ -154,16 +123,11 @@ export default function App() {
 
       <div className={pageBodyShellClass}>
         <div className="flex items-center justify-between gap-4">
-          <div className={`min-w-0 flex flex-wrap items-center gap-3 ${uiTextSmallClass} text-white/62`}>
-            <p className={`${uiTextSmallClass} font-medium leading-none text-white`}>
+          <div className="min-w-0 flex flex-wrap items-center gap-3 text-sm text-white/62">
+            <p className="text-sm font-medium leading-none text-white">
               {visibleFonts.length.toLocaleString()} of{" "}
-              {availableFonts.length.toLocaleString()} families
+              {fontLibrary.length.toLocaleString()} families
             </p>
-            {isPending ? (
-              <span className={`rounded-full border border-white/8 bg-[#1a1b1f] px-2.5 py-1 ${uiTextSmallClass} uppercase tracking-[0.18em] text-white/55`}>
-                Updating
-              </span>
-            ) : null}
           </div>
 
           <div className="flex shrink-0 items-center gap-3 self-center">
@@ -204,7 +168,6 @@ export default function App() {
                   key={font.id}
                   font={font}
                   previewText={previewText}
-                  previewSize={previewSize}
                   onPreviewTextChange={setPreviewText}
                   onOpenDetails={navigateToFont}
                 />
@@ -217,7 +180,6 @@ export default function App() {
                   key={font.id}
                   font={font}
                   previewText={previewText}
-                  previewSize={previewSize}
                   onPreviewTextChange={setPreviewText}
                   onOpenDetails={navigateToFont}
                 />
@@ -226,17 +188,17 @@ export default function App() {
           )
         ) : (
           <div className="mt-4 rounded-[2rem] border border-dashed border-white/12 bg-[#17181c] px-6 py-16 text-center">
-            <p className={`${uiTextSmallClass} uppercase tracking-[0.24em] text-white/42`}>
+            <p className="text-sm uppercase tracking-[0.24em] text-white/42">
               No matches
             </p>
             <h2 className={`mt-4 ${uiTextTitleClass} font-medium tracking-tight text-white`}>
-              {availableFonts.length === 0
+              {fontLibrary.length === 0
                 ? "No font files are available yet."
                 : "Nothing matches this search."}
             </h2>
-            <p className={`mx-auto mt-3 max-w-xl ${uiTextSmallClass} leading-7 text-white/56`}>
-              {availableFonts.length === 0
-                ? "Add `content/fonts/<id>/family.toml`, put the full upstream in `content/upstreams/<id>`, then run `aube run fonts:sync -- <id>`."
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-white/56">
+              {fontLibrary.length === 0
+                ? "Font previews will appear here when the library has entries."
                 : "Try a broader term, a different designer name, or a shorter family search."}
             </p>
           </div>
