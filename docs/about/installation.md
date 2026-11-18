@@ -17,6 +17,9 @@ The app builds from tracked previews; full upstream files are only needed to
 sync previews. The project keeps dependencies local so React and its types
 resolve to the versions in the lockfile.
 
+The dev command refreshes Vite's dependency cache on startup. Vite 8.0.8 does not
+recognize Aube's lockfile, so this prevents stale paths after dependencies change.
+
 For the docs, install `uv`, then run:
 
 ```bash

@@ -169,6 +169,38 @@
 }
 
 @font-face {
+  font-family: "tiparo-geist-serif-0";
+  src: url("../../content/fonts/geist-serif/geist-font/GeistSerif/webfonts/GeistSerif-Regular.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "tiparo-geist-serif-1";
+  src: url("../../content/fonts/geist-serif/geist-font/GeistSerif/webfonts/GeistSerif-Square.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "tiparo-geist-serif-2";
+  src: url("../../content/fonts/geist-serif/geist-font/GeistSerif/webfonts/GeistSerif-Triangle.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "tiparo-geist-serif-3";
+  src: url("../../content/fonts/geist-serif/geist-font/GeistSerif/webfonts/GeistSerif-Heart.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
   font-family: "tiparo-inter-0";
   src: url("../../content/fonts/inter/web/Inter-Black.woff2") format("woff2");
   font-display: swap;
@@ -470,6 +502,150 @@
   font-display: swap;
   font-style: normal;
   font-weight: 400;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-0";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-1";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-2";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-3";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-4";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-5";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-6";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-7";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-8";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-9";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-10";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-11";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-12";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-13";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-14";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-15";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-16";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "tiparo-obel-mono-17";
+  src: url("../../content/fonts/obel-mono/ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 900;
 }
 
 @font-face {

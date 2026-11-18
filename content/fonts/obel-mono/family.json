@@ -1,0 +1,94 @@
+{
+  "details": {
+    "name": "Obel Mono",
+    "designer": "Cody Collier",
+    "designer_url": "https://typographic.systems/about",
+    "license": "SIL Open Font License 1.1",
+    "license_url": "https://typographic.systems/license",
+    "copyright": "Copyright 2026 The Obel Mono Project Authors (https://typographic.systems)",
+    "foundry": "Typographic Systems",
+    "foundry_url": "https://typographic.systems",
+    "website": "https://typographic.systems/obel-mono"
+  },
+  "source": {
+    "commit": "1.004",
+    "archive": "https://typographic.systems/download/ObelMono-1.004.zip"
+  },
+  "display": {
+    "style": "Regular400"
+  },
+  "style": {
+    "Thin100": {
+      "name": "Thin 100",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2"
+    },
+    "Thin100Italic": {
+      "name": "Thin 100 Italic",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2"
+    },
+    "ExtraLight200": {
+      "name": "ExtraLight 200",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2"
+    },
+    "ExtraLight200Italic": {
+      "name": "ExtraLight 200 Italic",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2"
+    },
+    "Light300": {
+      "name": "Light 300",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2"
+    },
+    "Light300Italic": {
+      "name": "Light 300 Italic",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2"
+    },
+    "Regular400": {
+      "name": "Regular 400",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2"
+    },
+    "Italic400": {
+      "name": "Italic 400",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2"
+    },
+    "Medium500": {
+      "name": "Medium 500",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2"
+    },
+    "Medium500Italic": {
+      "name": "Medium 500 Italic",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2"
+    },
+    "SemiBold600": {
+      "name": "SemiBold 600",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2"
+    },
+    "SemiBold600Italic": {
+      "name": "SemiBold 600 Italic",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2"
+    },
+    "Bold700": {
+      "name": "Bold 700",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2"
+    },
+    "Bold700Italic": {
+      "name": "Bold 700 Italic",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2"
+    },
+    "ExtraBold800": {
+      "name": "ExtraBold 800",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2"
+    },
+    "ExtraBold800Italic": {
+      "name": "ExtraBold 800 Italic",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2"
+    },
+    "Black900": {
+      "name": "Black 900",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-VF.woff2"
+    },
+    "Black900Italic": {
+      "name": "Black 900 Italic",
+      "file": "ObelMono-1.004/ObelMono/woff2/ObelMono-Italic-VF.woff2"
+    }
+  }
+}

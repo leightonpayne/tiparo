@@ -1,48 +1,27 @@
 import { useState } from "react";
-import {
-  ArrowDownToLineIcon,
-  ChevronLeftIcon,
-  ExternalLinkIcon,
-} from "lucide-react";
+import { ArrowDownToLineIcon, ExternalLinkIcon } from "lucide-react";
 
 import type { FontEntry } from "@/data/fonts";
 import { previewPresets } from "@/data/fonts";
+import { AppHeader } from "@/components/app-header";
 import { EditableSpecimenText } from "@/components/editable-specimen-text";
+import { FontMockupGallery } from "@/components/font-mockup-gallery";
 import { Button, buttonClasses } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import {
-  brandButtonClass,
-  brandMarkImageClass,
-  brandMarkWrapClass,
-  brandTitleClass,
-  pageBodyShellClass,
-  pageHeaderShellClass,
-  uiTextTitleClass,
-} from "@/lib/layout";
+import { pageBodyShellClass } from "@/lib/layout";
 import { cn } from "@/lib/utils";
-import { getDetailSpecimenMetrics, getSpecimenText } from "@/lib/specimen";
+import { getDetailSpecimenMetrics } from "@/lib/specimen";
+import { useScrollReveal } from "@/lib/use-scroll-reveal";
 
 type FontDetailPageProps = {
   font: FontEntry;
   onBack: () => void;
 };
 
-const styleSizeOptions = [8, 12, 14, 20, 24, 32, 40, 64, 96, 120, 184, 280];
-
 export function FontDetailPage({ font, onBack }: FontDetailPageProps) {
+  const revealRef = useScrollReveal<HTMLDivElement>(font.id);
   const [largeText, setLargeText] = useState<string>(previewPresets.large);
   const [mediumText, setMediumText] = useState<string>(previewPresets.medium);
   const [smallText, setSmallText] = useState<string>(previewPresets.small);
-  const [stylesPreviewSize, setStylesPreviewSize] = useState(32);
-  const { faces } = font;
-  const stylesPreviewText = getSpecimenText(font, largeText);
   const downloadUrl = font.links.download;
   const renderLinkedText = (value: string, href?: string) => {
     if (!href || value === "Unavailable") {
@@ -50,14 +29,12 @@ export function FontDetailPage({ font, onBack }: FontDetailPageProps) {
     }
 
     return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noreferrer"
-        className="inline-flex items-start gap-1.5 transition hover:text-[#F2FDAD] focus-visible:text-[#F2FDAD] focus-visible:outline-none"
-      >
+      <a href={href} target="_blank" rel="noreferrer" className="ui-text-link">
         <span>{value}</span>
-        <ExternalLinkIcon className="mt-0.5 size-3.5 shrink-0 opacity-72" />
+        <ExternalLinkIcon
+          className="mt-1 size-3.5 shrink-0 text-muted-foreground"
+          aria-hidden="true"
+        />
       </a>
     );
   };
@@ -90,12 +67,13 @@ export function FontDetailPage({ font, onBack }: FontDetailPageProps) {
       label: "License",
       value: renderLinkedText(font.license || "Unavailable", font.licenseUrl),
     },
-    ...(font.copyright
-      ? [{ label: "Copyright", value: font.copyright }]
-      : []),
+    ...(font.copyright ? [{ label: "Copyright", value: font.copyright }] : []),
     {
       label: "Website",
-      value: renderLinkedText(font.links.official || "Unavailable", font.links.official),
+      value: renderLinkedText(
+        font.links.official || "Unavailable",
+        font.links.official,
+      ),
     },
     ...(font.links.source
       ? [
@@ -109,125 +87,89 @@ export function FontDetailPage({ font, onBack }: FontDetailPageProps) {
   ];
 
   return (
-    <main className="min-h-screen pb-16 text-white">
-      <header className="sticky top-0 z-30 border-b border-white/6 bg-[#111214]/94 backdrop-blur-xl">
-        <div className={cn(pageHeaderShellClass, "justify-between gap-4")}>
-          <div className="flex shrink-0 items-center gap-3">
-            <button
-              type="button"
-              onClick={onBack}
-              className={brandButtonClass}
-              aria-label="Back to font library"
-            >
-              <span className={brandMarkWrapClass}>
-                <img
-                  src={`${import.meta.env.BASE_URL}tiparo.svg`}
-                  alt=""
-                  aria-hidden="true"
-                  className={cn(
-                    brandMarkImageClass,
-                    "duration-200 group-hover:scale-[0.84] group-hover:opacity-0 group-focus-visible:scale-[0.84] group-focus-visible:opacity-0",
-                  )}
-                />
-                <span
-                  className={cn(
-                    buttonClasses({ size: "icon-sm" }),
-                    "absolute inset-0 translate-y-1 scale-[0.94] place-items-center opacity-0 text-[#111214] transition duration-200 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:border-[#F2FDAD] group-hover:bg-[#F2FDAD] group-hover:text-[#111214] group-focus-visible:translate-y-0 group-focus-visible:scale-100 group-focus-visible:opacity-100 group-focus-visible:border-[#F2FDAD] group-focus-visible:bg-[#F2FDAD] group-focus-visible:text-[#111214]",
-                  )}
-                >
-                  <ChevronLeftIcon className="size-5" />
-                </span>
-              </span>
-              <div>
-                <h1 className={brandTitleClass}>Tiparo</h1>
-              </div>
-            </button>
-          </div>
-          {downloadUrl ? (
-            <a
-              href={downloadUrl}
-              target="_blank"
-              rel="noreferrer"
-              className={cn(
-                buttonClasses({ size: "sm" }),
-                "px-4",
-              )}
-            >
-              <ArrowDownToLineIcon className="size-4" />
-              Download
-            </a>
-          ) : (
-            <Button
-              size="sm"
-              className="px-4 disabled:opacity-45"
-              disabled
-            >
-              <ArrowDownToLineIcon className="size-4" />
-              Download
-            </Button>
-          )}
+    <main className="ui-page">
+      <AppHeader onHome={onBack} back>
+        {downloadUrl ? (
+          <a
+            href={downloadUrl}
+            target="_blank"
+            rel="noreferrer"
+            className={buttonClasses({ className: "ui-download" })}
+          >
+            <ArrowDownToLineIcon
+              className="ui-download-icon"
+              aria-hidden="true"
+            />
+            Download
+          </a>
+        ) : (
+          <Button disabled>
+            <ArrowDownToLineIcon aria-hidden="true" />
+            Download
+          </Button>
+        )}
+      </AppHeader>
+
+      <div className={`${pageBodyShellClass} ui-detail-body`} ref={revealRef}>
+        <div className="ui-page-heading" data-reveal>
+          <h2 className="ui-page-title">{font.family}</h2>
         </div>
-      </header>
-
-      <div className={pageBodyShellClass}>
-        <div className="space-y-7">
-          <section>
-            <div className="min-w-0">
-              <div className="flex min-h-11 items-center">
-                <div className="flex items-center gap-3 text-sm text-white/68">
-                  <h2 className={`${uiTextTitleClass} font-medium tracking-tight leading-none text-white`}>
-                    {font.family}
-                  </h2>
-                </div>
-              </div>
-
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/56">
-                {faces.length} {faces.length === 1 ? "style" : "styles"}
-                {font.designer ? ` | Designed by ${font.designer}` : ""}
-              </p>
-              {font.specimen?.note ? (
-                <p className="mt-2 max-w-3xl text-sm leading-6 text-white/42">
-                  {font.specimen.note}
-                </p>
-              ) : null}
-
-              <div className="mt-8 grid gap-x-12 gap-y-8 lg:grid-cols-2 lg:gap-y-10">
-                {(
-                  [
-                    {
-                      text: largeText,
-                      onChange: setLargeText,
-                      sizeMultiplier: 1,
-                      minSize: 32,
-                      fluidSize: "6vw",
-                      measure: "32ch",
-                      lineHeight: 1.18,
-                    },
-                    {
-                      text: mediumText,
-                      onChange: setMediumText,
-                      sizeMultiplier: 0.55,
-                      minSize: 20,
-                      fluidSize: "2.5vw",
-                      measure: "60ch",
-                      lineHeight: 1.5,
-                    },
-                    {
-                      text: smallText,
-                      onChange: setSmallText,
-                      sizeMultiplier: 0.38,
-                      minSize: 16,
-                      fluidSize: "1.8vw",
-                      measure: "70ch",
-                      lineHeight: 1.6,
-                    },
-                  ] as const
-                ).map(({ text, onChange, sizeMultiplier, minSize, fluidSize, measure, lineHeight }, i) => {
+        <div className="ui-section-stack">
+          <section className="ui-section" aria-label="Freeform specimens">
+            <div className="ui-specimen-grid">
+              {(
+                [
+                  {
+                    text: largeText,
+                    onChange: setLargeText,
+                    sizeMultiplier: 1,
+                    minSize: 32,
+                    fluidSize: "6vw",
+                    measure: "32ch",
+                    lineHeight: 1.18,
+                  },
+                  {
+                    text: mediumText,
+                    onChange: setMediumText,
+                    sizeMultiplier: 0.55,
+                    minSize: 20,
+                    fluidSize: "2.5vw",
+                    measure: "60ch",
+                    lineHeight: 1.5,
+                  },
+                  {
+                    text: smallText,
+                    onChange: setSmallText,
+                    sizeMultiplier: 0.38,
+                    minSize: 16,
+                    fluidSize: "1.8vw",
+                    measure: "70ch",
+                    lineHeight: 1.6,
+                  },
+                ] as const
+              ).map(
+                (
+                  {
+                    text,
+                    onChange,
+                    sizeMultiplier,
+                    minSize,
+                    fluidSize,
+                    measure,
+                    lineHeight,
+                  },
+                  i,
+                ) => {
                   const metrics = getDetailSpecimenMetrics(font, text);
-                  const size = Math.max(Math.round(metrics.size * sizeMultiplier), minSize);
+                  const size = Math.max(
+                    Math.round(metrics.size * sizeMultiplier),
+                    minSize,
+                  );
                   return (
                     <div
                       key={i}
+                      data-reveal
+                      style={{ animationDelay: `${90 + i * 90}ms` }}
                       className={cn(
                         "min-w-0 overflow-visible py-[0.2em]",
                         i === 0 && "lg:col-span-2",
@@ -237,7 +179,7 @@ export function FontDetailPage({ font, onBack }: FontDetailPageProps) {
                         value={text}
                         displayValue={metrics.text}
                         onChange={onChange}
-                        className="whitespace-pre-wrap break-words text-white"
+                        className="whitespace-pre-wrap break-words text-foreground"
                         style={{
                           fontFamily: `"${font.previewFamily}", var(--font-sans)`,
                           fontSize: `clamp(${minSize}px, ${fluidSize}, ${size}px)`,
@@ -247,100 +189,26 @@ export function FontDetailPage({ font, onBack }: FontDetailPageProps) {
                       />
                     </div>
                   );
-                })}
-              </div>
+                },
+              )}
             </div>
           </section>
 
-          <section>
-            <dl className="border-y border-white/10">
+          <FontMockupGallery key={font.id} font={font} />
+
+          <section className="ui-section" aria-label="Type information">
+            <dl className="ui-metadata ui-body">
               {detailsItems.map((item, index) => (
                 <div
                   key={item.label}
-                  className={cn(
-                    "py-4 sm:grid sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[240px_minmax(0,1fr)]",
-                    index < detailsItems.length - 1 && "border-b border-white/10",
-                  )}
+                  data-reveal
+                  style={{ animationDelay: `${Math.min(index, 4) * 55}ms` }}
                 >
-                  <dt className="text-sm text-white/50">{item.label}</dt>
-                  <dd className="mt-1 break-words text-sm font-medium text-white sm:mt-0">
-                    {item.value}
-                  </dd>
+                  <dt>{item.label}</dt>
+                  <dd>{item.value}</dd>
                 </div>
               ))}
             </dl>
-          </section>
-
-          <section>
-            <div className="space-y-4">
-              <h3 className={`${uiTextTitleClass} font-normal tracking-tight text-white`}>
-                Styles
-              </h3>
-
-              <div className="flex items-center justify-start gap-4">
-                <Select
-                  value={`${stylesPreviewSize}`}
-                  onValueChange={(value) => setStylesPreviewSize(Number(value))}
-                >
-                  <SelectTrigger
-                    className={cn(
-                      buttonClasses({ size: "sm" }),
-                      "h-9 w-[96px] px-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:!border-[#F2FDAD] hover:!bg-[#F2FDAD] hover:!text-[#111214] data-[popup-open]:!border-[#F2FDAD] data-[popup-open]:!bg-[#F2FDAD] data-[popup-open]:!text-[#111214]",
-                    )}
-                  >
-                    <SelectValue>{stylesPreviewSize}px</SelectValue>
-                  </SelectTrigger>
-                  <SelectContent className="border border-white/10 bg-[#23252b] text-white ring-0">
-                    {styleSizeOptions.map((sizeOption) => (
-                      <SelectItem key={sizeOption} value={`${sizeOption}`}>
-                        {sizeOption}px
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <div className="w-[min(22rem,calc(100vw-9rem))] shrink-0 px-1">
-                  <Slider
-                    min={8}
-                    max={300}
-                    step={1}
-                    value={[stylesPreviewSize]}
-                    onValueChange={(value) => {
-                      const nextValue = Array.isArray(value) ? value[0] : value;
-                      setStylesPreviewSize(nextValue ?? 8);
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 border-t border-white/12">
-              {faces.map((face) => (
-                <article
-                  key={face.id}
-                  className="border-b border-white/12 py-4"
-                >
-                  <p className="text-base font-medium text-white/82">
-                    {face.name}
-                  </p>
-                  <div className="mt-4 overflow-hidden">
-                    <EditableSpecimenText
-                      value={largeText}
-                      displayValue={stylesPreviewText}
-                      onChange={setLargeText}
-                      singleLine
-                      className="pt-[0.16em] pb-[0.22em] leading-[1.16] text-white"
-                      style={{
-                        fontFamily: `"${face.fontFamily}", var(--font-sans)`,
-                        fontStyle: face.style,
-                        fontWeight: face.weight,
-                        fontSize: `min(${stylesPreviewSize}px, calc(100vw - 5rem))`,
-                      }}
-                    />
-                  </div>
-                </article>
-              ))}
-            </div>
           </section>
         </div>
       </div>

@@ -1,22 +1,183 @@
 [data-md-color-scheme="default"] {
-  --md-primary-fg-color: #0d0252;
-  --md-primary-fg-color--light: #2d2472;
-  --md-primary-fg-color--dark: #080036;
-  --md-accent-fg-color: #0d0252;
-  --md-accent-fg-color--transparent: rgb(13 2 82 / 0.18);
+  --md-primary-fg-color: var(--flexoki-black);
+  --md-primary-fg-color--light: var(--flexoki-base-900);
+  --md-primary-fg-color--dark: var(--flexoki-black);
+  --md-primary-bg-color: var(--flexoki-paper);
+  --md-accent-fg-color: var(--flexoki-black);
+  --md-accent-fg-color--transparent: var(--flexoki-base-100);
+  --tiparo-rule: var(--flexoki-base-500);
 }
 
 [data-md-color-scheme="slate"] {
   --md-primary-fg-color: #f2fdad;
-  --md-primary-fg-color--light: #f7ffd0;
-  --md-primary-fg-color--dark: #d4e676;
+  --md-primary-fg-color--light: #f2fdad;
+  --md-primary-fg-color--dark: #f2fdad;
+  --md-primary-bg-color: var(--flexoki-black);
   --md-accent-fg-color: #f2fdad;
   --md-accent-fg-color--transparent: rgb(242 253 173 / 0.18);
+  --tiparo-rule: var(--flexoki-base-600);
+}
+
+[data-md-color-scheme] {
+  --ui-rule-width: 2px;
+  --flexoki-syntax-keyword: var(--md-code-fg-color);
+  --flexoki-syntax-type: var(--md-code-fg-color);
+  --flexoki-syntax-string: var(--md-default-fg-color--light);
+  --flexoki-syntax-number: var(--md-default-fg-color--light);
+  --flexoki-syntax-function: var(--md-code-fg-color);
+  --flexoki-syntax-blue: var(--md-code-fg-color);
+  --flexoki-syntax-red: var(--md-code-fg-color);
+  --flexoki-syntax-magenta: var(--md-code-fg-color);
+  --md-code-hl-color: #f2fdad;
+  --md-code-hl-color--light: color-mix(
+    in srgb,
+    #f2fdad 18%,
+    var(--md-code-bg-color)
+  );
+  --md-typeset-del-color: var(--md-default-bg-color--lightest);
+  --md-typeset-ins-color: var(--md-default-bg-color--lighter);
+  --md-typeset-mark-color: #f2fdad;
+  --md-warning-fg-color: var(--md-default-fg-color);
+  --md-warning-bg-color: var(--md-default-bg-color--lighter);
+  --md-typeset-table-color: var(--tiparo-rule);
+  --md-shadow-z1: none;
+  --md-shadow-z2: none;
+  --md-shadow-z3: none;
+}
+
+::selection,
+.md-typeset mark {
+  background-color: #f2fdad;
+  color: var(--flexoki-black);
+}
+
+[data-md-color-scheme] .md-typeset :is(.admonition, details) {
+  --flexoki-admonition-accent: var(--md-default-fg-color--light);
+  background-color: var(--md-admonition-bg-color);
+  border: var(--ui-rule-width) solid var(--tiparo-rule);
+}
+
+[data-md-color-scheme]
+  .md-typeset
+  :is(.admonition, details)
+  > :is(.admonition-title, summary)::before {
+  background-color: var(--flexoki-admonition-accent);
+}
+
+[data-md-color-scheme]
+  .md-typeset
+  :is(.admonition, details)
+  > :is(.admonition-title, summary)::after {
+  color: var(--flexoki-admonition-accent);
 }
 
 .md-typeset img[src*="static/diagrams/"] {
   display: block;
   margin-inline: auto;
-  border: 1px solid #cecdc3;
-  border-radius: 0.4rem;
+  border: var(--ui-rule-width) solid var(--tiparo-rule);
+  border-radius: 0;
+}
+
+[data-md-color-scheme]
+  :is(
+    .md-header,
+    .md-tabs,
+    .md-search__button,
+    .md-search__form,
+    .md-search__output,
+    .md-nav__link,
+    .md-nav__source,
+    .md-top,
+    .md-typeset code,
+    .md-typeset kbd,
+    .md-typeset table,
+    .md-typeset .md-button,
+    .md-typeset .md-input,
+    .md-typeset .admonition,
+    .md-typeset details,
+    .md-typeset summary,
+    .md-typeset .tabbed-set,
+    .md-typeset .tabbed-labels > label,
+    .md-typeset .tabbed-button,
+    .md-typeset .md-tag,
+    .md-typeset .grid.cards > :is(ol, ul) > li,
+    .md-typeset .grid > .card
+  ) {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+[data-md-color-scheme] :is(.md-header, .md-tabs, .md-top) {
+  background-color: var(--md-default-bg-color);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.md-header,
+.md-tabs {
+  border-bottom: var(--ui-rule-width) solid var(--tiparo-rule);
+}
+
+[data-md-color-scheme]
+  :is(
+    .md-nav__link,
+    .md-nav__source,
+    .md-search__button,
+    .md-typeset .md-button,
+    .md-typeset .md-input,
+    .md-typeset code
+  ) {
+  transition: none;
+}
+
+[data-md-color-scheme]
+  :is(.md-search__button, .md-typeset .md-button, .md-top) {
+  border: var(--ui-rule-width) solid var(--tiparo-rule);
+  background-color: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+}
+
+.md-search__button {
+  height: 2rem;
+}
+
+.md-search__button::after {
+  top: 50%;
+  border-radius: 0;
+  background: transparent;
+  transform: translateY(-50%);
+}
+
+.md-typeset h1 {
+  color: var(--md-default-fg-color);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.md-typeset h2 {
+  padding-bottom: 0.4rem;
+  border-bottom: var(--ui-rule-width) solid var(--tiparo-rule);
+  font-weight: 600;
+}
+
+.md-typeset kbd {
+  border: var(--ui-rule-width) solid var(--tiparo-rule);
+}
+
+[data-md-color-scheme] .md-typeset table:not([class]) {
+  border: var(--ui-rule-width) solid var(--tiparo-rule);
+}
+
+[data-md-color-scheme] .md-typeset table:not([class]) td {
+  border-top: var(--ui-rule-width) solid var(--tiparo-rule);
+}
+
+[data-md-color-scheme] .md-typeset pre > code {
+  border: var(--ui-rule-width) solid var(--tiparo-rule);
+}
+
+[data-md-color-scheme] .md-typeset hr {
+  border: 0;
+  border-bottom: var(--ui-rule-width) solid var(--tiparo-rule);
 }

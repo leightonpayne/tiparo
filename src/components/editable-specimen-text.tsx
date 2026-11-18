@@ -152,7 +152,7 @@ export function EditableSpecimenText({
       onKeyDown={(event) => event.stopPropagation()}
       onScroll={singleLine ? updateSingleLineMask : undefined}
       className={cn(
-        "block w-full resize-none border-0 bg-transparent p-0 text-inherit outline-none placeholder:text-white/26 focus:outline-none focus:ring-0 cursor-text",
+        "block w-full resize-none border-0 bg-transparent p-0 text-inherit outline-none placeholder:text-muted-foreground focus:outline-none focus:ring-0 cursor-text",
         singleLine
           ? "tiparo-scrollbar-hidden overflow-x-auto overflow-y-hidden whitespace-nowrap overscroll-x-contain"
           : "overflow-hidden",

@@ -1,0 +1,45 @@
+{
+  "details": {
+    "name": "Geist Serif",
+    "designer": [
+      "Mark Davis",
+      "Andrés Briganti",
+      "Evil Rabbit"
+    ],
+    "designer_url": [
+      "https://wordmark.nyc"
+    ],
+    "license": "SIL Open Font License 1.1",
+    "license_url": "https://github.com/vercel/geist-font/blob/ef2597cfc42f4797676df105517ccc0a1cfa6569/OFL.txt",
+    "copyright": "Copyright 2026 The Geist Project Authors (https://github.com/vercel/geist-font)",
+    "foundry": "WORDMARK",
+    "foundry_url": "https://wordmark.nyc",
+    "website": "https://vercel.com/font?type=serif"
+  },
+  "source": {
+    "repository": "https://github.com/vercel/geist-font",
+    "commit": "ef2597cfc42f4797676df105517ccc0a1cfa6569",
+    "archive": "https://github.com/vercel/geist-font/releases/download/v1.9.2/geist-font-v1.9.2.zip"
+  },
+  "display": {
+    "style": "Regular400"
+  },
+  "style": {
+    "Regular400": {
+      "name": "Regular 400",
+      "file": "geist-font/GeistSerif/webfonts/GeistSerif-Regular.woff2"
+    },
+    "Square400": {
+      "name": "Square 400",
+      "file": "geist-font/GeistSerif/webfonts/GeistSerif-Square.woff2"
+    },
+    "Triangle400": {
+      "name": "Triangle 400",
+      "file": "geist-font/GeistSerif/webfonts/GeistSerif-Triangle.woff2"
+    },
+    "Heart400": {
+      "name": "Heart 400",
+      "file": "geist-font/GeistSerif/webfonts/GeistSerif-Heart.woff2"
+    }
+  }
+}

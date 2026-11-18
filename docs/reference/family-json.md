@@ -99,7 +99,7 @@ Use these when a font cannot display ordinary preview text.
 | `replace_punctuation` | Nonblank string replacing Unicode punctuation, for example `"*"`. |
 | `supported` | String or string array listing allowed characters. Include `" "` to keep spaces. |
 | `unsupported` | String or string array listing characters to remove. |
-| `note` | Explanation displayed on the font detail page. |
+| `note` | Optional explanatory metadata retained in the registry. |
 
 Rules run in this order: lowercase, punctuation replacement, supported-character
 filter, unsupported-character filter. Empty character lists do not filter text.

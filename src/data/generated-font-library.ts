@@ -235,6 +235,65 @@ export const fontLibrary: FontEntry[] = [
     "version": "e1f671c727f6de7e97c1e1d26dbb44f349c19459"
   },
   {
+    "id": "geist-serif",
+    "family": "Geist Serif",
+    "designer": "Mark Davis, Andrés Briganti, Evil Rabbit",
+    "designers": [
+      {
+        "name": "Mark Davis",
+        "url": "https://wordmark.nyc"
+      },
+      {
+        "name": "Andrés Briganti"
+      },
+      {
+        "name": "Evil Rabbit"
+      }
+    ],
+    "foundry": "WORDMARK",
+    "foundryUrl": "https://wordmark.nyc",
+    "license": "SIL Open Font License 1.1",
+    "licenseUrl": "https://github.com/vercel/geist-font/blob/ef2597cfc42f4797676df105517ccc0a1cfa6569/OFL.txt",
+    "copyright": "Copyright 2026 The Geist Project Authors (https://github.com/vercel/geist-font)",
+    "faces": [
+      {
+        "id": "Regular400",
+        "name": "Regular 400",
+        "fontFamily": "tiparo-geist-serif-0",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "id": "Square400",
+        "name": "Square 400",
+        "fontFamily": "tiparo-geist-serif-1",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "id": "Triangle400",
+        "name": "Triangle 400",
+        "fontFamily": "tiparo-geist-serif-2",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "id": "Heart400",
+        "name": "Heart 400",
+        "fontFamily": "tiparo-geist-serif-3",
+        "weight": "400",
+        "style": "normal"
+      }
+    ],
+    "previewFamily": "tiparo-geist-serif-0",
+    "links": {
+      "source": "https://github.com/vercel/geist-font",
+      "official": "https://vercel.com/font?type=serif",
+      "download": "https://github.com/vercel/geist-font/releases/download/v1.9.2/geist-font-v1.9.2.zip"
+    },
+    "version": "ef2597cfc42f4797676df105517ccc0a1cfa6569"
+  },
+  {
     "id": "inter",
     "family": "Inter",
     "designer": "Rasmus Andersson",
@@ -565,6 +624,156 @@ export const fontLibrary: FontEntry[] = [
       "official": "https://www.shipbrook.net/",
       "download": "https://downloads.leightonpayne.dev/tiparo/40fd4afb/tiparo-jsl-blackletter.tar.gz"
     }
+  },
+  {
+    "id": "obel-mono",
+    "family": "Obel Mono",
+    "designer": "Cody Collier",
+    "designers": [
+      {
+        "name": "Cody Collier",
+        "url": "https://typographic.systems/about"
+      }
+    ],
+    "foundry": "Typographic Systems",
+    "foundryUrl": "https://typographic.systems",
+    "license": "SIL Open Font License 1.1",
+    "licenseUrl": "https://typographic.systems/license",
+    "copyright": "Copyright 2026 The Obel Mono Project Authors (https://typographic.systems)",
+    "faces": [
+      {
+        "id": "Thin100",
+        "name": "Thin 100",
+        "fontFamily": "tiparo-obel-mono-0",
+        "weight": "100",
+        "style": "normal"
+      },
+      {
+        "id": "Thin100Italic",
+        "name": "Thin 100 Italic",
+        "fontFamily": "tiparo-obel-mono-1",
+        "weight": "100",
+        "style": "italic"
+      },
+      {
+        "id": "ExtraLight200",
+        "name": "ExtraLight 200",
+        "fontFamily": "tiparo-obel-mono-2",
+        "weight": "200",
+        "style": "normal"
+      },
+      {
+        "id": "ExtraLight200Italic",
+        "name": "ExtraLight 200 Italic",
+        "fontFamily": "tiparo-obel-mono-3",
+        "weight": "200",
+        "style": "italic"
+      },
+      {
+        "id": "Light300",
+        "name": "Light 300",
+        "fontFamily": "tiparo-obel-mono-4",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "id": "Light300Italic",
+        "name": "Light 300 Italic",
+        "fontFamily": "tiparo-obel-mono-5",
+        "weight": "300",
+        "style": "italic"
+      },
+      {
+        "id": "Regular400",
+        "name": "Regular 400",
+        "fontFamily": "tiparo-obel-mono-6",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "id": "Italic400",
+        "name": "Italic 400",
+        "fontFamily": "tiparo-obel-mono-7",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "id": "Medium500",
+        "name": "Medium 500",
+        "fontFamily": "tiparo-obel-mono-8",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "id": "Medium500Italic",
+        "name": "Medium 500 Italic",
+        "fontFamily": "tiparo-obel-mono-9",
+        "weight": "500",
+        "style": "italic"
+      },
+      {
+        "id": "SemiBold600",
+        "name": "SemiBold 600",
+        "fontFamily": "tiparo-obel-mono-10",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "id": "SemiBold600Italic",
+        "name": "SemiBold 600 Italic",
+        "fontFamily": "tiparo-obel-mono-11",
+        "weight": "600",
+        "style": "italic"
+      },
+      {
+        "id": "Bold700",
+        "name": "Bold 700",
+        "fontFamily": "tiparo-obel-mono-12",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "id": "Bold700Italic",
+        "name": "Bold 700 Italic",
+        "fontFamily": "tiparo-obel-mono-13",
+        "weight": "700",
+        "style": "italic"
+      },
+      {
+        "id": "ExtraBold800",
+        "name": "ExtraBold 800",
+        "fontFamily": "tiparo-obel-mono-14",
+        "weight": "800",
+        "style": "normal"
+      },
+      {
+        "id": "ExtraBold800Italic",
+        "name": "ExtraBold 800 Italic",
+        "fontFamily": "tiparo-obel-mono-15",
+        "weight": "800",
+        "style": "italic"
+      },
+      {
+        "id": "Black900",
+        "name": "Black 900",
+        "fontFamily": "tiparo-obel-mono-16",
+        "weight": "900",
+        "style": "normal"
+      },
+      {
+        "id": "Black900Italic",
+        "name": "Black 900 Italic",
+        "fontFamily": "tiparo-obel-mono-17",
+        "weight": "900",
+        "style": "italic"
+      }
+    ],
+    "previewFamily": "tiparo-obel-mono-6",
+    "links": {
+      "official": "https://typographic.systems/obel-mono",
+      "download": "https://typographic.systems/download/ObelMono-1.004.zip"
+    },
+    "version": "1.004"
   },
   {
     "id": "paper-mono",

@@ -1,0 +1,77 @@
+.infinite-canvas {
+  position: relative;
+  isolation: isolate;
+  height: clamp(24rem, 58svh, 44rem);
+  overflow: hidden;
+  border: var(--ui-rule-width) solid var(--border);
+  border-radius: var(--ui-radius-surface);
+  background: var(--card);
+}
+
+.infinite-canvas-viewport {
+  cursor: grab;
+  touch-action: none;
+  outline: none;
+}
+
+.infinite-canvas-viewport:active {
+  cursor: grabbing;
+}
+
+.infinite-canvas-world {
+  position: relative;
+}
+
+.infinite-canvas-item {
+  position: absolute;
+}
+
+.infinite-canvas-world a,
+.infinite-canvas-world button {
+  cursor: pointer;
+}
+
+.infinite-canvas-world :focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: var(--ui-radius-control);
+}
+
+.infinite-canvas-zoom {
+  display: grid;
+  place-items: center;
+  min-width: 2.5rem;
+  color: var(--muted-foreground);
+  font-size: var(--ui-text-xs);
+  line-height: var(--ui-leading-xs);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.infinite-canvas-controls {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  border: var(--ui-rule-width) solid var(--border);
+  background: var(--background);
+}
+
+.infinite-canvas-controls > * {
+  border: 0;
+}
+
+.infinite-canvas-controls > * + * {
+  border-left: var(--ui-rule-width) solid var(--border);
+}
+
+@media (max-width: 639px) {
+  .infinite-canvas {
+    height: clamp(20rem, 52svh, 32rem);
+  }
+
+  .infinite-canvas-controls {
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+}

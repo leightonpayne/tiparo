@@ -13,6 +13,9 @@ icon: lucide/circle-plus
 3. Set `source.archive` to a complete HTTP(S) download URL, preferably a pinned
    official release including its license. Existing hosted archives can also
    be linked by their complete URLs. Tiparo does not upload or manage archives.
+4. Keep a copy of the upstream copyright and license notice in
+   `public/licenses/<font-id>.txt` so it accompanies the deployed preview files.
+   Record the notice in the [license documentation](../about/license.md).
 
 Copy the listed preview files into the tracked font directory, then start the
 app (which regenerates the manifest):

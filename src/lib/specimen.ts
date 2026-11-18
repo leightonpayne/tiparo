@@ -54,51 +54,24 @@ export function getSpecimenText(font: FontEntry, requestedText: string) {
   }
 
   if (rules.supportedGlyphs && rules.supportedGlyphs.length > 0) {
-    const supported = new Set(rules.supportedGlyphs.flatMap((glyph) => Array.from(glyph)));
+    const supported = new Set(
+      rules.supportedGlyphs.flatMap((glyph) => Array.from(glyph)),
+    );
     text = Array.from(text)
       .filter((char) => supported.has(char))
       .join("");
   }
 
   if (rules.unsupportedGlyphs && rules.unsupportedGlyphs.length > 0) {
-    const unsupported = new Set(rules.unsupportedGlyphs.flatMap((glyph) => Array.from(glyph)));
+    const unsupported = new Set(
+      rules.unsupportedGlyphs.flatMap((glyph) => Array.from(glyph)),
+    );
     text = Array.from(text)
       .filter((char) => !unsupported.has(char))
       .join("");
   }
 
   return text;
-}
-
-export function getGridSpecimenMetrics(font: FontEntry, requestedText: string) {
-  const text = getSpecimenText(font, requestedText);
-  const glyphHeavy = isGlyphHeavyText(text);
-  const visibleChars = countVisibleChars(text);
-  const longestToken = maxTokenLength(text);
-
-  let size = Math.min(Math.max(previewSize - 4, 34), 60);
-
-  if (glyphHeavy) {
-    size = Math.min(size, 44);
-  }
-
-  if (visibleChars > 42) {
-    size -= 4;
-  }
-
-  if (visibleChars > 72) {
-    size -= 5;
-  }
-
-  if (longestToken > 14) {
-    size -= 3;
-  }
-
-  return {
-    text,
-    glyphHeavy,
-    size: Math.max(size, glyphHeavy ? 24 : 30),
-  };
 }
 
 export function getListSpecimenMetrics(font: FontEntry, requestedText: string) {
@@ -123,7 +96,10 @@ export function getListSpecimenMetrics(font: FontEntry, requestedText: string) {
   };
 }
 
-export function getDetailSpecimenMetrics(font: FontEntry, requestedText: string) {
+export function getDetailSpecimenMetrics(
+  font: FontEntry,
+  requestedText: string,
+) {
   const text = getSpecimenText(font, requestedText);
   const glyphHeavy = isGlyphHeavyText(text);
   const visibleChars = countVisibleChars(text);
