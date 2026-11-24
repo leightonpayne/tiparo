@@ -23,11 +23,17 @@
 }
 .mockup-projection {
   position: absolute;
-  top: 0;
-  left: 0;
-  transform-origin: 0 0;
+  inset: 0;
   pointer-events: none;
+  /* Full printed colours inherit the paper's wrinkles, light and shadows. */
   mix-blend-mode: multiply;
+}
+.mockup-page-mask {
+  position: absolute;
+  inset: 0;
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
 }
 .mockup-surface {
   position: absolute;
@@ -35,260 +41,178 @@
   left: 0;
   transform-origin: 0 0;
   container-type: inline-size;
+  overflow: hidden;
+  background: var(--poster-paper);
+  color: var(--poster-ink);
+}
+.mockup-print-projection {
+  position: absolute;
+  inset: 0;
+}
+.mockup-print-measure {
+  visibility: hidden;
+  pointer-events: none;
+}
+.mockup-warp-tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  /* Slight overlap prevents antialiasing seams between neighbouring patches. */
+  clip-path: inset(calc(-0.3px * var(--mockup-render-scale, 1)));
 }
 .mockup-print {
   position: absolute;
-  inset: 8%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 5cqw;
-  color: #100f0f;
-  overflow-wrap: anywhere;
-  white-space: pre-wrap;
+  inset: 7% var(--poster-inset-inline, 7%) 5%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: calc(8cqw * var(--mockup-fit, 1));
+  color: var(--poster-ink);
+  font-synthesis: none;
+  /* Enlarged rendering planes must keep the same optical font design. */
+  font-optical-sizing: none;
+  white-space: pre-line;
 }
 .mockup-print p,
-.mockup-print h4 {
+.mockup-print h4,
+.mockup-print blockquote {
   margin: 0;
 }
-.mockup-print-kicker,
-.mockup-print-footer {
-  font-size: calc(3.6cqw * var(--mockup-fit, 1));
-  line-height: 1.2;
-  letter-spacing: 0.035em;
-}
-.mockup-print h4 {
-  font-size: calc(14cqw * var(--mockup-fit, 1));
-  line-height: 0.98;
-  letter-spacing: -0.015em;
-  text-wrap: balance;
-  overflow-wrap: normal;
-}
-.mockup-print-body {
-  margin-top: 5cqw !important;
-  font-size: calc(5.5cqw * var(--mockup-fit, 1));
-  line-height: 1.25;
-  text-wrap: pretty;
-}
 .mockup-print-main {
-  --mockup-icon-size: 28cqw;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
 }
 .mockup-print-copy {
   min-width: 0;
-}
-.mockup-print-icon {
-  display: block;
-  width: calc(var(--mockup-icon-size) * var(--mockup-fit, 1));
-  height: calc(var(--mockup-icon-size) * var(--mockup-fit, 1));
   flex-shrink: 0;
-  margin-bottom: calc(5cqw * var(--mockup-fit, 1));
-  overflow: visible;
 }
-.mockup-print-main[data-icon-layout="beside"] {
-  --mockup-icon-size: 26cqw;
+.mockup-print h4 {
+  font-size: calc(var(--poster-headline-size) * var(--mockup-fit, 1) * var(--headline-fit, 1));
+  line-height: 1.14;
+  letter-spacing: -0.035em;
+}
+.mockup-print h4 span {
+  display: block;
+  font-size: calc(1em * var(--line-scale, 1));
+  white-space: pre;
+}
+.mockup-print h4 span[data-accent] {
+  color: var(--poster-accent);
+}
+.mockup-print-body {
+  margin-top: calc(7cqw * var(--mockup-fit, 1)) !important;
+  font-size: calc(var(--poster-body-size) * var(--mockup-fit, 1));
+  line-height: 1.16;
+  letter-spacing: -0.015em;
+  /* Keep the same wrapping when this print is rendered at a denser scale. */
+  text-wrap: wrap;
+}
+.mockup-print-colophon {
   display: grid;
-  grid-template-columns:
-    calc(var(--mockup-icon-size) * var(--mockup-fit, 1))
-    minmax(0, 1fr);
-  align-items: center;
-  gap: calc(6cqw * var(--mockup-fit, 1));
+  gap: calc(1cqw * var(--mockup-fit, 1));
+  overflow-wrap: anywhere;
 }
-.mockup-print-main[data-icon-layout="below"] {
-  display: flex;
-  flex-direction: column;
-  gap: calc(6cqw * var(--mockup-fit, 1));
+.mockup-print-footer {
+  font-size: calc(3.3cqw * var(--mockup-fit, 1));
+  line-height: 1.2;
 }
-.mockup-print-main[data-icon-layout="below"] .mockup-print-icon {
-  order: 1;
+.mockup-print-kicker {
+  font-size: calc(2.7cqw * var(--mockup-fit, 1));
+  line-height: 1.25;
 }
-.mockup-print-main[data-icon-layout="beside"] .mockup-print-icon,
-.mockup-print-main[data-icon-layout="below"] .mockup-print-icon {
-  margin-bottom: 0;
+
+/* A broadside is a few deliberately sized lines and a quiet printer's credit. */
+.mockup-surface[data-layout="broadside"] .mockup-print-colophon {
+  border-top: 0.25cqw solid currentColor;
+  padding-top: 2cqw;
 }
-.mockup-card[data-design="artprint"]
-  .mockup-print-main:not([data-icon-layout="beside"]) {
-  --mockup-icon-size: 34cqw;
+
+/* Longer passages read as one paragraph, in the family's actual text face. */
+.mockup-surface[data-layout="statement"] .mockup-print {
+  inset: 9% var(--poster-inset-inline, 8%) 6%;
 }
-.mockup-card[data-design="artprint"] .mockup-print-icon {
-  margin-inline: auto;
+.mockup-surface[data-layout="statement"] .mockup-print-main {
+  justify-content: center;
 }
-.mockup-card[data-design="poster"] h4 {
-  font-size: calc(17cqw * var(--mockup-fit, 1));
+.mockup-surface[data-layout="statement"] h4 {
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  white-space: normal;
+  text-wrap: wrap;
 }
-.mockup-card[data-design="placard"] .mockup-print {
-  inset: 10%;
+.mockup-surface[data-layout="statement"] .mockup-print-body {
+  margin-top: calc(9cqw * var(--mockup-fit, 1)) !important;
 }
-.mockup-card[data-design="placard"] h4 {
-  font-size: calc(16cqw * var(--mockup-fit, 1));
-}
-.mockup-card[data-design="placard"] .mockup-print-body {
-  font-size: calc(6cqw * var(--mockup-fit, 1));
-}
-.mockup-card[data-design="book"] h4 {
-  font-size: calc(20cqw * var(--mockup-fit, 1));
-}
-.mockup-card[data-design="book"] .mockup-print-main {
-  margin-block: 8cqw auto;
-}
-.mockup-card[data-design="study"] .mockup-print-main {
-  border-top: 0.4cqw solid currentColor;
-  padding-top: 6cqw;
-}
-.mockup-card[data-design="broadside"] .mockup-projection {
-  mix-blend-mode: screen;
-}
-.mockup-card[data-design="artprint"] .mockup-print {
+
+/* Short placards need only a strong silhouette of type. */
+.mockup-surface[data-layout="placard"] .mockup-print {
   text-align: center;
 }
-.mockup-card[data-design="artprint"] h4 {
-  font-size: calc(20cqw * var(--mockup-fit, 1));
-}
-.mockup-card[data-design="reading"] .mockup-print {
-  inset: 12% 9%;
-  gap: 2cqw;
-}
-.mockup-card[data-design="reading"] h4 {
-  font-size: calc(12cqw * var(--mockup-fit, 1));
-}
-.mockup-card[data-design="reading"] .mockup-print-body {
-  margin-top: 2cqw !important;
-  font-size: calc(3.2cqw * var(--mockup-fit, 1));
-}
-.mockup-card[data-design="reading"] .mockup-print-kicker,
-.mockup-card[data-design="reading"] .mockup-print-footer {
-  font-size: calc(2.5cqw * var(--mockup-fit, 1));
-}
-.mockup-surface[data-composition="editorial"] .mockup-print {
-  inset: 5%;
-  gap: 5cqw;
-}
-.mockup-surface[data-composition="editorial"] .mockup-print-main {
-  margin-bottom: auto;
-  border-top: 0.25cqw solid currentColor;
-  padding-top: 5cqw;
-}
-.mockup-surface[data-composition="editorial"] .mockup-print-body {
-  font-size: calc(6cqw * var(--mockup-fit, 1));
-  line-height: 1.4;
-  letter-spacing: 0;
-  white-space: pre-line;
-}
-.mockup-card[data-tone="light"] .mockup-projection {
-  mix-blend-mode: screen;
-}
-.mockup-card[data-tone="light"] .mockup-print {
-  color: #fffcf0;
+.mockup-surface[data-layout="placard"] .mockup-print-main {
+  justify-content: center;
 }
 
-.mockup-surface[data-composition="exhibition"] .mockup-print {
-  inset: 6%;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto 1fr auto;
-  justify-content: normal;
-  gap: calc(4cqw * var(--mockup-fit, 1));
-  text-align: left;
+/* Two opposing clauses get comparable weight instead of a tiny caption. */
+.mockup-surface[data-layout="contrast"] .mockup-print-body {
+  margin-top: calc(12cqw * var(--mockup-fit, 1)) !important;
+  line-height: 1.14;
+  letter-spacing: -0.035em;
 }
-.mockup-surface[data-composition="exhibition"] .mockup-print-main {
-  align-self: center;
-  margin: 0;
-}
-.mockup-surface[data-composition="exhibition"] .mockup-print h4 {
-  line-height: 0.94;
-  letter-spacing: -0.025em;
-}
-.mockup-surface[data-composition="exhibition"] .mockup-print-kicker {
-  font-size: calc(3cqw * var(--mockup-fit, 1));
-  letter-spacing: 0.08em;
-}
-.mockup-surface[data-composition="exhibition"] .mockup-print-body {
-  margin-top: calc(4cqw * var(--mockup-fit, 1)) !important;
-  font-size: calc(4.5cqw * var(--mockup-fit, 1));
-  line-height: 1.25;
-}
-.mockup-surface[data-composition="exhibition"] .mockup-print-footer {
-  font-size: calc(8cqw * var(--mockup-fit, 1));
-  line-height: 1.25;
-  letter-spacing: -0.025em;
-  text-align: right;
-}
-
-.mockup-surface[data-composition="billboard"] .mockup-print {
-  gap: 2.5cqw;
-}
-.mockup-surface[data-composition="billboard"] .mockup-print-kicker,
-.mockup-surface[data-composition="billboard"] .mockup-print-footer {
-  font-size: calc(2.2cqw * var(--mockup-fit, 1));
-}
-.mockup-surface[data-composition="billboard"] .mockup-print-body {
-  margin-top: 3cqw !important;
-  font-size: calc(3.6cqw * var(--mockup-fit, 1));
-}
-
-.mockup-surface[data-composition="screen"] .mockup-print {
-  inset: 7%;
+.mockup-surface[data-placement="top"] .mockup-print-main {
   justify-content: flex-start;
-  gap: calc(5cqw * var(--mockup-fit, 1));
 }
-.mockup-screen-nav {
+.mockup-surface[data-placement="center"] .mockup-print-main {
+  justify-content: center;
+}
+
+/* Keep landscape line breaks authored for the actual banner proportions. */
+.mockup-surface[data-format="landscape"] .mockup-print {
+  inset: 9% var(--poster-inset-inline, 5%) 6%;
+  gap: calc(3cqw * var(--mockup-fit, 1));
+}
+.mockup-surface[data-format="landscape"] .mockup-print-main {
+  justify-content: center;
+}
+.mockup-surface[data-format="landscape"] .mockup-print-body {
+  margin-top: calc(2.5cqw * var(--mockup-fit, 1)) !important;
+}
+.mockup-surface[data-format="landscape"] .mockup-print-colophon {
   display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 0.6em;
-  padding-bottom: 0.8em;
-  font-size: calc(4.2cqw * var(--mockup-fit, 1));
-  line-height: 1.2;
-  font-weight: 500;
+  flex-wrap: wrap;
+  column-gap: 2cqw;
+  row-gap: 0.5cqw;
+  align-items: baseline;
 }
-.mockup-screen-nav span {
-  flex: 1;
+.mockup-surface[data-format="landscape"] .mockup-print-footer {
+  font-size: calc(2cqw * var(--mockup-fit, 1));
 }
-.mockup-screen-nav svg {
-  width: 1.1em;
-  height: 1.1em;
-  flex-shrink: 0;
+.mockup-surface[data-format="landscape"] .mockup-print-kicker {
+  font-size: calc(1.7cqw * var(--mockup-fit, 1));
 }
-.mockup-surface[data-composition="screen"] .mockup-print-kicker {
-  font-size: calc(3.3cqw * var(--mockup-fit, 1));
-  opacity: 0.7;
+.mockup-surface[data-format="landscape"][data-layout="placard"] .mockup-print-colophon {
+  justify-content: center;
 }
-.mockup-surface[data-composition="screen"] .mockup-print h4 {
-  line-height: 1.08;
-  text-wrap: balance;
+.mockup-surface[data-format="landscape"][data-layout="broadside"] .mockup-print-colophon {
+  padding-top: 1cqw;
 }
-.mockup-surface[data-composition="screen"] .mockup-print-body {
-  margin-top: 5cqw !important;
-  font-size: calc(4.4cqw * var(--mockup-fit, 1));
-  line-height: 1.5;
-  text-wrap: pretty;
+
+.mockup-surface[data-format="strip"] .mockup-print {
+  inset: 13% var(--poster-inset-inline, 5%) 13%;
+  gap: calc(1cqw * var(--mockup-fit, 1));
+  text-align: center;
 }
-.mockup-surface[data-composition="screen"] .mockup-print-footer {
-  margin-top: auto;
-  padding-top: 3cqw;
-  font-size: calc(2.7cqw * var(--mockup-fit, 1));
-  opacity: 0.7;
+.mockup-surface[data-format="strip"] .mockup-print-main {
+  justify-content: center;
 }
-.mockup-surface[data-screen-format="wide"] .mockup-print {
-  inset: 7% 6%;
-  gap: calc(2.4cqw * var(--mockup-fit, 1));
+.mockup-surface[data-format="strip"] h4 {
+  white-space: nowrap;
 }
-.mockup-surface[data-screen-format="wide"] .mockup-screen-nav {
-  font-size: calc(2.5cqw * var(--mockup-fit, 1));
-}
-.mockup-surface[data-screen-format="wide"] .mockup-print-kicker {
-  font-size: calc(1.8cqw * var(--mockup-fit, 1));
-}
-.mockup-surface[data-screen-format="wide"] .mockup-print-copy {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: start;
-  gap: 5cqw;
-}
-.mockup-surface[data-screen-format="wide"] .mockup-print-body {
-  margin-top: 0 !important;
-  font-size: calc(2.4cqw * var(--mockup-fit, 1));
-}
-.mockup-surface[data-screen-format="wide"] .mockup-print-footer {
-  padding-top: 2cqw;
+.mockup-surface[data-format="strip"] .mockup-print-footer {
   font-size: calc(1.8cqw * var(--mockup-fit, 1));
 }

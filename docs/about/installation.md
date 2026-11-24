@@ -32,6 +32,7 @@ aube run docs:serve
 | `aube run dev`         | Regenerate font data and start Vite                            |
 | `aube test`            | Run regression tests                                           |
 | `aube run build`       | Regenerate font data, check TypeScript, build app into `dist/` |
+| `aube run mockups:build` | Rebuild supplied mockup backgrounds, masks and projection data |
 | `aube run preview`     | Serve the existing app build locally                           |
 | `aube run docs:serve`  | Preview docs locally                                           |
 | `aube run docs:build`  | Build docs into `dist/docs/`                                   |

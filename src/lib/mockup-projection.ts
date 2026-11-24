@@ -6,12 +6,11 @@ export type MockupSurface = readonly [
   MockupPoint,
 ];
 
-/** Maps a print plane onto photo corners (TL, TR, BR, BL), with transform-origin: 0 0. */
-export function getMockupSurfaceTransform(
+function getMockupSurfaceMatrix(
   points: MockupSurface,
   width: number,
   height: number,
-): string {
+): number[] {
   if (
     !Number.isFinite(width) ||
     !Number.isFinite(height) ||
@@ -97,5 +96,22 @@ export function getMockupSurfaceTransform(
       "Mockup surface transform is not finite; check its dimensions and points.",
     );
   }
-  return `matrix3d(${matrix.join(", ")})`;
+  return matrix;
+}
+
+/** Maps a print plane onto photo corners (TL, TR, BR, BL), with transform-origin: 0 0. */
+export function getMockupSurfaceTransform(points: MockupSurface, width: number, height: number): string {
+  return `matrix3d(${getMockupSurfaceMatrix(points, width, height).join(", ")})`;
+}
+
+/** The same perspective mapping for sampling curved surfaces in photograph space. */
+export function createMockupSurfaceProjector(points: MockupSurface, width: number, height: number) {
+  const matrix = getMockupSurfaceMatrix(points, width, height);
+  return ([x, y]: MockupPoint): MockupPoint => {
+    const divisor = matrix[3] * x + matrix[7] * y + 1;
+    return [
+      (matrix[0] * x + matrix[4] * y + matrix[12]) / divisor,
+      (matrix[1] * x + matrix[5] * y + matrix[13]) / divisor,
+    ];
+  };
 }

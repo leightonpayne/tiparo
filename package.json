@@ -10,6 +10,7 @@
     "docs:build": "aube run docs:diagrams && uv run --group docs zensical build --clean",
     "docs:serve": "aube run docs:diagrams && uv run --group docs zensical serve",
     "fonts:sync": "node scripts/sync-font-assets.mjs",
+    "mockups:build": "uv run scripts/build-mockup-assets.py",
     "dev": "aube run content:sync && vite --force",
     "build": "aube run content:sync && tsc --noEmit && vite build",
     "pages:build": "aube run build && aube run docs:build",

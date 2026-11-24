@@ -6,7 +6,10 @@ site
 .venv
 .venv-docs
 .uv_cache
+__pycache__/
 content/upstreams/
+# Licensed source templates stay local; only the web exports are distributed.
+content/mockups/*.zip
 docs/static/diagrams/
 
 .wrangler/

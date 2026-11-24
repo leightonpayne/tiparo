@@ -64,19 +64,24 @@ gallery, scene data and canvas code out of the library view’s initial download
 | `src/components/font-list-row.tsx` | Editable library previews and navigation to font details |
 | `src/components/font-detail-page.tsx` | Editable paragraph samples, mockup canvas, metadata, and download link |
 | `src/components/font-mockup-gallery.tsx`, `font-mockup.css` | Live typography over sourced mockup images in a repeating canvas |
-| `public/mockups/` | Locally served WebP images for 75 print, device and art scenes |
-| `src/components/mockup-icon.tsx` | Renders Phosphor print icons with their original viewBox and square dimensions |
-| `src/data/mockup-icons.ts` | Fourteen unmodified filled SVG paths from `@phosphor-icons/core` 2.1.1 |
-| `public/licenses/phosphor.txt` | Original MIT copyright and permission notice for the Phosphor artwork |
+| `public/mockups/local/` | Locally served WebP backgrounds and print-surface masks for 40 scenes from 32 supplied archives |
 | `public/licenses/lucide.txt` | Complete ISC and Feather-derived MIT notices for Lucide interface icons |
 | `src/components/editable-specimen-text.tsx` | Editable samples; resizes after text, layout, and font-loading changes |
 | `src/lib/specimen.ts` | Applies per-font character rules and preview sizing |
 | `src/lib/mockup.ts` | Selects real headline/body faces and sanitizes mockup copy |
-| `src/data/mockup-scenes.ts` | Text/image credits, crops, print-surface corners, optional second pages, icon choices, designs, and urban/art setting tags |
+| `src/data/mockup-scenes.ts` | Image credits, quotation sources and surface assignments for the supplied mockups |
+| `src/data/agitprop-sources.ts` | Author, work, year and source URL for each quoted text |
+| `src/data/agitprop-designs.ts` | 57 quotation panels, line sizes, shared print palette and related panel sequences |
+| `src/components/mockup-print.tsx` | Live typographic artwork, source colophons and font fitting |
+| `src/data/generated-mockup-assets.json` | Exported image dimensions, print-surface corners, proportions and alpha-mask paths |
+| `scripts/build-mockup-assets.py` | Rebuilds the web exports from local `content/mockups/` archives |
 | `src/lib/mockup-projection.ts` | Maps live typography to photographed paper, screens, canvases and walls |
+| `src/lib/mockup-warp.ts` | Samples bicubic envelopes and tessellates curved surfaces into live-HTML pieces |
+| `tests/test_mockup_warp_export.py` | Checks warp extraction against cached PSD descriptors and raster bounds |
 | `src/components/ui/infinite-canvas.tsx` | Repeating viewport, pan/zoom, reset, and keyboard navigation using react-zoom-pan-pinch |
 | `src/lib/repeating-canvas.ts` | Enumerates only visible periodic scene copies, including negative coordinates |
 | `src/lib/mockup-layout.ts` | Justified rows preserve crop proportions and spacing at repeat boundaries |
+| `src/lib/mockup-render-quality.ts` | Zoom bands, device-pixel-aware print resolution and curved-surface detail |
 | `src/data/fonts.ts` | Runtime data types |
 | `scripts/lib/font-spec.mjs` | Shared JSON validation and path handling |
 
@@ -144,12 +149,9 @@ font files as they are used. The default face is resolved during generation
 from `display.style`, falling back to regular 400 or the first face.
 
 Font pages show editable freeform specimens first, followed by a repeating canvas
-of 75 distinct print, device and art mockups and type information.
-The 21 scenes marked `setting: "urban"` or `setting: "art"` come first as a
-combined group: 16 urban scenes plus five art scenes. This group
-and the remaining 54 scenes are independently shuffled
-when the gallery mounts, then stay stable while editing specimens or exploring
-the canvas.
+of 40 street, flyer and book mockups and type information. The supplied mockups are shuffled when
+the gallery mounts, then stay stable while editing specimens or exploring the
+canvas.
 Sections use accessible labels without visible section headings; the font family
 title, metadata field labels, and canvas controls remain visible. The page heading
 shows the family name alone; optional specimen notes remain in the registry.
@@ -165,7 +167,7 @@ the DOM. Repeated images reuse the same local URLs and browser cache.
 
 The compact viewer uses `clamp(24rem, 58svh, 44rem)` for its height, changing to
 `clamp(20rem, 52svh, 32rem)` below 640px. It opens and resets at exactly 50% zoom
-on every screen, with a zoom range of 20–250%. The first mockup starts 16px from
+on every screen, with a zoom range of 20–400%. The first mockup starts 16px from
 the left and 24px from the top; wide mockups can extend beyond narrow viewports
 and remain accessible by panning.
 
@@ -175,114 +177,81 @@ focused viewport; reduced motion disables animation and inertia.
 The canvas region includes keyboard instructions for assistive technology;
 repeated visual copies are hidden from it.
 
-The scenes include books, open publications, notebooks, posters, placards,
-framed prints, working papers, reading cards, paired wall posters, a freestanding
-banner, postal envelopes, correspondence cards and clipped prints.
-Eight device reading scenes include four phones, two laptops, a desktop monitor
-and a tablet. The urban photographs include a night street lightbox, an airport
-digital display, a concrete facade billboard, a terminal lightbox and an
-industrial wall poster. The metro group adds a cinema, a drive-in screen and
-a sunlit street lightbox.
-Five art scenes add a handheld magazine, a spiral sketchbook on black timber,
-a gallery wall and two studio canvases.
-The selection favours neutral paper and textiles, natural city light and clear
-type surfaces. A red pocket pamphlet and blue physical billboard retain their
-original photographed colours. Dark cloth, kraft covers, cream paper,
-newsprint, street lightboxes and illuminated panels provide varied materials
-and lighting. Each
-uses the selected font’s real faces, preferring Display cuts for headlines and
-text cuts for body copy.
-Four measured image corners define each print surface’s CSS
-perspective transform. A tight crop translates and scales the full image and
-projected typography together, keeping the lettering on its photographed surface as
-the frame resizes or zooms. An optional second page has its own surface and text
-layout, so open publications can show running prose or chapter contents beside
-a title.
+The canvas uses the layered mockups supplied in `content/mockups/`, covering
+posters, banners, billboards, lightboxes, stickers, an advertising column, a stand,
+a three-frame display, flyers and a sewn book. `aube run mockups:build` exports
+blank photographs and
+per-surface alpha masks to `public/mockups/local/`, plus projection metadata to
+`src/data/generated-mockup-assets.json`. Normal app builds use the checked-in
+exports and do not need the source ZIPs or Python. For metadata-only updates,
+`uv run scripts/build-mockup-assets.py --metadata-only MDU049 MDU088` retains the
+existing photographs and masks while refreshing placement and warp controls.
 
-Eight device scenes use `composition: "screen"` to show a digital publication in the
-selected font, including its navigation label, author credit, article heading,
-body copy and footer. Portrait screens stack the heading and body; wide laptop
-and desktop screens place them in two columns. Decorative Lucide book and
-search icons sit in the navigation bar. Measured screen surfaces avoid bezels,
-notches, rounded corners and home indicators, and the transparent text overlay
-retains the photograph’s screen lighting. The street and terminal lightboxes
-use poster layouts. Seven scenes—the airport display, digital billboard,
-concrete billboard, industrial wall poster, cinema screen, drive-in screen and gallery wall—use
-`composition: "billboard"`, reducing author credits, supporting copy, footers
-and spacing to make the headline dominant on landscape surfaces.
-The eight `device-*`, five `urban-*` and three `metro-*` photographs use WebP
-quality 82, method 6, with a maximum longest side of 1,800 pixels. Urban crops
-preserve natural light, concrete, metal and surrounding structures while keeping
-the measured display surfaces prominent. Metro crops retain cinema lighting,
-drive-in corrugation and sunlight around the type. Surface
-insets avoid hands, notches and rounded frames; ordinary print padding keeps
-cinema lettering inside slightly curved screen edges.
+Each scene has a `pages` array, including every visible print surface. Four
+corners from each PSD smart object define its perspective transform. Four of
+the 57 surfaces also have bicubic control grids: both cylinder surfaces in
+`mdu049` and the custom envelopes in `mdu088` and the right book page of
+`md1263-4`. Cylinder parameters are converted
+at export time, with hidden back regions excluded. Controls are normalized to
+Photoshop's control-point hull, preserving the original print proportions.
 
-Four art scenes use `composition: "exhibition"`, placing a small author credit
-above large left-aligned type and a year at the lower right. The magazine’s
-second page has its own projection and a short Benjamin excerpt, inset above
-the reader’s forearm. The sketchbook print avoids binding and shadows, the
-canvas prints avoid easel clamps and edges, and the gallery wall’s billboard
-layout stays clear of the room corner and fixtures. All five `arts-*` images
-retain their natural light and texture, with neutral dark ink, no external
-taglines, and WebP quality 82, method 6, at up to 1,800 pixels on the longest side.
+`src/lib/mockup-warp.ts` samples each envelope and adaptively tessellates it into
+clipped live-HTML pieces, each placed by a CSS perspective transform. A fitted
+composition supplies those pieces, so the typography remains live rather than
+becoming a raster image. Raster transparency and ancestor masks clip torn edges
+and foreground objects. Photograph, masks and lettering scale together during
+resize and zoom. The mesh follows the exported bicubic deformation; arbitrary
+Photoshop pixel-displacement filters and fine wrinkle displacement remain
+unmodeled, while photographed shading and texture are retained.
 
-The backgrounds comprise 70 photographs and five existing 3D mockup renders
-from Pexels, Unsplash and Pixabay. No AI-generated backgrounds are used. The
-local WebP assets total 8,225,378 bytes (about 7.84 MiB). The canvas mounts nearby
-copies and eagerly loads their shared local images because WebKit can
-miss native lazy-loading triggers on the transformed photo layers. Creator
-credits and source URLs remain in the scene data and documentation rather
-than appearing beneath the images.
-See [mockup assets and licences](mockup-assets.md) for all image and text sources.
-Typography fits its print surface after resizes and font loading.
-Headlines keep whole words and shrink when needed. Mockup ink uses Flexoki
-neutrals: `#100f0f` by default and `#fffcf0` on dark surfaces. Source
-photographs keep their natural colours.
-Character restrictions apply to all mockup
-text while preserving line breaks.
+Rendering detail follows the camera in 25/50/100/200/400% bands, with a small
+downgrade hysteresis to avoid repeated rebuilding near a boundary. Device pixel
+ratio and each print's projected scale select a 1×, 2× or 4× source plane. The
+destination corners and paper masks stay fixed. Curved surfaces target 0.35
+device-pixel approximation error, within bounded tolerance limits; overview
+views use fewer patches and close views gain detail. Panning within a band keeps
+the existing print DOM. Screen-density changes refresh the selected detail.
 
-Twenty-eight print scenes include one of fourteen filled icons from
-[Phosphor Icons](https://github.com/phosphor-icons/core). The original SVG path
-strings from `@phosphor-icons/core` 2.1.1 are stored in `mockup-icons.ts` and
-rendered by `mockup-icon.tsx`. Their geometry and `0 0 256 256` viewBox are kept
-intact; no runtime icon package is needed. The original MIT notice is retained
-in `public/licenses/phosphor.txt`.
+All print fitting happens on the original 600px-wide plane. Rendered copies
+inherit its fit factors, use ordinary wrapping and retain a 0.5% fitting margin
+for scaled font-metric rounding. Automatic optical sizing is disabled so zoom
+does not select a different font design. One masked blue sheet underlies each
+composition, preventing gaps between curve patches from exposing the unprinted
+photograph. Photographs and alpha masks retain their original export resolution;
+fine credits become readable by zooming closer, rather than changing the artwork.
 
-Each SVG inherits the print’s ink and shares its perspective, crop, fit factor
-and canvas zoom. Explicit equal width and height preserve square proportions:
-28cqw above or below the copy, 26cqw beside it, and 34cqw above or below the copy
-in art prints. These dimensions and spacing scale with `--mockup-fit`. The
-icons are decorative (`aria-hidden`, non-focusable), leaving the text to convey
-the meaning. Lucide remains in use for interface controls; its complete ISC
-and applicable Feather MIT notices are retained in `public/licenses/lucide.txt`.
+The selected font's real faces remain live: display cuts for broadsides and
+placards, and text cuts for paragraph statements and credits. Text fits again
+after font loading; limited character sets follow their specimen rules while
+preserving line breaks. Landscape surfaces keep authored banner line breaks,
+and small panoramic strips retain the quotation and author credit.
+All panels use blue stock (`#1F5EA6`) and white text (`#ffffff`), including accents
+and credits, multiplied over the photographed surface to preserve its lighting
+and texture. Four typographic treatments vary line sizes, paragraph setting and
+placement according to the text. A small source colophon replaces decorative
+stamps and emblems. Headline width fitting is separate from supporting copy; a
+second pass fits the composition to the underlying print plane. Folds, tears,
+foliage and frames may naturally cover lettering without triggering automatic
+layout avoidance. Side margins still account for curved columns and printed-area
+proportions. The source templates' sample artwork is excluded from the exports.
 
-Mockup copy combines Marxist, socialist feminist and Black feminist writing
-with art criticism. Feminist treatments cover women’s labour, suffrage, peace,
-social reproduction, collective organising and visual culture, using short
-excerpts and work titles across print and screen contexts. Authors include
-Kollontai, Zetkin, Luxemburg, Eleanor Marx, Federici, Davis, Jones, James,
-Arruzza, Bhattacharya, Fraser, Dalla Costa, Vogel, Mies, Ferguson and bell hooks,
-alongside the Combahee River Collective. Collective authorship, editor credits
-and bell hooks’s lowercase name are preserved on the objects. Existing works
-remain represented as repeated-copy scenes take on additional texts.
-The matted and exhibition prints pair the art icon with bell hooks’s
-*Art on My Mind* and Davis’s *Women, Culture & Politics*. The digital billboard
-pairs the resistance icon with the Combahee River Collective’s statement.
-The metro scenes pair short excerpts with their settings: Marx’s eighth thesis
-in a cinema, the Manifesto’s passage on free development in a street lightbox,
-and Morris’s *Art and Labour* on a drive-in screen.
-The art scenes use Benjamin’s *The Author as Producer* and *The Work of Art*,
-Berger’s *Ways of Seeing*, and existing Morris passages. Benjamin’s 1934 text
-is distinguished from its linked 1970 translation; Berger’s title, brief
-opening and 1972 date follow Penguin’s publication record.
-Links to primary texts, archival records and publisher excerpts remain in the
-scene data, including the Marxists Internet Archive, William Morris Archive,
-Penguin, Verso, PM Press, Pluto, Haymarket, Bloomsbury and The New Press. Source
-notes distinguish original publication or speech dates from later translations
-and editions, and identify marked excerpts. Publisher descriptions and endorsements
-are not used as quotations by the authors.
-They are recorded with the [mockup assets](mockup-assets.md#text-sources).
+The canvas eagerly loads nearby copies' shared local images because WebKit can
+miss native lazy-loading triggers on transformed photo layers. Image credits,
+archive filenames and specimen source URLs remain in the scene data and
+[asset documentation](mockup-assets.md). Licensed source archives stay local and
+are excluded from Git and the app's public assets.
+
+Print compositions contain no decorative icons. The earlier Phosphor artwork
+and its licence are retained in the repository but are not rendered. Lucide
+remains in use for interface controls; its complete ISC and applicable Feather
+MIT notices are retained in `public/licenses/lucide.txt`.
+
+Short quotations follow the primary texts, archived editions or publisher
+excerpts recorded in `agitprop-sources.ts`. Each panel retains its own author,
+work, year and URL; the rendered `blockquote` carries the source in `cite`.
+A work-title specimen is marked separately. Capitals and line breaks can change
+for a composition while quoted wording stays intact. See the
+[mockup assets](mockup-assets.md#text-sources) for the complete source list.
 
 ## Maintenance
 

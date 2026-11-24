@@ -21,14 +21,16 @@ import {
   type CanvasRepeat,
   type InfiniteCanvasItem,
 } from "@/lib/repeating-canvas";
+import { quantizeCanvasScale } from "@/lib/mockup-render-quality";
 
 import "./infinite-canvas.css";
 
 export type { InfiniteCanvasItem } from "@/lib/repeating-canvas";
+export type CanvasRenderView = { scale: number; pixelRatio: number };
 
 type InfiniteCanvasProps<T extends InfiniteCanvasItem> = {
   items: readonly T[];
-  renderItem: (item: T) => ReactNode;
+  renderItem: (item: T, view: CanvasRenderView) => ReactNode;
   label: string;
   worldWidth: number;
   worldHeight: number;
@@ -60,6 +62,10 @@ export function InfiniteCanvas<T extends InfiniteCanvasItem>({
   );
   const [visible, setVisible] = useState<CanvasRepeat<T>[]>([]);
   const [zoom, setZoom] = useState(baseScale * 100);
+  const [renderView, setRenderView] = useState<CanvasRenderView>(() => ({
+    scale: baseScale,
+    pixelRatio: window.devicePixelRatio || 1,
+  }));
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -95,6 +101,14 @@ export function InfiniteCanvas<T extends InfiniteCanvasItem>({
           : next,
       );
       setZoom(Math.round(camera.scale * 100));
+      // Camera motion stays continuous; expensive print detail changes only
+      // when crossing a resolution band or moving to a different-density screen.
+      setRenderView((previous) => {
+        const scale = quantizeCanvasScale(camera.scale, previous.scale);
+        const pixelRatio = window.devicePixelRatio || 1;
+        return previous.scale === scale && previous.pixelRatio === pixelRatio
+          ? previous : { scale, pixelRatio };
+      });
     },
     [items, worldWidth, worldHeight],
   );
@@ -106,6 +120,18 @@ export function InfiniteCanvas<T extends InfiniteCanvasItem>({
     observer.observe(root);
     updateVisible(cameraRef.current);
     return () => observer.disconnect();
+  }, [updateVisible]);
+
+  useEffect(() => {
+    let resolution: MediaQueryList;
+    const watchResolution = () => {
+      resolution?.removeEventListener("change", watchResolution);
+      updateVisible(cameraRef.current);
+      resolution = window.matchMedia(`(resolution: ${window.devicePixelRatio || 1}dppx)`);
+      resolution.addEventListener("change", watchResolution);
+    };
+    watchResolution();
+    return () => resolution.removeEventListener("change", watchResolution);
   }, [updateVisible]);
 
   const animationTime = reducedMotion ? 0 : 180;
@@ -140,10 +166,10 @@ export function InfiniteCanvas<T extends InfiniteCanvasItem>({
           data-repeat-row={row}
           style={{ left: x, top: y, width: item.width, minHeight: item.height }}
         >
-          {renderItem(item)}
+          {renderItem(item, renderView)}
         </div>
       )),
-    [visible, renderItem],
+    [visible, renderItem, renderView],
   );
 
   return (
@@ -158,7 +184,7 @@ export function InfiniteCanvas<T extends InfiniteCanvasItem>({
         ref={transformRef}
         initialScale={baseScale}
         minScale={minimumScale}
-        maxScale={2.5}
+        maxScale={4}
         limitToBounds={false}
         disablePadding
         smooth={!reducedMotion}
@@ -210,7 +236,7 @@ export function InfiniteCanvas<T extends InfiniteCanvasItem>({
               const item = target.closest<HTMLElement>("[data-canvas-item]");
               if (item)
                 void transformRef.current?.zoomToElement(item, {
-                  maxScale: 1.25,
+                  maxScale: 4,
                   animationTime,
                 });
             },
